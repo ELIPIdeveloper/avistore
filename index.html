@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avi Store | فروشگاه آوی</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+  * { font-family: 'Vazirmatn', sans-serif; }
+  body { background-color: #f7f7f9; }
+  .hero-banner {
+    background-image: url('baner.png');
+    background-size: cover;
+    background-position: center;
+  }
+  .card-img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+  .fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+</style>
+</head>
+<body class="text-gray-800">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-500 flex items-center justify-center text-white font-extrabold text-lg shadow-lg">A</div>
+        <span class="text-2xl font-extrabold tracking-tight text-gray-900">avi <span class="text-violet-600">store</span></span>
+      </div>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+        <a href="#home" class="hover:text-violet-600 transition">خانه</a>
+        <a href="#products" class="hover:text-violet-600 transition">محصولات</a>
+        <a href="#about" class="hover:text-violet-600 transition">درباره ما</a>
+        <a href="#contact" class="hover:text-violet-600 transition">تماس با ما</a>
+      </nav>
+      <div class="flex items-center gap-4">
+        <button class="relative p-2 rounded-full hover:bg-gray-100 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 1.98-4.684 2.57-7.135.108-.45-.232-.865-.696-.865H5.25M7.5 14.25L5.106 5.272M7.5 14.25L4.5 20.25m0 0h11.25" />
+          </svg>
+          <span id="cartCount" class="absolute -top-1 -left-1 bg-violet-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </button>
+        <button class="md:hidden p-2" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t px-4 py-3 space-y-2 text-gray-600 font-medium">
+      <a href="#home" class="block py-1">خانه</a>
+      <a href="#products" class="block py-1">محصولات</a>
+      <a href="#about" class="block py-1">درباره ما</a>
+      <a href="#contact" class="block py-1">تماس با ما</a>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section id="home" class="relative">
+    <div class="hero-banner relative h-[60vh] md:h-[75vh] w-full flex items-center">
+      <div class="absolute inset-0 bg-gradient-to-l from-black/70 via-black/30 to-transparent"></div>
+      <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 w-full">
+        <div class="max-w-xl fade-in">
+          <span class="inline-block bg-violet-600 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">پیشنهاد ویژه</span>
+          <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4">به فروشگاه <span class="text-fuchsia-400">آوی</span> خوش آمدید</h1>
+          <p class="text-gray-200 text-base md:text-lg mb-6">بهترین محصولات با کیفیت عالی و قیمت مناسب، همین حالا خرید کنید.</p>
+          <a href="#products" class="inline-block bg-white text-gray-900 font-bold px-8 py-3 rounded-full hover:bg-violet-600 hover:text-white transition shadow-lg">مشاهده محصولات</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="flex items-center gap-4 bg-white rounded-2xl shadow-sm p-5">
+      <div class="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center text-violet-600">🚚</div>
+      <div>
+        <h3 class="font-bold">ارسال سریع</h3>
+        <p class="text-sm text-gray-500">تحویل به سراسر کشور</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 bg-white rounded-2xl shadow-sm p-5">
+      <div class="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center text-violet-600">💳</div>
+      <div>
+        <h3 class="font-bold">پرداخت امن</h3>
+        <p class="text-sm text-gray-500">درگاه پرداخت مطمئن</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 bg-white rounded-2xl shadow-sm p-5">
+      <div class="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center text-violet-600">🎁</div>
+      <div>
+        <h3 class="font-bold">ضمانت اصالت کالا</h3>
+        <p class="text-sm text-gray-500">۷ روز ضمانت بازگشت</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold text-gray-900 mb-2">محصولات ما</h2>
+      <p class="text-gray-500">مجموعه‌ای منتخب از بهترین کالاهای فروشگاه آوی</p>
+      <div class="w-20 h-1 bg-violet-600 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Product 1 -->
+      <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden group">
+        <div class="overflow-hidden">
+          <img src="1.png" alt="محصول ۱" class="card-img w-full group-hover:scale-105 transition duration-500">
+        </div>
+        <div class="p-5">
+          <h3 class="font-bold text-lg mb-1">محصول شماره ۱</h3>
+          <p class="text-gray-500 text-sm mb-3">توضیح کوتاه و جذاب درباره این محصول با کیفیت بالا.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-violet-600 font-extrabold">۴۹۹,۰۰۰ تومان</span>
+            <button onclick="addToCart('محصول شماره ۱')" class="bg-gray-900 text-white text-sm px-4 py-2 rounded-full hover:bg-violet-600 transition">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden group">
+        <div class="overflow-hidden">
+          <img src="2.png" alt="محصول ۲" class="card-img w-full group-hover:scale-105 transition duration-500">
+        </div>
+        <div class="p-5">
+          <h3 class="font-bold text-lg mb-1">محصول شماره ۲</h3>
+          <p class="text-gray-500 text-sm mb-3">توضیح کوتاه و جذاب درباره این محصول با کیفیت بالا.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-violet-600 font-extrabold">۶۹۹,۰۰۰ تومان</span>
+            <button onclick="addToCart('محصول شماره ۲')" class="bg-gray-900 text-white text-sm px-4 py-2 rounded-full hover:bg-violet-600 transition">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden group">
+        <div class="overflow-hidden">
+          <img src="3.png" alt="محصول ۳" class="card-img w-full group-hover:scale-105 transition duration-500">
+        </div>
+        <div class="p-5">
+          <h3 class="font-bold text-lg mb-1">محصول شماره ۳</h3>
+          <p class="text-gray-500 text-sm mb-3">توضیح کوتاه و جذاب درباره این محصول با کیفیت بالا.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-violet-600 font-extrabold">۳۹۹,۰۰۰ تومان</span>
+            <button onclick="addToCart('محصول شماره ۳')" class="bg-gray-900 text-white text-sm px-4 py-2 rounded-full hover:bg-violet-600 transition">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="bg-white py-14">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900 mb-4">درباره فروشگاه آوی</h2>
+      <p class="text-gray-500 leading-8">
+        فروشگاه آوی با هدف ارائه بهترین محصولات با کیفیت و قیمت مناسب فعالیت می‌کند.
+        ما تلاش می‌کنیم تجربه‌ای لذت‌بخش از خرید آنلاین را برای شما فراهم کنیم.
+      </p>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="max-w-5xl mx-auto px-6 py-14">
+    <div class="bg-gradient-to-l from-violet-600 to-fuchsia-500 rounded-3xl p-10 text-center text-white shadow-xl">
+      <h3 class="text-2xl font-extrabold mb-2">از تخفیف‌های ویژه باخبر شوید</h3>
+      <p class="mb-6 text-white/90">ایمیل خود را وارد کنید تا از جدیدترین پیشنهادات آگاه شوید</p>
+      <form class="flex flex-col sm:flex-row gap-3 justify-center" onsubmit="event.preventDefault(); alert('با تشکر از عضویت شما!');">
+        <input type="email" required placeholder="ایمیل شما" class="px-5 py-3 rounded-full text-gray-900 w-full sm:w-80 focus:outline-none">
+        <button class="bg-gray-900 px-6 py-3 rounded-full font-bold hover:bg-black transition">عضویت</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-gray-900 text-gray-300 pt-12 pb-6">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h4 class="text-white font-extrabold text-xl mb-3">avi store</h4>
+        <p class="text-sm text-gray-400">فروشگاه آنلاین آوی، بهترین انتخاب برای خرید آسان و مطمئن.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3">دسترسی سریع</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#home" class="hover:text-white">خانه</a></li>
+          <li><a href="#products" class="hover:text-white">محصولات</a></li>
+          <li><a href="#about" class="hover:text-white">درباره ما</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3">تماس با ما</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li>تلفن: ۰۲۱-۱۲۳۴۵۶۷۸</li>
+          <li>ایمیل: info@avistore.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 border-t border-gray-800 pt-6">
+      © ۲۰۲۶ avi store — تمامی حقوق محفوظ است.
+    </div>
+  </footer>
+
+  <script>
+    let cartCount = 0;
+    function addToCart(name) {
+      cartCount++;
+      document.getElementById('cartCount').textContent = cartCount;
+      const toast = document.createElement('div');
+      toast.textContent = name + ' به سبد خرید اضافه شد';
+      toast.className = 'fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-lg z-50 text-sm fade-in';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
+  </script>
+</body>
+</html>
