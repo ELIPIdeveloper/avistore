@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>فروشگاه ساده</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">فروشگاه من</div>
+      <button id="cartBtn" class="cart-btn">سبد خرید <span id="cartCount">۰</span></button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">فروشگاه آنلاین ساده</p>
+        <h1>محصولات منتخب با پرداخت امن</h1>
+        <p>محصولات را انتخاب کنید و از طریق درگاه زرین‌پال پرداخت کنید.</p>
+      </div>
+    </section>
+
+    <section>
+      <div id="products" class="grid"></div>
+    </section>
+  </main>
+
+  <aside id="cartPanel" class="cart-panel" aria-hidden="true">
+    <div class="cart-head">
+      <h2>سبد خرید</h2>
+      <button id="closeCart" class="icon-btn">×</button>
+    </div>
+    <div id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total"><span>مجموع</span><strong id="cartTotal">۰ تومان</strong></div>
+      <button id="checkoutBtn" class="primary">ادامه و پرداخت</button>
+      <p class="hint">قیمت‌ها در این نمونه به تومان نمایش داده می‌شوند.</p>
+    </div>
+  </aside>
+  <div id="overlay" class="overlay"></div>
+
+  <div id="checkoutModal" class="modal hidden">
+    <div class="modal-card">
+      <button id="closeModal" class="icon-btn">×</button>
+      <h2>اطلاعات سفارش</h2>
+      <form id="checkoutForm">
+        <label>نام و نام خانوادگی
+          <input name="name" required maxlength="80" autocomplete="name">
+        </label>
+        <label>شماره موبایل
+          <input name="mobile" required inputmode="tel" pattern="09[0-9]{9}" placeholder="09123456789">
+        </label>
+        <label>ایمیل (اختیاری)
+          <input name="email" type="email" maxlength="120" autocomplete="email">
+        </label>
+        <button class="primary" type="submit">رفتن به درگاه زرین‌پال</button>
+        <p id="checkoutError" class="error"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
