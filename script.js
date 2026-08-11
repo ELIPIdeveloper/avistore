@@ -1,6 +1,6 @@
 // آدرس Cloudflare Worker خودت را اینجا قرار بده
 const WORKER_URL =
-    "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
+    "https://avistore-api.mohammadaminmoradi1133.workers.dev";
 
 const purchaseInput = document.getElementById("purchaseId");
 const payButton = document.getElementById("payButton");
