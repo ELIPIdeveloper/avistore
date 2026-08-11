@@ -1,32 +1,110 @@
-<!doctype html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AViStore | فروشگاه آنلاین</title>
-<meta name="description" content="AViStore فروشگاه آنلاین لباس و محصولات منتخب">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header><div class="container nav">
-<a class="logo" href="/">AVi<span>Store</span></a>
-<nav class="navlinks"><a href="#products">محصولات</a><a href="#about">درباره ما</a></nav>
-<a class="cart" href="checkout.html">سبد خرید (<span data-cart-count>0</span>)</a>
-</div></header>
-<main class="container">
-<section class="hero">
-<h1>خرید ساده، شیک و مطمئن</h1>
-<p>به AViStore خوش آمدید؛ محصولات منتخب با تجربه خرید سریع و پرداخت آنلاین.</p>
-<a class="btn" href="#products">مشاهده محصولات</a>
-</section>
-<section id="products">
-<div class="section-title"><h2>محصولات جدید</h2><span>AViStore</span></div>
-<div class="grid" id="products"></div>
-</section>
-<section id="about" class="hero">
-<h2>AViStore</h2>
-<p>فروشگاه آنلاین برای انتخاب آسان محصولات مورد نیاز شما.</p>
-</section>
-</main>
-<footer><div class="container">© 2026 AViStore — تمامی حقوق محفوظ است.</div></footer>
-<script src="js/config.js"></script><script src="js/app.js"></script>
-</body></html>
+${
+                                        formatPrice(
+                                            product.old_price
+                                        )
+                                    }
+
+                                </div>
+
+                                
+
+                                :
+
+                                ""
+
+                            }
+
+
+                            <div
+                                class="stock">
+
+                                موجودی:
+
+                                ${
+                                    Number(
+                                        product.stock
+                                    ).toLocaleString(
+                                        "fa-IR"
+                                    )
+                                }
+
+                            </div>
+
+
+                            <button
+
+                                class="product-button"
+
+                                onclick="
+                                    viewProduct(
+                                        ${Number(product.id)}
+                                    )
+                                "
+
+                            >
+
+                                مشاهده محصول
+
+                            </button>
+
+
+                        </div>
+
+                    </article>
+
+                ).join("");
+
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+
+            container.innerHTML = 
+
+                <div class="error">
+
+                    ❌ خطا در اتصال به سرور
+
+                    <br><br>
+
+                    لطفاً دوباره تلاش کنید.
+
+                </div>
+
+            ;
+
+        }
+
+    }
+
+
+    /*
+     * صفحه محصول
+     */
+
+    function viewProduct(id) {
+
+        window.location.href =
+            product.html?id=${id};
+
+    }
+
+
+    /*
+     * اجرای خودکار
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadProducts
+    );
+
+</script>
+
+
+</body>
+
+</html>
