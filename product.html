@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>محصول | AViStore</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header {
+            max-width: 1100px;
+            margin: auto;
+            height: 70px;
+            padding: 0 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #111;
+        }
+
+        .logo span {
+            color: #f5a400;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #555;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .product-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: cover;
+            border-radius: 20px;
+            background: #eee;
+        }
+
+        .category {
+            display: inline-block;
+
+            background: #fff0c4;
+            color: #8a6200;
+
+            padding: 6px 12px;
+            border-radius: 20px;
+
+            font-size: 12px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin: 20px 0 10px;
+        }
+
+        .description {
+            color: #666;
+            line-height: 2;
+        }
+
+        .price {
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+        .old-price {
+            color: #999;
+            text-decoration: line-through;
+            margin-top: 8px;
+        }
+
+        .stock {
+            color: #555;
+            margin-top: 15px;
+        }
+
+        .buy-button {
+            width: 100%;
+            margin-top: 25px;
+
+            border: none;
+            border-radius: 14px;
+
+            padding: 16px;
+
+            background: #f5a400;
+            color: #111;
+
+            font-size: 17px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .buy-button:hover {
+            opacity: .85;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px;
+        }
+
+        .error {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            color: #b00000;
+        }
+
+        @media (max-width: 700px) {
+
+            .product {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header>
+
+    <div class="header">
+
+        <a href="index.html"
+           class="logo">
+
+            AVi<span>Store</span>
+
+        </a>
+
+        <a href="index.html"
+           class="back">
+
+            ← بازگشت به فروشگاه
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div id="product">
+
+        <div class="loading">
+
+            در حال دریافت محصول...
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    const API_BASE =
+        "https://api.avistore.ir";
+
+
+    function formatPrice(price) {
+
+        return Number(price)
+            .toLocaleString("fa-IR")
+            + " تومان";
+
+    }
+
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            text ?? "";
+
+        return div.innerHTML;
+
+    }
+
+
+    async function loadProduct() {
+
+        const container =
+            document.getElementById("product");
+
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const id =
+            params.get("id");
+
+
+        if (!id) {
+
+            container.innerHTML = `
+
+                <div class="error">
+
+                    شناسه محصول مشخص نیست.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/products/${id}`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Product not found"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const product =
+                data.product;
+
+
+            if (!product) {
+
+                throw new Error(
+                    "Product not found"
+                );
+
+            }
+
+
+            document.title =
+                product.name +
+                " | AViStore";
+
+
+            container.innerHTML = `
+
+                <div class="product">
+
+
+                    <div>
+
+                        <img
+
+                            class="product-image"
+
+                            src="${
+                                escapeHTML(
+                                    product.image
+                                )
+                            }"
+
+                            alt="${
+                                escapeHTML(
+                                    product.name
+                                )
+                            }"
+
+                        >
+
+                    </div>
+
+
+                    <div>
+
+
+                        <span class="category">
+
+                            ${
+                                escapeHTML(
+                                    product.category ||
+                                    "محصول"
+                                )
+                            }
+
+                        </span>
+
+
+                        <h1>
+
+                            ${
+                                escapeHTML(
+                                    product.name
+                                )
+                            }
+
+                        </h1>
+
+
+                        <p class="description">
+
+                            ${
+                                escapeHTML(
+                                    product.description ||
+                                    "توضیحی برای این محصول ثبت نشده است."
+                                )
+                            }
+
+                        </p>
+
+
+                        <div class="price">
+
+                            ${
+                                formatPrice(
+                                    product.price
+                                )
+                            }
+
+                        </div>
+
+
+                        ${
+                            product.old_price
+                            ?
+
+                            `
+
+                            <div class="old-price">
+
+                                ${
+                                    formatPrice(
+                                        product.old_price
+                                    )
+                                }
+
+                            </div>
+
+                            `
+
+                            :
+
+                            ""
+
+                        }
+
+
+                        <div class="stock">
+
+                            موجودی:
+
+                            ${
+                                Number(
+                                    product.stock
+                                ).toLocaleString(
+                                    "fa-IR"
+                                )
+                            }
+
+                        </div>
+
+
+                        <button
+
+                            class="buy-button"
+
+                            onclick="
+                                addToCart(${product.id})
+                            "
+
+                        >
+
+                            افزودن به سبد خرید 🛒
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+
+            container.innerHTML = `
+
+                <div class="error">
+
+                    ❌ محصول پیدا نشد.
+
+                    <br><br>
+
+                    <a href="index.html">
+
+                        بازگشت به فروشگاه
+
+                    </a>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    function addToCart(id) {
+
+        alert(
+            "سبد خرید را در مرحله بعد فعال می‌کنیم."
+        );
+
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadProduct
+    );
+
+</script>
+
+
+</body>
+
+</html>
