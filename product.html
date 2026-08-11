@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="description" content="مشاهده محصول در AViStore">
 
     <title>محصول | AViStore</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -24,19 +19,17 @@
         }
 
         header {
-            background: #fff;
+            background: white;
+            padding: 20px;
             border-bottom: 1px solid #eee;
         }
 
         .header {
             max-width: 1100px;
             margin: auto;
-            height: 70px;
-            padding: 0 20px;
-
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
@@ -50,23 +43,12 @@
             color: #f5a400;
         }
 
-        .header-links {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .back {
-            text-decoration: none;
-            color: #555;
-        }
-
-        .cart-link {
-            text-decoration: none;
+        .cart {
             background: #111;
-            color: #fff;
+            color: white;
             padding: 10px 15px;
             border-radius: 10px;
+            text-decoration: none;
         }
 
         main {
@@ -76,53 +58,31 @@
         }
 
         .product {
-            background: #fff;
-            border-radius: 25px;
+            background: white;
+            border-radius: 20px;
             padding: 25px;
 
             display: grid;
             grid-template-columns: 1fr 1fr;
-
             gap: 40px;
         }
 
-        .product-image {
+        .product img {
             width: 100%;
-            max-height: 650px;
-
-            object-fit: cover;
-
-            border-radius: 20px;
-
-            background: #eee;
-        }
-
-        .category {
-            display: inline-block;
-
-            background: #fff0c4;
-            color: #8a6200;
-
-            padding: 6px 12px;
-
-            border-radius: 20px;
-
-            font-size: 12px;
+            border-radius: 18px;
         }
 
         h1 {
             font-size: 32px;
-            margin: 20px 0 12px;
         }
 
         .description {
             color: #666;
             line-height: 2;
-            font-size: 15px;
         }
 
         .price {
-            font-size: 27px;
+            font-size: 25px;
             font-weight: bold;
             margin-top: 25px;
         }
@@ -138,190 +98,63 @@
             color: #555;
         }
 
-        .quantity-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            margin-top: 20px;
-        }
-
-        .quantity-box button {
-            width: 38px;
-            height: 38px;
-
-            border: 1px solid #ddd;
-            background: #fff;
-
-            border-radius: 9px;
-
-            cursor: pointer;
-
-            font-size: 20px;
-        }
-
-        .quantity-box span {
-            min-width: 30px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .buy-button {
+        button {
             width: 100%;
-
-            margin-top: 25px;
-
             border: none;
-
-            border-radius: 14px;
-
-            padding: 16px;
-
             background: #f5a400;
-            color: #111;
-
-            font-size: 17px;
-            font-weight: bold;
-
-            cursor: pointer;
-
-            font-family: inherit;
-        }
-
-        .buy-button:hover {
-            opacity: .85;
-        }
-
-        .buy-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .loading {
-            background: #fff;
-            border-radius: 20px;
-
-            text-align: center;
-
-            padding: 80px 20px;
-        }
-
-        .error {
-            background: #fff;
-            border-radius: 20px;
-
-            text-align: center;
-
-            padding: 60px 20px;
-
-            color: #b00000;
-        }
-
-        .success {
-            position: fixed;
-
-            bottom: 25px;
-            right: 25px;
-
-            background: #111;
-            color: #fff;
-
-            padding: 15px 20px;
-
+            padding: 15px;
             border-radius: 12px;
+            margin-top: 25px;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-            box-shadow:
-                0 10px 30px rgba(0,0,0,.15);
-
-            display: none;
-
-            z-index: 1000;
+        .loading,
+        .error {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
         }
 
         @media (max-width: 700px) {
-
-            .header {
-                height: auto;
-                min-height: 70px;
-            }
-
-            .back {
-                display: none;
-            }
-
             .product {
                 grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 15px;
             }
 
             h1 {
                 font-size: 25px;
             }
-
-            .price {
-                font-size: 23px;
-            }
-
         }
-
     </style>
-
 </head>
 
 <body>
-
 
 <header>
 
     <div class="header">
 
-        <a
-            href="index.html"
-            class="logo"
-        >
-
+        <a href="index.html" class="logo">
             AVi<span>Store</span>
-
         </a>
 
-
-        <div class="header-links">
-
-            <a
-                href="index.html"
-                class="back"
-            >
-
-                ← فروشگاه
-
-            </a>
-
-
-            <a
-                href="checkout.html"
-                class="cart-link"
-            >
-
-                🛒 سبد خرید
-
-            </a>
-
-        </div>
+        <a href="checkout.html" class="cart">
+            🛒 سبد خرید
+        </a>
 
     </div>
 
 </header>
-
 
 <main>
 
     <div id="product">
 
         <div class="loading">
-
             در حال دریافت محصول...
-
         </div>
 
     </div>
@@ -329,227 +162,95 @@
 </main>
 
 
-<div
-    id="success"
-    class="success"
->
-
-    محصول به سبد خرید اضافه شد ✓
-
-</div>
-
-
 <script>
 
-    /*
-     * آدرس API فروشگاه
-     */
+const API_BASE = "https://api.avistore.ir";
 
-    const API_BASE =
-        "https://api.avistore.ir";
+const CART_KEY = "avistore_cart";
 
 
-    /*
-     * کلید سبد خرید
-     */
+function formatPrice(price) {
 
-    const CART_KEY =
-        "avistore_cart";
+    return Number(price).toLocaleString("fa-IR") + " تومان";
 
-
-    /*
-     * محصول فعلی
-     */
-
-    let currentProduct = null;
+}
 
 
-    /*
-     * تعداد انتخاب‌شده
-     */
+function getProductId() {
 
-    let selectedQuantity = 1;
+    const params =
+        new URLSearchParams(window.location.search);
 
+    return params.get("id");
 
-    /*
-     * تبدیل قیمت
-     */
-
-    function formatPrice(price) {
-
-        return Number(price)
-            .toLocaleString("fa-IR")
-            + " تومان";
-
-    }
+}
 
 
-    /*
-     * جلوگیری از HTML Injection
-     */
+async function loadProduct() {
 
-    function escapeHTML(value) {
+    const container =
+        document.getElementById("product");
 
-        const div =
-            document.createElement("div");
+    const id =
+        getProductId();
 
-        div.textContent =
-            value ?? "";
 
-        return div.innerHTML;
+    if (!id) {
+
+        container.innerHTML = `
+            <div class="error">
+                شناسه محصول وجود ندارد.
+            </div>
+        `;
+
+        return;
 
     }
 
 
-    /*
-     * گرفتن ID از URL
-     *
-     * مثال:
-     *
-     * product.html?id=1
-     */
+    try {
 
-    function getProductId() {
-
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        return params.get("id");
-
-    }
-
-
-    /*
-     * گرفتن محصول از API
-     */
-
-    async function loadProduct() {
-
-        const container =
-            document.getElementById(
-                "product"
+        const response =
+            await fetch(
+                API_BASE +
+                "/products/" +
+                encodeURIComponent(id)
             );
 
 
-        const id =
-            getProductId();
+        const data =
+            await response.json();
 
 
-        if (!id) {
-
-            showError(
-                "شناسه محصول مشخص نیست."
-            );
-
-            return;
-
-        }
+        console.log("API:", data);
 
 
-        try {
+        if (!data.ok || !data.product) {
 
-            const response =
-                await fetch(
-                    `${API_BASE}/products/${encodeURIComponent(id)}`
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Product not found"
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            if (
-                !data.ok ||
-                !data.product
-            ) {
-
-                throw new Error(
-                    "Product not found"
-                );
-
-            }
-
-
-            currentProduct =
-                data.product;
-
-
-            selectedQuantity = 1;
-
-
-            document.title =
-                `${currentProduct.name} | AViStore`;
-
-
-            renderProduct();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            showError(
-                "محصول پیدا نشد یا اتصال به سرور برقرار نشد."
+            throw new Error(
+                "محصول پیدا نشد"
             );
 
         }
-
-    }
-
-
-    /*
-     * نمایش محصول
-     */
-
-    function renderProduct() {
-
-        const container =
-            document.getElementById(
-                "product"
-            );
 
 
         const product =
-            currentProduct;
+            data.product;
 
 
-        const stock =
-            Number(product.stock) || 0;
-
-
-        const image =
-            product.image ||
-            "https://placehold.co/800x900?text=AViStore";
+        document.title =
+            product.name + " | AViStore";
 
 
         container.innerHTML = `
 
             <div class="product">
 
-
                 <div>
 
                     <img
-
-                        class="product-image"
-
-                        src="${escapeHTML(image)}"
-
-                        alt="${escapeHTML(product.name)}"
-
-                        loading="eager"
-
+                        src="${product.image}"
+                        alt="${product.name}"
                     >
 
                 </div>
@@ -557,33 +258,13 @@
 
                 <div>
 
-
-                    <span class="category">
-
-                        ${escapeHTML(
-                            product.category ||
-                            "محصول"
-                        )}
-
-                    </span>
-
-
                     <h1>
-
-                        ${escapeHTML(
-                            product.name
-                        )}
-
+                        ${product.name}
                     </h1>
 
 
                     <p class="description">
-
-                        ${escapeHTML(
-                            product.description ||
-                            "توضیحی برای این محصول ثبت نشده است."
-                        )}
-
+                        ${product.description || ""}
                     </p>
 
 
@@ -599,9 +280,7 @@
                     ${
                         product.old_price
                         ?
-
                         `
-
                         <div class="old-price">
 
                             ${formatPrice(
@@ -609,363 +288,55 @@
                             )}
 
                         </div>
-
                         `
-
                         :
-
                         ""
-
                     }
 
 
                     <div class="stock">
 
                         موجودی:
-
-                        ${stock.toLocaleString(
-                            "fa-IR"
-                        )}
+                        ${product.stock}
 
                     </div>
 
 
-                    ${
-                        stock > 0
+                    <button
+                        onclick="addToCart(
+                            ${product.id},
+                            '${String(product.name).replace(/'/g, "\\'")}',
+                            ${Number(product.price)},
+                            '${String(product.image).replace(/'/g, "\\'")}'
+                        )"
+                    >
 
-                        ?
+                        افزودن به سبد خرید 🛒
 
-                        `
-
-                        <div class="quantity-box">
-
-                            <button
-                                type="button"
-                                onclick="changeQuantity(-1)"
-                            >
-                                −
-                            </button>
-
-
-                            <span
-                                id="quantity"
-                            >
-                                1
-                            </span>
-
-
-                            <button
-                                type="button"
-                                onclick="changeQuantity(1)"
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-
-                        <button
-
-                            id="buyButton"
-
-                            class="buy-button"
-
-                            type="button"
-
-                            onclick="addToCart()"
-
-                        >
-
-                            افزودن به سبد خرید 🛒
-
-                        </button>
-
-                        `
-
-                        :
-
-                        `
-
-                        <button
-                            class="buy-button"
-                            disabled
-                        >
-
-                            ناموجود
-
-                        </button>
-
-                        `
-
-                    }
-
+                    </button>
 
                 </div>
-
 
             </div>
 
         `;
 
-    }
 
+    } catch (error) {
 
-    /*
-     * تغییر تعداد
-     */
-
-    function changeQuantity(change) {
-
-        if (!currentProduct) {
-            return;
-        }
-
-
-        const stock =
-            Number(
-                currentProduct.stock
-            ) || 0;
-
-
-        selectedQuantity +=
-            change;
-
-
-        if (selectedQuantity < 1) {
-
-            selectedQuantity = 1;
-
-        }
-
-
-        if (
-            selectedQuantity >
-            stock
-        ) {
-
-            selectedQuantity =
-                stock;
-
-        }
-
-
-        const quantityElement =
-            document.getElementById(
-                "quantity"
-            );
-
-
-        if (quantityElement) {
-
-            quantityElement.textContent =
-                selectedQuantity;
-
-        }
-
-    }
-
-
-    /*
-     * گرفتن سبد خرید
-     */
-
-    function getCart() {
-
-        try {
-
-            return JSON.parse(
-                localStorage.getItem(
-                    CART_KEY
-                )
-            ) || [];
-
-        } catch {
-
-            return [];
-
-        }
-
-    }
-
-
-    /*
-     * ذخیره سبد خرید
-     */
-
-    function saveCart(cart) {
-
-        localStorage.setItem(
-            CART_KEY,
-            JSON.stringify(cart)
-        );
-
-    }
-
-
-    /*
-     * افزودن محصول به سبد
-     */
-
-    function addToCart() {
-
-        if (!currentProduct) {
-            return;
-        }
-
-
-        const stock =
-            Number(
-                currentProduct.stock
-            ) || 0;
-
-
-        if (stock <= 0) {
-
-            alert(
-                "این محصول موجود نیست."
-            );
-
-            return;
-
-        }
-
-
-        const cart =
-            getCart();
-
-
-        const existing =
-            cart.find(
-                item =>
-                    Number(item.id) ===
-                    Number(currentProduct.id)
-            );
-
-
-        if (existing) {
-
-            const newQuantity =
-                Number(existing.quantity || 0)
-                + selectedQuantity;
-
-
-            if (newQuantity > stock) {
-
-                alert(
-                    "تعداد انتخاب‌شده بیشتر از موجودی محصول است."
-                );
-
-                return;
-
-            }
-
-
-            existing.quantity =
-                newQuantity;
-
-        } else {
-
-            cart.push({
-
-                id:
-                    Number(
-                        currentProduct.id
-                    ),
-
-                name:
-                    currentProduct.name,
-
-                price:
-                    Number(
-                        currentProduct.price
-                    ),
-
-                image:
-                    currentProduct.image,
-
-                quantity:
-                    selectedQuantity
-
-            });
-
-        }
-
-
-        saveCart(cart);
-
-
-        showSuccess();
-
-
-        /*
-         * چند لحظه بعد
-         * سبد خرید باز شود
-         */
-
-        setTimeout(() => {
-
-            window.location.href =
-                "checkout.html";
-
-        }, 800);
-
-    }
-
-
-    /*
-     * نمایش پیام موفقیت
-     */
-
-    function showSuccess() {
-
-        const element =
-            document.getElementById(
-                "success"
-            );
-
-
-        element.style.display =
-            "block";
-
-
-        setTimeout(() => {
-
-            element.style.display =
-                "none";
-
-        }, 1500);
-
-    }
-
-
-    /*
-     * نمایش خطا
-     */
-
-    function showError(message) {
-
-        const container =
-            document.getElementById(
-                "product"
-            );
+        console.error(error);
 
 
         container.innerHTML = `
 
             <div class="error">
 
-                ❌
-
-                <br><br>
-
-                ${escapeHTML(message)}
+                ❌ خطا در دریافت محصول
 
                 <br><br>
 
                 <a href="index.html">
-
                     بازگشت به فروشگاه
-
                 </a>
 
             </div>
@@ -974,19 +345,85 @@
 
     }
 
+}
 
-    /*
-     * شروع
-     */
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        loadProduct
+function addToCart(
+    id,
+    name,
+    price,
+    image
+) {
+
+    let cart = [];
+
+
+    try {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    CART_KEY
+                )
+            ) || [];
+
+    } catch {
+
+        cart = [];
+
+    }
+
+
+    const existing =
+        cart.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+
+    if (existing) {
+
+        existing.quantity =
+            Number(existing.quantity) + 1;
+
+    } else {
+
+        cart.push({
+
+            id: Number(id),
+
+            name: name,
+
+            price: Number(price),
+
+            image: image,
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(cart)
     );
+
+
+    window.location.href =
+        "checkout.html";
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadProduct
+);
 
 </script>
 
-
 </body>
-
 </html>
