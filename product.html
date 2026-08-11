@@ -481,14 +481,86 @@
     }
 
 
-    function addToCart(id) {
+    async function addToCart(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                https://api.avistore.ir/products/${id}
+            );
+
+        if (!response.ok) {
+            throw new Error("محصول پیدا نشد");
+        }
+
+        const data =
+            await response.json();
+
+        const product =
+            data.product;
+
+        if (!product) {
+            throw new Error("محصول پیدا نشد");
+        }
+
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem("avistore_cart")
+            ) || [];
+
+
+        const existing =
+            cart.find(
+                item => item.id === product.id
+            );
+
+
+        if (existing) {
+
+            existing.quantity += 1;
+
+        } else {
+
+            cart.push({
+
+                id: product.id,
+
+                name: product.name,
+
+                price: product.price,
+
+                image: product.image,
+
+                quantity: 1
+
+            });
+
+        }
+
+
+        localStorage.setItem(
+            "avistore_cart",
+            JSON.stringify(cart)
+        );
+
+
+        window.location.href =
+            "checkout.html";
+
+
+    } catch (error) {
 
         alert(
-            "سبد خرید را در مرحله بعد فعال می‌کنیم."
+            "افزودن محصول به سبد خرید ناموفق بود."
         );
+
+        console.error(error);
 
     }
 
+}
 
     document.addEventListener(
         "DOMContentLoaded",
