@@ -1,4 +1,716 @@
-${
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="AViStore - فروشگاه آنلاین">
+
+    <title>AViStore | فروشگاه آنلاین</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: auto;
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #f5a400;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #f5a400;
+        }
+
+        .cart {
+            background: #111;
+            color: white;
+
+            padding: 10px 15px;
+            border-radius: 12px;
+
+            font-size: 14px;
+        }
+
+        /* Hero */
+
+        .hero {
+            max-width: 1200px;
+            margin: 30px auto;
+
+            padding: 70px 40px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff2c9,
+                    #ffffff
+                );
+
+            border: 1px solid #eee;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #666;
+            line-height: 2;
+
+            max-width: 600px;
+        }
+
+        .hero-button {
+            display: inline-block;
+
+            margin-top: 25px;
+
+            background: #f5a400;
+            color: #111;
+
+            padding: 13px 25px;
+
+            border-radius: 13px;
+
+            font-weight: bold;
+        }
+
+        /* Products */
+
+        .products-section {
+            max-width: 1200px;
+            margin: auto;
+
+            padding: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            font-size: 25px;
+        }
+
+        #products {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+        /* Product */
+
+        .product-card {
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            border: 1px solid #eee;
+
+            transition: 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.08);
+        }
+
+        .product-image {
+            width: 100%;
+
+            aspect-ratio: 1 / 1.15;
+
+            object-fit: cover;
+
+            background: #eee;
+        }
+
+        .product-content {
+            padding: 16px;
+        }
+
+        .category {
+            display: inline-block;
+
+            background: #fff1c7;
+
+            color: #9a6800;
+
+            font-size: 11px;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 18px;
+
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #777;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            min-height: 46px;
+        }
+
+        .price {
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-top: 15px;
+        }
+
+        .old-price {
+            color: #999;
+
+            text-decoration: line-through;
+
+            font-size: 12px;
+
+            margin-top: 5px;
+        }
+
+        .stock {
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 8px;
+        }
+
+        .product-button {
+            width: 100%;
+
+            border: none;
+
+            background: #111;
+
+            color: white;
+
+            padding: 12px;
+
+            border-radius: 11px;
+
+            margin-top: 15px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+        }
+
+        .product-button:hover {
+            background: #f5a400;
+
+            color: #111;
+        }
+
+        /* Loading */
+
+        .loading {
+            text-align: center;
+
+            grid-column: 1 / -1;
+
+            padding: 50px;
+
+            color: #777;
+        }
+
+        /* Error */
+
+        .error {
+            text-align: center;
+
+            grid-column: 1 / -1;
+
+            padding: 50px;
+
+            color: #c00;
+        }
+
+        /* Footer */
+
+        footer {
+            margin-top: 70px;
+
+            background: #111;
+
+            color: white;
+
+            padding: 35px 20px;
+
+            text-align: center;
+        }
+
+        footer p {
+            color: #aaa;
+
+            margin-top: 10px;
+
+            font-size: 13px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 1000px) {
+
+            #products {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                margin: 15px;
+
+                padding: 45px 25px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            #products {
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 12px;
+            }
+
+            .product-content {
+                padding: 12px;
+            }
+
+            .product-name {
+                font-size: 15px;
+            }
+
+            .price {
+                font-size: 15px;
+            }
+
+        }
+
+        @media (max-width: 420px) {
+
+            #products {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- Header -->
+
+<header>
+
+    <div class="header">
+
+        <a href="/" class="logo">
+            AVi<span>Store</span>
+        </a>
+
+        <nav>
+
+            <a href="/">
+                خانه
+            </a>
+
+            <a href="#products-section">
+                محصولات
+            </a>
+
+            <a href="#about">
+                درباره ما
+            </a>
+
+        </nav>
+
+        <a href="checkout.html" class="cart">
+            🛒 سبد خرید
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- Hero -->
+
+<section class="hero">
+
+    <h1>
+        خرید ساده، شیک و مطمئن
+    </h1>
+
+    <p>
+        به AViStore خوش آمدید.
+        محصولات منتخب را با تجربه‌ای سریع،
+        ساده و مطمئن خریداری کنید.
+    </p>
+
+    <a href="#products-section"
+       class="hero-button">
+
+        مشاهده محصولات
+
+    </a>
+
+</section>
+
+
+<!-- Products -->
+
+<section
+    id="products-section"
+    class="products-section">
+
+    <div class="section-title">
+
+        <h2>
+            محصولات
+        </h2>
+
+        <span>
+            AViStore
+        </span>
+
+    </div>
+
+
+    <div id="products">
+
+        <div class="loading">
+
+            در حال دریافت محصولات...
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- About -->
+
+<section
+    id="about"
+    class="products-section">
+
+    <div class="hero">
+
+        <h2>
+            درباره AViStore
+        </h2>
+
+        <p>
+
+            AViStore یک فروشگاه آنلاین
+            برای خرید آسان و مطمئن محصولات
+            منتخب است.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- Footer -->
+
+<footer>
+
+    <strong>
+        AViStore
+    </strong>
+
+    <p>
+        © 2026 AViStore -
+        تمامی حقوق محفوظ است.
+    </p>
+
+</footer>
+
+
+<script>
+
+    /*
+     * آدرس Backend فروشگاه
+     */
+
+    const API_BASE =
+        "https://api.avistore.ir";
+
+
+    /*
+     * تبدیل عدد به تومان
+     */
+
+    function formatPrice(price) {
+
+        return Number(price)
+            .toLocaleString("fa-IR")
+            + " تومان";
+
+    }
+
+
+    /*
+     * جلوگیری از تزریق HTML
+     */
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            text ?? "";
+
+        return div.innerHTML;
+
+    }
+
+
+    /*
+     * دریافت محصولات
+     */
+
+    async function loadProducts() {
+
+        const container =
+            document.getElementById("products");
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/products`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "خطا در دریافت محصولات"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const products =
+                data.products || [];
+
+
+            if (products.length === 0) {
+
+                container.innerHTML = `
+
+                    <div class="loading">
+
+                        محصولی موجود نیست.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /*
+             * ساخت کارت محصولات
+             */
+
+            container.innerHTML =
+                products.map(product => `
+
+                    <article
+                        class="product-card">
+
+
+                        <img
+
+                            class="product-image"
+
+                            src="${
+                                escapeHTML(
+                                    product.image ||
+                                    "https://placehold.co/600x700?text=AViStore"
+                                )
+                            }"
+
+                            alt="${
+                                escapeHTML(
+                                    product.name
+                                )
+                            }"
+
+                            loading="lazy"
+
+                        >
+
+
+                        <div
+                            class="product-content">
+
+
+                            <span
+                                class="category">
+
+                                ${
+                                    escapeHTML(
+                                        product.category ||
+                                        "محصول"
+                                    )
+                                }
+
+                            </span>
+
+
+                            <h3
+                                class="product-name">
+
+                                ${
+                                    escapeHTML(
+                                        product.name
+                                    )
+                                }
+
+                            </h3>
+
+
+                            <p
+                                class="description">
+
+                                ${
+                                    escapeHTML(
+                                        product.description ||
+                                        ""
+                                    )
+                                }
+
+                            </p>
+
+
+                            <div
+                                class="price">
+
+                                ${
+                                    formatPrice(
+                                        product.price
+                                    )
+                                }
+
+                            </div>
+
+
+                            ${
+                                product.old_price
+                                ?
+
+                                `
+
+                                <div
+                                    class="old-price">
+
+                                    ${
                                         formatPrice(
                                             product.old_price
                                         )
@@ -6,7 +718,7 @@ ${
 
                                 </div>
 
-                                
+                                `
 
                                 :
 
@@ -52,7 +764,7 @@ ${
 
                     </article>
 
-                ).join("");
+                `).join("");
 
 
         }
@@ -62,7 +774,7 @@ ${
             console.error(error);
 
 
-            container.innerHTML = 
+            container.innerHTML = `
 
                 <div class="error">
 
@@ -74,7 +786,7 @@ ${
 
                 </div>
 
-            ;
+            `;
 
         }
 
@@ -88,7 +800,7 @@ ${
     function viewProduct(id) {
 
         window.location.href =
-            product.html?id=${id};
+            `product.html?id=${id}`;
 
     }
 
