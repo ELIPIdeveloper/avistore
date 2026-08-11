@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>نتیجه پرداخت</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="payment-box">
+
+    <h1 id="title">
+        در حال بررسی پرداخت...
+    </h1>
+
+    <p id="details"></p>
+
+</div>
+
+<script>
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const status =
+    params.get("status");
+
+const purchaseId =
+    params.get("purchase_id");
+
+const refId =
+    params.get("ref_id");
+
+const message =
+    params.get("message");
+
+const title =
+    document.getElementById("title");
+
+const details =
+    document.getElementById("details");
+
+
+if (status === "success") {
+
+    title.textContent =
+        "پرداخت با موفقیت انجام شد";
+
+    details.textContent =
+        "شناسه خرید: " +
+        (purchaseId || "-") +
+        " | کد پیگیری: " +
+        (refId || "-");
+
+} else {
+
+    title.textContent =
+        "پرداخت ناموفق بود";
+
+    details.textContent =
+        (message || "پرداخت تکمیل نشد.") +
+        " | شناسه خرید: " +
+        (purchaseId || "-");
+}
+
+</script>
+
+</body>
+</html>
