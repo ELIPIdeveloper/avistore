@@ -1,37 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پرداخت آنلاین</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبت سفارش | AviStore</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+<main class="container">
+  <section class="card">
+    <h1>ثبت سفارش</h1>
+    <p class="muted">کد محصولات و تعداد را وارد کنید.</p>
 
-<div class="payment-box">
+    <div id="items"></div>
+    <button type="button" class="secondary" id="addItem">+ افزودن محصول</button>
 
-    <h1>پرداخت آنلاین</h1>
+    <hr>
 
-    <label for="purchaseId">شناسه خرید</label>
+    <h2>اطلاعات گیرنده</h2>
 
-    <!-- شناسه خرید را اینجا قرار بده -->
-    <input
-        type="text"
-        id="purchaseId"
-        value="ORDER-1001"
-        placeholder="مثلاً ORDER-1001"
-    >
+    <label>نام و نام خانوادگی</label>
+    <input id="fullName" maxlength="100" placeholder="مثلاً محمد محمدی">
 
-    <button id="payButton">
-        پرداخت
-    </button>
+    <label>شماره موبایل</label>
+    <input id="phone" inputmode="tel" maxlength="20" placeholder="09123456789">
 
-    <p id="message"></p>
+    <label>استان</label>
+    <input id="province" maxlength="50">
 
-</div>
+    <label>شهر</label>
+    <input id="city" maxlength="80">
+
+    <label>آدرس کامل</label>
+    <textarea id="address" maxlength="500" rows="4" placeholder="آدرس پستی کامل"></textarea>
+
+    <label>کد پستی</label>
+    <input id="postalCode" inputmode="numeric" maxlength="20">
+
+    <label>توضیحات سفارش <span class="optional">(اختیاری)</span></label>
+    <textarea id="notes" maxlength="500" rows="3"></textarea>
+
+    <div id="summary" class="summary">جمع کل: —</div>
+    <button id="payButton">ادامه و پرداخت</button>
+    <div id="message"></div>
+  </section>
+</main>
 
 <script src="script.js"></script>
-
 </body>
 </html>
