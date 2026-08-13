@@ -1,34 +1,141 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>نتیجه سفارش | AviStore</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتیجه پرداخت | اوی‌استور</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230F6E5D'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23FAF9F5' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#F5F7F4; --surface:#FFFFFF; --ink:#16211C; --ink-soft:#5B6960; --ink-faint:#8B9790;
+    --accent:#0F6E5D; --accent-dark:#0B4F42; --accent-tint:#E4F0EC;
+    --gold:#D98E2B; --danger:#C2452F; --danger-tint:#FBE7E2; --success-tint:#E4F0EC;
+    --line:#E1E6DF; --radius:18px; --shadow-lg:0 20px 60px -20px rgba(22,33,28,.3);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+    font-family:'Vazirmatn',sans-serif;-webkit-font-smoothing:antialiased;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  .num{font-variant-numeric:tabular-nums;}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    max-width:460px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden;
+  }
+  .card-top{padding:34px 28px 24px;text-align:center;}
+  .icon{
+    width:64px;height:64px;border-radius:50%;margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon.success{background:var(--success-tint);color:var(--accent);}
+  .icon.fail{background:var(--danger-tint);color:var(--danger);}
+  .card-top h1{margin:0 0 8px;font-size:20px;font-weight:800;}
+  .card-top p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.9;}
+
+  .receipt{
+    margin:0 24px 24px;background:var(--bg);border-radius:14px;
+    border:1.5px dashed var(--line);padding:16px 18px;
+  }
+  .receipt-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .receipt-row:last-child{border-bottom:none;}
+  .receipt-row span:first-child{color:var(--ink-faint);}
+  .receipt-row span:last-child{font-weight:700;}
+  .copy-btn{
+    background:none;border:1px solid var(--line);border-radius:7px;
+    font-size:11px;padding:2px 8px;margin-right:6px;color:var(--ink-soft);cursor:pointer;
+  }
+  .copy-btn:hover{background:var(--accent-tint);border-color:var(--accent);color:var(--accent-dark);}
+
+  .actions{padding:0 24px 28px;display:flex;flex-direction:column;gap:10px;}
+  .btn{
+    display:block;text-align:center;text-decoration:none;border-radius:12px;padding:12px;
+    font-weight:800;font-size:14.5px;border:none;cursor:pointer;transition:opacity .15s;
+  }
+  .btn:hover{opacity:.9;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-ghost{background:var(--bg);color:var(--ink);border:1.5px solid var(--line);}
+</style>
 </head>
 <body>
-<main class="container">
-<section class="card center">
-  <div id="icon" class="result-icon">...</div>
-  <h1 id="title">نتیجه پرداخت</h1>
-  <p id="message">در حال بررسی...</p>
-  <div id="info"></div>
-  <a href="https://avistore.ir" class="home">بازگشت به فروشگاه</a>
-</section>
-</main>
+
+<div class="card">
+  <div class="card-top" id="cardTop">
+    <div class="icon" id="statusIcon"></div>
+    <h1 id="statusTitle">در حال بررسی نتیجه پرداخت…</h1>
+    <p id="statusMsg">لطفاً چند لحظه صبر کنید.</p>
+  </div>
+
+  <div class="receipt" id="receiptBox" hidden>
+    <div class="receipt-row" id="row-purchase" hidden><span>شماره سفارش</span><span class="num" id="val-purchase"></span></div>
+    <div class="receipt-row" id="row-ref" hidden><span>کد پیگیری</span><span class="num" id="val-ref"></span><button class="copy-btn" id="copyRef">کپی</button></div>
+    <div class="receipt-row" id="row-code" hidden><span>کد خطا</span><span class="num" id="val-code"></span></div>
+  </div>
+
+  <div class="actions">
+    <a href="/" class="btn btn-primary">بازگشت به فروشگاه</a>
+  </div>
+</div>
+
 <script>
-const p = new URLSearchParams(location.search);
-const success = p.get("status") === "success";
-document.getElementById("icon").textContent = success ? "✓" : "×";
-document.getElementById("icon").className = "result-icon " + (success ? "success" : "failed");
-document.getElementById("title").textContent = success ? "پرداخت موفق بود" : "پرداخت ناموفق بود";
-document.getElementById("message").textContent =
-  success ? "سفارش شما ثبت و پرداخت آن تأیید شد." : (p.get("message") || "پرداخت انجام نشد.");
-document.getElementById("info").innerHTML = `
-  <div class="info"><b>شماره سفارش:</b> ${esc(p.get("purchase_id") || "-")}</div>
-  ${success ? `<div class="info"><b>کد پیگیری:</b> ${esc(p.get("ref_id") || "-")}</div>` : ""}
-`;
-function esc(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+(function(){
+  "use strict";
+  var params = new URLSearchParams(window.location.search);
+  var status = (params.get("status") || "").toLowerCase();
+  var purchaseId = params.get("purchase_id") || "";
+  var refId = params.get("ref_id") || "";
+  var message = params.get("message") || "";
+  var zarinpalCode = params.get("zarinpal_code") || "";
+
+  var icon = document.getElementById("statusIcon");
+  var title = document.getElementById("statusTitle");
+  var msg = document.getElementById("statusMsg");
+  var receiptBox = document.getElementById("receiptBox");
+
+  function show(rowId, valId, value){
+    if(!value) return;
+    document.getElementById(rowId).hidden = false;
+    document.getElementById(valId).textContent = value;
+    receiptBox.hidden = false;
+  }
+
+  if(status === "success"){
+    icon.className = "icon success";
+    icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>';
+    title.textContent = "پرداخت با موفقیت انجام شد";
+    msg.textContent = message || "سفارش شما ثبت شد و به‌زودی پردازش می‌شود.";
+
+    // پاک کردن سبد خرید پس از پرداخت موفق
+    try { localStorage.removeItem("avistore_cart"); } catch(e){}
+
+  } else if(status === "failed"){
+    icon.className = "icon fail";
+    icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    title.textContent = "پرداخت ناموفق بود";
+    msg.textContent = message || "متأسفانه پرداخت شما انجام نشد. می‌توانید دوباره تلاش کنید.";
+  } else {
+    icon.className = "icon fail";
+    icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>';
+    title.textContent = "وضعیت نامشخص";
+    msg.textContent = message || "اطلاعات کافی برای نمایش نتیجه پرداخت دریافت نشد.";
+  }
+
+  show("row-purchase", "val-purchase", purchaseId);
+  show("row-ref", "val-ref", refId);
+  show("row-code", "val-code", zarinpalCode);
+  if(!refId) document.getElementById("copyRef").hidden = true;
+
+  var copyBtn = document.getElementById("copyRef");
+  copyBtn.addEventListener("click", function(){
+    navigator.clipboard.writeText(refId).then(function(){
+      copyBtn.textContent = "کپی شد";
+      setTimeout(function(){ copyBtn.textContent = "کپی"; }, 1500);
+    });
+  });
+})();
 </script>
 </body>
 </html>
