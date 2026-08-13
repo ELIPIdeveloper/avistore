@@ -432,21 +432,22 @@
       var parsed = JSON.parse(raw);
       return (parsed && typeof parsed === "object") ? parsed : {};
     } catch(e){ 
-      console.warn("Failed to load cart:", e);
+      console.warn("Failed to load cart in search.html:", e);
       return {}; 
     }
   }
   function saveCart(){
     try { 
       localStorage.setItem(STORAGE.CART, JSON.stringify(cart));
-      console.log("Cart saved:", cart);
+      console.log("Cart saved from search.html:", cart);
     } catch(e){
-      console.error("Failed to save cart:", e);
+      console.error("Failed to save cart in search.html:", e);
     }
   }
   
   // تحميل السبد عند بدء الصفحة
   cart = loadCart();
+  console.log("✅ search.html - Cart loaded:", cart);
   function loadCustomer(){
     try {
       var raw = localStorage.getItem(STORAGE.CUSTOMER);

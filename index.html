@@ -475,6 +475,8 @@
   
   // تحميل السبد عند بدء الصفحة
   cart = loadCart();
+  console.log("✅ index.html - Cart loaded:", cart);
+  
   function loadCustomer(){
     try {
       var raw = localStorage.getItem(STORAGE.CUSTOMER);

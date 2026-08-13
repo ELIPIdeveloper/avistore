@@ -571,6 +571,11 @@
       });
   }
 
+  // تصحيح اختبار: اطبع محتويات السبد الحالي
+  console.log("Initial cart data:", cart);
+  console.log("Storage key:", STORAGE.CART);
+  console.log("LocalStorage value:", localStorage.getItem(STORAGE.CART));
+  
   // عرض السبد فور التحميل (حتى قبل تحميل المنتجات)
   renderCart();
   
@@ -593,8 +598,19 @@
 
   function cartEntries(){
     return Object.keys(cart)
-      .filter(function(code){ return productsByCode[code] && cart[code] > 0; })
-      .map(function(code){ return { code: code, qty: cart[code], product: productsByCode[code] }; });
+      .filter(function(code){ return cart[code] > 0; })
+      .map(function(code){ 
+        return { 
+          code: code, 
+          qty: cart[code], 
+          product: productsByCode[code] || { 
+            name: "منتج حذف شده",
+            price: 0,
+            thumb: "",
+            image: ""
+          }
+        }; 
+      });
   }
 
   function cartTotal(){
