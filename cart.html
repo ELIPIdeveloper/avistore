@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>اوی‌استور | فروشگاه اینترنتی</title>
+<title>سبد خرید | اوی‌استور</title>
 <meta name="description" content="فروشگاه اینترنتی اوی‌استور — خرید امن و سریع">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -346,76 +346,56 @@
 </header>
 
 <div class="app">
-  <div class="banner-slider">
-    <div class="banner-track" id="bannerTrack">
-      <div class="banner-slide">
-        <span class="banner-eyebrow">✓ پرداخت امن با زرین‌پال</span>
-        <h2>هرچی لازم داری، همین‌جاست.</h2>
-        <p>محصولات را جستجو کن، به سبد اضافه کن و با خیال راحت خرید کن.</p>
-      </div>
-      <div class="banner-slide alt">
-        <span class="banner-eyebrow">🚚 ارسال به سراسر کشور</span>
-        <h2>تحویل سریع درب منزل</h2>
-        <p>سفارش‌ها پس از ثبت، در سریع‌ترین زمان ممکن بسته‌بندی و ارسال می‌شوند.</p>
-      </div>
-      <div class="banner-slide gold">
-        <span class="banner-eyebrow">🎁 تخفیف‌های ویژه</span>
-        <h2>پیشنهادهای هر هفته</h2>
-        <p>محصولات جدید و تخفیف‌دار را در صفحه اصلی دنبال کن.</p>
-      </div>
-    </div>
-    <div class="banner-dots" id="bannerDots"></div>
-  </div>
+  <section>
+    <div class="cart-page-inner">
 
-  <div class="about-section">
-    <h3>درباره اوی‌استور</h3>
-    <p>اوی‌استور یک فروشگاه اینترنتی است که تلاش می‌کند خریدی ساده، سریع و مطمئن را برای شما فراهم کند. تمام قیمت‌ها و موجودی محصولات به‌صورت لحظه‌ای از سرور خوانده می‌شود و در زمان پرداخت نیز مجدداً توسط سرور بررسی می‌گردد تا از صحت سفارش شما اطمینان حاصل شود.</p>
-    <p>در صورت هرگونه سوال درباره سفارش، ارسال یا بازگشت کالا، تیم پشتیبانی ما آماده کمک به شماست.</p>
-    <div class="trust-row">
-      <span class="trust-chip">✓ پرداخت امن</span>
-      <span class="trust-chip">🚚 ارسال سریع</span>
-      <span class="trust-chip">↩ امکان مرجوعی</span>
-      <span class="trust-chip">☎ پشتیبانی آنلاین</span>
-    </div>
-  </div>
+      <div id="cartView">
+        <div class="cart-page-head">
+          <h2>سبد خرید</h2>
+        </div>
+        <div class="cart-list-card" id="cartItemsWrap"></div>
+        <div class="receipt-card" id="cartFoot" hidden>
+          <div class="receipt-row"><span>تعداد اقلام</span><span class="num" id="cartItemCount">0</span></div>
+          <div class="receipt-total"><span>جمع کل</span><span class="num" id="cartSubtotal">0 ریال</span></div>
+          <p style="font-size:11px;color:var(--ink-faint);margin:6px 0 0;line-height:1.7;">مبلغ نهایی هنگام پرداخت توسط سرور مجدداً محاسبه می‌شود.</p>
+          <button class="checkout-btn" id="goCheckoutBtn">ادامه و تکمیل سفارش</button>
+        </div>
+      </div>
 
-  <div class="section-title">
-    <h2>پیشنهاد امروز برای شما</h2>
-    <button class="refresh-link" id="shuffleHomeBtn">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 2v6h-6M3 22v-6h6M3.5 9a8.5 8.5 0 0 1 14.6-4.9L21 8M20.5 15a8.5 8.5 0 0 1-14.6 4.9L3 16"/></svg>
-      نمایش تصادفی
-    </button>
-  </div>
-  <div class="grid" id="homeGrid">
-    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-  </div>
+      <div id="checkoutView" style="display:none;">
+        <button class="back-link" id="backToCartBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          بازگشت به سبد
+        </button>
+        <div class="cart-page-head"><h2>تکمیل اطلاعات ارسال</h2></div>
+        <div class="checkout-form-card">
+          <div class="form-error" id="formError"></div>
+          <form id="checkoutForm">
+            <div class="field"><label>نام و نام خانوادگی</label><input type="text" name="full_name" required maxlength="100"></div>
+            <div class="field"><label>شماره موبایل</label><input type="tel" name="phone" required placeholder="09xxxxxxxxx" maxlength="11" inputmode="numeric"></div>
+            <div class="field-row">
+              <div class="field"><label>استان</label><input type="text" name="province" required maxlength="50"></div>
+              <div class="field"><label>شهر</label><input type="text" name="city" required maxlength="80"></div>
+            </div>
+            <div class="field"><label>آدرس کامل</label><textarea name="address" required maxlength="500"></textarea></div>
+            <div class="field"><label>کد پستی</label><input type="text" name="postal_code" required maxlength="20" inputmode="numeric"></div>
+            <div class="field"><label>توضیحات (اختیاری)</label><textarea name="notes" maxlength="500"></textarea></div>
+          </form>
+        </div>
+        <div class="receipt-card">
+          <div class="receipt-total"><span>مبلغ قابل پرداخت</span><span class="num" id="checkoutTotal">0 ریال</span></div>
+          <button class="checkout-btn" id="payBtn" type="submit" form="checkoutForm">پرداخت و ثبت سفارش</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
 </div>
 
 <footer class="app-foot">© <span id="year"></span> اوی‌استور — تمام حقوق محفوظ است.</footer>
-<div class="lightbox" id="lightbox">
-  <div class="lightbox-panel">
-    <button class="lightbox-close" id="lightboxClose">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-    <div class="lightbox-img"><img id="lightboxImg" src="" alt=""></div>
-    <div class="lightbox-info">
-      <h2 id="lightboxTitle"></h2>
-      <p id="lightboxDesc"></p>
-      <div class="price-tag" id="lightboxPrice" style="font-size:19px;"></div>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
-        <div class="stepper" id="lightboxStepper">
-          <button type="button" data-act="dec">−</button>
-          <span id="lightboxQty">1</span>
-          <button type="button" data-act="inc">+</button>
-        </div>
-        <button class="add-btn" id="lightboxAdd" style="flex:1;padding:10px;">افزودن به سبد</button>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="toast-stack" id="toastStack"></div>
 <nav class="bottom-nav">
-  <a class="nav-btn active" href="index.html">
+  <a class="nav-btn" href="index.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
     خانه
   </a>
@@ -427,7 +407,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
     جستجو
   </a>
-  <a class="nav-btn" href="cart.html">
+  <a class="nav-btn active" href="cart.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
     سبد خرید
     <span class="nav-badge" id="navCartBadge" hidden>0</span>
@@ -570,106 +550,180 @@
         products = list.filter(function(p){ return p && p.code && p.active !== false; });
         productsByCode = {};
         products.forEach(function(p){ productsByCode[p.code] = p; });
-        rollHomeRandom();
-        renderHome();
+        renderCart();
       })
       .catch(function(err){
-        var msg = '<div class="error-state">' +
+        document.getElementById("cartItemsWrap").innerHTML =
+          '<div class="error-state">' +
           '<h3>مشکلی در بارگذاری محصولات پیش آمد</h3>' +
           '<p>فایل products.json پیدا نشد یا فرمت آن نادرست است. (' + escapeHtml(err.message) + ')</p>' +
           '</div>';
-        document.getElementById("homeGrid").innerHTML = msg;
       });
   }
 
-  var homeRandomList = [];
-  function rollHomeRandom(){
-    var n = Math.min(CONFIG.HOME_RANDOM_COUNT, products.length);
-    homeRandomList = shuffledCopy(products).slice(0, n);
-  }
-  document.getElementById("shuffleHomeBtn").addEventListener("click", function(){
-    rollHomeRandom();
-    renderHome();
+  document.getElementById("cartItemsWrap").addEventListener("click", function(e){
+    var inc = e.target.closest("[data-inc]");
+    var dec = e.target.closest("[data-dec]");
+    var rem = e.target.closest("[data-remove]");
+    if(inc) setQty(inc.getAttribute("data-inc"), (cart[inc.getAttribute("data-inc")]||0) + 1);
+    if(dec) setQty(dec.getAttribute("data-dec"), (cart[dec.getAttribute("data-dec")]||0) - 1);
+    if(rem) setQty(rem.getAttribute("data-remove"), 0);
   });
 
-  function renderHome(){
-    var grid = document.getElementById("homeGrid");
-    if(!homeRandomList.length){
-      grid.innerHTML = '<div class="empty-state"><h3>محصولی موجود نیست</h3><p>بعداً دوباره سر بزن.</p></div>';
+  function setQty(code, qty){
+    if(qty <= 0){ delete cart[code]; }
+    else { cart[code] = Math.min(qty, CONFIG.MAX_QTY_PER_PRODUCT); }
+    saveCart();
+    updateCartBadge();
+    renderCart();
+  }
+
+  function cartEntries(){
+    return Object.keys(cart)
+      .filter(function(code){ return productsByCode[code] && cart[code] > 0; })
+      .map(function(code){ return { code: code, qty: cart[code], product: productsByCode[code] }; });
+  }
+
+  function cartTotal(){
+    return cartEntries().reduce(function(sum, e){ return sum + (Number(e.product.price)||0) * e.qty; }, 0);
+  }
+
+  function renderCart(){
+    var entries = cartEntries();
+    var count = entries.reduce(function(s,e){ return s + e.qty; }, 0);
+    updateCartBadge();
+
+    var wrap = document.getElementById("cartItemsWrap");
+    var foot = document.getElementById("cartFoot");
+
+    if(!entries.length){
+      wrap.innerHTML =
+        '<div class="cart-empty">' +
+        '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L22 8H6"/></svg>' +
+        '<p>سبد خرید شما خالی است</p></div>';
+      foot.hidden = true;
+      updateCheckoutTotal();
       return;
     }
-    grid.innerHTML = homeRandomList.map(cardHtml).join("");
-  }
-  document.getElementById("homeGrid").addEventListener("click", handleGridClick);
 
-  function afterCartChange(){ renderHome(); }
+    foot.hidden = false;
+    wrap.innerHTML = entries.map(function(e){
+      var thumb = escapeHtml(e.product.thumb || e.product.image || "");
+      return (
+        '<div class="cart-item" data-code="' + escapeHtml(e.code) + '">' +
+          '<img src="' + thumb + '" alt="">' +
+          '<div class="cart-item-info">' +
+            '<h4>' + escapeHtml(e.product.name) + '</h4>' +
+            '<div class="line-price num">' + fmtPrice(e.product.price) + ' × ' + e.qty + '</div>' +
+            '<div class="stepper" style="margin-top:6px;">' +
+              '<button type="button" data-dec="' + escapeHtml(e.code) + '">−</button>' +
+              '<span class="num">' + e.qty + '</span>' +
+              '<button type="button" data-inc="' + escapeHtml(e.code) + '" ' + (e.qty>=CONFIG.MAX_QTY_PER_PRODUCT?"disabled":"") + '>+</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cart-item-actions">' +
+            '<span class="num" style="font-weight:700;font-size:13px;">' + fmtPrice(e.product.price * e.qty) + '</span>' +
+            '<button class="remove-link" data-remove="' + escapeHtml(e.code) + '">حذف</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join("");
 
-  var lightbox = document.getElementById("lightbox");
-  var lightboxCode = null, lightboxQty = 1;
-  function openLightbox(code){
-    var p = productsByCode[code];
-    if(!p) return;
-    lightboxCode = code;
-    lightboxQty = 1;
-    document.getElementById("lightboxImg").src = p.image || p.thumb || "";
-    document.getElementById("lightboxImg").alt = p.name;
-    document.getElementById("lightboxTitle").textContent = p.name;
-    document.getElementById("lightboxDesc").textContent = p.description || "";
-    document.getElementById("lightboxPrice").textContent = fmtPrice(p.price);
-    document.getElementById("lightboxQty").textContent = lightboxQty;
-    lightbox.classList.add("open");
-  }
-  function closeLightbox(){ lightbox.classList.remove("open"); }
-  document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
-  lightbox.addEventListener("click", function(e){ if(e.target === lightbox) closeLightbox(); });
-  document.getElementById("lightboxStepper").addEventListener("click", function(e){
-    var btn = e.target.closest("button"); if(!btn) return;
-    var act = btn.getAttribute("data-act");
-    var already = cart[lightboxCode] || 0;
-    if(act === "inc" && lightboxQty + already < CONFIG.MAX_QTY_PER_PRODUCT) lightboxQty++;
-    if(act === "dec" && lightboxQty > 1) lightboxQty--;
-    document.getElementById("lightboxQty").textContent = lightboxQty;
-  });
-  document.getElementById("lightboxAdd").addEventListener("click", function(){
-    addToCart(lightboxCode, lightboxQty);
-    closeLightbox();
-  });
-
-  function handleGridClick(e){
-    var addBtn = e.target.closest("[data-add]");
-    if(addBtn){
-      addToCart(addBtn.getAttribute("data-add"), 1);
-      return;
-    }
-    var mediaEl = e.target.closest("[data-open-lightbox]");
-    if(mediaEl){
-      openLightbox(mediaEl.getAttribute("data-open-lightbox"));
-    }
+    document.getElementById("cartItemCount").textContent = count;
+    document.getElementById("cartSubtotal").textContent = fmtPrice(cartTotal());
+    updateCheckoutTotal();
   }
 
-  (function initBanners(){
-    var track = document.getElementById("bannerTrack");
-    var slides = track.querySelectorAll(".banner-slide");
-    var dotsWrap = document.getElementById("bannerDots");
-    slides.forEach(function(_, i){
-      var d = document.createElement("span");
-      if(i === 0) d.classList.add("on");
-      dotsWrap.appendChild(d);
+  function updateCheckoutTotal(){
+    var el = document.getElementById("checkoutTotal");
+    if(el) el.textContent = fmtPrice(cartTotal());
+  }
+
+  var cartView = document.getElementById("cartView");
+  var checkoutView = document.getElementById("checkoutView");
+
+  function showCartView(){ cartView.style.display = "block"; checkoutView.style.display = "none"; }
+  function showCheckoutView(){
+    if(!cartEntries().length){ toast("سبد خرید خالی است.", true); return; }
+    cartView.style.display = "none"; checkoutView.style.display = "block";
+    prefillCustomer();
+  }
+
+  document.getElementById("goCheckoutBtn").addEventListener("click", showCheckoutView);
+  document.getElementById("backToCartBtn").addEventListener("click", showCartView);
+
+  var form = document.getElementById("checkoutForm");
+  var payBtn = document.getElementById("payBtn");
+  var formError = document.getElementById("formError");
+
+  function prefillCustomer(){
+    var saved = loadCustomer();
+    Object.keys(saved).forEach(function(key){
+      var input = form.querySelector('[name="' + key + '"]');
+      if(input) input.value = saved[key];
     });
-    var dots = dotsWrap.querySelectorAll("span");
-    function setActive(i){
-      dots.forEach(function(d, idx){ d.classList.toggle("on", idx === i); });
+  }
+  function showFormError(msg){
+    formError.textContent = msg;
+    formError.classList.add("show");
+  }
+  function hideFormError(){ formError.classList.remove("show"); }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    hideFormError();
+
+    var entries = cartEntries();
+    if(!entries.length){ showFormError("سبد خرید خالی است."); return; }
+
+    var fd = new FormData(form);
+    var customer = {
+      full_name: (fd.get("full_name")||"").toString().trim(),
+      phone: (fd.get("phone")||"").toString().trim(),
+      province: (fd.get("province")||"").toString().trim(),
+      city: (fd.get("city")||"").toString().trim(),
+      address: (fd.get("address")||"").toString().trim(),
+      postal_code: (fd.get("postal_code")||"").toString().trim(),
+      notes: (fd.get("notes")||"").toString().trim()
+    };
+
+    if(!customer.full_name){ showFormError("نام و نام خانوادگی را وارد کنید."); return; }
+    if(!/^09\d{9}$/.test(customer.phone)){ showFormError("شماره موبایل معتبر نیست (مثال: 09123456789)."); return; }
+    if(!customer.province || !customer.city || !customer.address || !customer.postal_code){
+      showFormError("اطلاعات آدرس را کامل وارد کنید."); return;
     }
-    track.addEventListener("scroll", function(){
-      var i = Math.round(track.scrollLeft / track.clientWidth);
-      setActive(Math.max(0, Math.min(slides.length - 1, i)));
+
+    saveCustomer(customer);
+
+    var products_payload = entries.map(function(e){
+      return { code: e.code, quantity: e.qty };
     });
-    var autoIdx = 0;
-    setInterval(function(){
-      autoIdx = (autoIdx + 1) % slides.length;
-      track.scrollTo({ left: autoIdx * track.clientWidth, behavior: "smooth" });
-    }, 4500);
-  })();
+
+    payBtn.disabled = true;
+    payBtn.textContent = "در حال اتصال به درگاه…";
+
+    fetch(CONFIG.API_BASE + "/api/create-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ products: products_payload, customer: customer })
+    })
+      .then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
+      .then(function(res){
+        if(res.ok && res.data && res.data.ok && res.data.url){
+          window.location.href = res.data.url;
+        } else {
+          var msg = (res.data && res.data.error) ? res.data.error : "ثبت سفارش با خطا مواجه شد.";
+          showFormError(msg);
+          payBtn.disabled = false;
+          payBtn.textContent = "پرداخت و ثبت سفارش";
+        }
+      })
+      .catch(function(){
+        showFormError("ارتباط با سرور برقرار نشد. اتصال اینترنت را بررسی کنید.");
+        payBtn.disabled = false;
+        payBtn.textContent = "پرداخت و ثبت سفارش";
+      });
+  });
 
   loadProducts();
 
