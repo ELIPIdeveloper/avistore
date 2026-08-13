@@ -421,20 +421,32 @@
 
   var products = [];
   var productsByCode = {};
-  var cart = loadCart();
+  var cart = {};
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
   function loadCart(){
     try {
       var raw = localStorage.getItem(STORAGE.CART);
-      var parsed = raw ? JSON.parse(raw) : {};
+      if(!raw) return {};
+      var parsed = JSON.parse(raw);
       return (parsed && typeof parsed === "object") ? parsed : {};
-    } catch(e){ return {}; }
+    } catch(e){ 
+      console.warn("Failed to load cart:", e);
+      return {}; 
+    }
   }
   function saveCart(){
-    try { localStorage.setItem(STORAGE.CART, JSON.stringify(cart)); } catch(e){}
+    try { 
+      localStorage.setItem(STORAGE.CART, JSON.stringify(cart));
+      console.log("Cart saved:", cart);
+    } catch(e){
+      console.error("Failed to save cart:", e);
+    }
   }
+  
+  // تحميل السبد عند بدء الصفحة
+  cart = loadCart();
   function loadCustomer(){
     try {
       var raw = localStorage.getItem(STORAGE.CUSTOMER);
