@@ -434,6 +434,7 @@
   </a>
 </nav>
 
+<script src="cart-store.js"></script>
 <script>
 (function(){
 
@@ -445,7 +446,7 @@
     CURRENCY_LABEL: "ریال",
     HOME_RANDOM_COUNT: 8
   };
-  var STORAGE = { CART: "avistore_cart", CUSTOMER: "avistore_customer" };
+  var STORAGE = AviCart.STORAGE;
 
   var products = [];
   var productsByCode = {};
@@ -453,36 +454,24 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  function loadCart(){
-    try {
-      var raw = localStorage.getItem(STORAGE.CART);
-      if(!raw) return {};
-      var parsed = JSON.parse(raw);
-      return (parsed && typeof parsed === "object") ? parsed : {};
-    } catch(e){ 
-      console.warn("Failed to load cart:", e);
-      return {}; 
-    }
-  }
-  function saveCart(){
-    try { 
-      localStorage.setItem(STORAGE.CART, JSON.stringify(cart));
-    } catch(e){
-    }
-  }
-  
+  // ذخیره/خواندن سبد و مشتری همیشه از طریق cart-store.js انجام می‌شود
+  // تا این صفحه دقیقا همان چیزی را ببیند که بقیه صفحات ذخیره کرده‌اند.
+  function loadCart(){ return AviCart.loadCart(); }
+  function saveCart(){ AviCart.saveCart(cart); }
+
   // تحميل السبد عند بدء الصفحة
   cart = loadCart();
-  
-  function loadCustomer(){
-    try {
-      var raw = localStorage.getItem(STORAGE.CUSTOMER);
-      return raw ? JSON.parse(raw) : {};
-    } catch(e){ return {}; }
-  }
-  function saveCustomer(data){
-    try { localStorage.setItem(STORAGE.CUSTOMER, JSON.stringify(data)); } catch(e){}
-  }
+
+  function loadCustomer(){ return AviCart.loadCustomer(); }
+  function saveCustomer(data){ AviCart.saveCustomer(data); }
+
+  // اگر در تب/صفحه دیگری سبد تغییر کرد (مثلا کاربر در cart.html
+  // چیزی حذف کرد و برگشت به این صفحه)، بج تعداد را بروز کن.
+  AviCart.onChange(function(updatedCart){
+    cart = updatedCart;
+    updateCartBadge();
+    if (typeof afterCartChange === "function") afterCartChange();
+  });
 
   function fmtPrice(n){
     n = Number(n) || 0;
