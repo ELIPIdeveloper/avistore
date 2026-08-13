@@ -440,7 +440,7 @@
   "use strict";
   var CONFIG = {
     API_BASE: "",
-    PRODUCTS_URL: "/products.json",
+    PRODUCTS_URL: "products.json",
     MAX_QTY_PER_PRODUCT: 10,
     CURRENCY_LABEL: "ریال",
     HOME_RANDOM_COUNT: 8
@@ -467,15 +467,12 @@
   function saveCart(){
     try { 
       localStorage.setItem(STORAGE.CART, JSON.stringify(cart));
-      console.log("Cart saved:", cart);
     } catch(e){
-      console.error("Failed to save cart:", e);
     }
   }
   
   // تحميل السبد عند بدء الصفحة
   cart = loadCart();
-  console.log("✅ index.html - Cart loaded:", cart);
   
   function loadCustomer(){
     try {
