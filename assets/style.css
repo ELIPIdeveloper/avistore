@@ -1,20 +1,19 @@
 :root{
-  --bg:#F5F7F4;
+  --bg:#F5F7FA;
   --surface:#FFFFFF;
-  --ink:#16211C;
-  --ink-soft:#5B6960;
-  --ink-faint:#8B9790;
-  --accent:#0F6E5D;
-  --accent-dark:#0B4F42;
-  --accent-tint:#E4F0EC;
-  --gold:#D98E2B;
-  --gold-tint:#FBEED9;
+  --ink:#131C2B;
+  --ink-soft:#55636F;
+  --ink-faint:#8994A1;
+  --accent:#1F4E86;
+  --accent-dark:#14375F;
+  --accent-bright:#2F73C7;
+  --accent-tint:#E7EEF7;
   --danger:#C2452F;
   --danger-tint:#FBE7E2;
-  --line:#E1E6DF;
+  --line:#E1E6ED;
   --radius:16px;
-  --shadow:0 8px 28px -12px rgba(22,33,28,.18);
-  --shadow-lg:0 20px 60px -20px rgba(22,33,28,.35);
+  --shadow:0 8px 28px -12px rgba(19,28,43,.16);
+  --shadow-lg:0 20px 60px -20px rgba(19,28,43,.32);
   --nav-h:64px;
 }
 *{box-sizing:border-box;}
@@ -35,7 +34,7 @@ a{color:inherit;text-decoration:none;}
 /* ===== Top bar ===== */
 header.site-head{
   position:sticky;top:0;z-index:40;
-  background:rgba(245,247,244,.92);
+  background:rgba(245,247,250,.92);
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
@@ -76,7 +75,7 @@ header.site-head{
 .icon-btn:active{transform:scale(.94);}
 .cart-badge{
   position:absolute;top:-4px;left:-4px;
-  background:var(--gold);color:#241505;
+  background:var(--accent-bright);color:#fff;
   font-size:10.5px;font-weight:800;
   min-width:18px;height:18px;border-radius:999px;
   display:flex;align-items:center;justify-content:center;
@@ -101,8 +100,8 @@ header.site-head{
   color:#fff;padding:26px 22px;min-height:132px;
   display:flex;flex-direction:column;justify-content:center;gap:6px;
 }
-.banner-slide.alt{background:linear-gradient(135deg,#3A3226 0%,var(--ink) 100%);}
-.banner-slide.gold{background:linear-gradient(135deg,var(--gold) 0%,#B36F16 100%);}
+.banner-slide.alt{background:linear-gradient(135deg,#26405F 0%,var(--ink) 100%);}
+.banner-slide.gold{background:linear-gradient(135deg,var(--accent-bright) 0%,var(--accent) 100%);}
 .banner-eyebrow{font-size:12px;font-weight:700;opacity:.85;}
 .banner-slide h2{margin:0;font-size:20px;font-weight:900;letter-spacing:-.3px;}
 .banner-slide p{margin:0;font-size:13px;opacity:.9;line-height:1.7;max-width:360px;}
@@ -209,7 +208,7 @@ header.site-head{
 .empty-state h3, .error-state h3{margin:0 0 6px;font-size:16px;color:var(--ink);}
 .empty-state p, .error-state p{font-size:13px;margin:0;}
 .skeleton{
-  background:linear-gradient(100deg,var(--surface) 30%,#eef1ec 50%,var(--surface) 70%);
+  background:linear-gradient(100deg,var(--surface) 30%,#EEF2F7 50%,var(--surface) 70%);
   background-size:200% 100%;animation:shine 1.3s infinite;
   border-radius:var(--radius);aspect-ratio:.78;
 }
@@ -327,7 +326,7 @@ nav.bottom-nav{
 .nav-btn.active{color:var(--accent);}
 .nav-btn .nav-badge{
   position:absolute;top:2px;left:calc(50% + 4px);
-  background:var(--gold);color:#241505;
+  background:var(--accent-bright);color:#fff;
   font-size:10px;font-weight:800;
   min-width:16px;height:16px;border-radius:999px;
   display:flex;align-items:center;justify-content:center;padding:0 3px;

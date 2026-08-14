@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230F6E5D'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23FAF9F5' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231F4E86'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23FAF9F5' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -34,7 +34,6 @@
   </div>
 </div>
 <div class="app">
-  <div class="cat-row" id="catRow"></div>
   <div class="search-meta" id="searchMeta"></div>
   <div class="grid" id="searchGrid"></div>
 </div>
@@ -79,41 +78,9 @@
     var params = new URLSearchParams(window.location.search);
     return params.get("q") || "";
   }
-  function getCategoryFromUrl(){
-    var params = new URLSearchParams(window.location.search);
-    return params.get("cat") || "";
-  }
 
   var searchTerm = getQueryFromUrl();
-  var activeCategory = getCategoryFromUrl();
   document.getElementById("searchInputPage").value = searchTerm;
-
-  var catRow = document.getElementById("catRow");
-  function renderCategoryChips(){
-    var cats = A.getCategories();
-    if(!cats.length){ catRow.innerHTML = ""; return; }
-    var chips = ['<a class="cat-chip' + (!activeCategory ? " active" : "") + '" data-cat="">همه</a>'];
-    cats.forEach(function(c){
-      chips.push(
-        '<a class="cat-chip' + (activeCategory === c ? " active" : "") + '" data-cat="' + A.escapeHtml(c) + '">' +
-          A.escapeHtml(c) +
-        '</a>'
-      );
-    });
-    catRow.innerHTML = chips.join("");
-  }
-  catRow.addEventListener("click", function(e){
-    var chip = e.target.closest("[data-cat]");
-    if(!chip) return;
-    e.preventDefault();
-    activeCategory = chip.getAttribute("data-cat") || "";
-    renderCategoryChips();
-    renderSearch();
-    var url = new URL(window.location);
-    if(activeCategory) url.searchParams.set("cat", activeCategory);
-    else url.searchParams.delete("cat");
-    window.history.replaceState({}, "", url);
-  });
 
   /* قفل کردن نوار جستجو زیر هدر، طوری که هنگام اسکرول ثابت بماند */
   function pinSearchHead(){
@@ -128,24 +95,18 @@
     var q = searchTerm.trim().toLowerCase();
     var all = A.getAllProducts();
 
-    if(!q && !activeCategory){
-      meta.textContent = all.length ? "چیزی برای جستجو تایپ کن یا یک دسته‌بندی را انتخاب کن…" : "";
+    if(!q){
+      meta.textContent = all.length ? "چیزی برای جستجو تایپ کن…" : "";
       grid.innerHTML = "";
       return;
     }
     var list = all.filter(function(p){
-      var matchesQuery = !q || (p.name + " " + (p.description||"")).toLowerCase().indexOf(q) !== -1;
-      var matchesCategory = !activeCategory || (p.category || "") === activeCategory;
-      return matchesQuery && matchesCategory;
+      var hay = (p.name + " " + (p.description||"")).toLowerCase();
+      return hay.indexOf(q) !== -1;
     });
-
-    var metaText = list.length + " نتیجه";
-    if(q) metaText += " برای «" + searchTerm.trim() + "»";
-    if(activeCategory) metaText += " در دسته «" + activeCategory + "»";
-    meta.textContent = metaText;
-
+    meta.textContent = list.length + " نتیجه برای «" + searchTerm.trim() + "»";
     if(!list.length){
-      grid.innerHTML = '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو یا دسته‌بندی را تغییر بده و دوباره تلاش کن.</p></div>';
+      grid.innerHTML = '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو را تغییر بده یا دوباره تلاش کن.</p></div>';
       return;
     }
     grid.innerHTML = list.map(A.cardHtml).join("");
@@ -160,16 +121,11 @@
     window.history.replaceState({}, "", url);
   });
 
-  A.fetchProducts().then(function(){
-    renderCategoryChips();
-    renderSearch();
-  }).catch(function(err){
+  A.fetchProducts().then(renderSearch).catch(function(err){
     grid.innerHTML = '<div class="error-state"><h3>مشکلی در بارگذاری محصولات پیش آمد</h3><p>' + A.escapeHtml(err.message) + '</p></div>';
   });
 
-  if(!activeCategory){
-    setTimeout(function(){ document.getElementById("searchInputPage").focus(); }, 50);
-  }
+  setTimeout(function(){ document.getElementById("searchInputPage").focus(); }, 50);
 })();
 </script>
 </body>

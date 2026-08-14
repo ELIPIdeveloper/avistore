@@ -58,15 +58,5 @@
     "image": "https://picsum.photos/seed/avistore6/1000/1000",
     "active": true,
     "category": "الکترونیک"
-  },
-  {
-    "code": "[P-1001]",
-    "name": "پاوربانک 2 میلی‌آمپر",
-    "description": "شارژ سریع دو پورت، نمایشگر دیجیتال درصد باتری.",
-    "price": 850000,
-    "thumb": "https://picsum.photos/seed/avistore6/600/600",
-    "image": "https://picsum.photos/seed/avistore6/1000/1000",
-    "active": true,
-    "category": "h"
   }
 ]
