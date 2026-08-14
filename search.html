@@ -112,8 +112,10 @@
     var all = A.getAllProducts();
 
     if(!q){
-      meta.textContent = all.length ? "چیزی برای جستجو تایپ کن…" : "";
-      grid.innerHTML = "";
+      var suggested = A.shuffledCopy(all).slice(0, A.CONFIG.HOME_RANDOM_COUNT);
+      meta.textContent = suggested.length ? "پیشنهاد برای شما" : "";
+      grid.innerHTML = suggested.map(A.cardHtml).join("");
+      A.wireRevealOnce(grid);
       return;
     }
     var list = all.filter(function(p){
