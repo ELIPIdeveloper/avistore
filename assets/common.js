@@ -133,8 +133,21 @@ window.AVISTORE = (function(){
     });
   }
 
+  /* ---------- reveal-once (blur→clear + حرکت، فقط با اولین فوکوس/هاور) ---------- */
+  function wireRevealOnce(scope){
+    var root = scope || document;
+    var els = root.querySelectorAll(".reveal-once:not([data-reveal-wired])");
+    els.forEach(function(el){
+      el.setAttribute("data-reveal-wired", "1");
+      function reveal(){ el.classList.add("revealed"); }
+      el.addEventListener("mouseenter", reveal, { once: true });
+      el.addEventListener("focus", reveal, { once: true });
+    });
+  }
+
   function initChrome(){
     renderBadges();
+    wireRevealOnce();
     // در صورتی که صفحه از حافظهٔ back-forward مرورگر (bfcache) بازیابی شود،
     // اسکریپت دوباره اجرا نمی‌شود، پس باید عدد سبد را دستی تازه کنیم.
     window.addEventListener("pageshow", function(e){
@@ -228,6 +241,7 @@ window.AVISTORE = (function(){
     categoryUrl: categoryUrl,
     onChange: onChange,
     initChrome: initChrome,
+    wireRevealOnce: wireRevealOnce,
     renderBadges: renderBadges,
     cartCount: cartCount,
     qtyOf: qtyOf,
