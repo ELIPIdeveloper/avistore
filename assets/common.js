@@ -133,15 +133,30 @@ window.AVISTORE = (function(){
     });
   }
 
-  /* ---------- reveal-once (blur→clear + حرکت، فقط با اولین فوکوس/هاور) ---------- */
+  /* ---------- reveal-once (بلور→واضح + حرکت، هنگام اسکرول وارد دید صفحه یا بلافاصله بعد از رندر نتایج سرچ) ----------
+     هدر (نوار بالا) و نوار پایین عمداً از این سیستم بیرون نگه داشته می‌شوند و کلاس reveal-once نمی‌گیرند. */
+  var revealObserver = null;
+  function getRevealObserver(){
+    if(revealObserver) return revealObserver;
+    if(typeof IntersectionObserver === "undefined") return null;
+    revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add("revealed");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { root: null, rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
+    return revealObserver;
+  }
   function wireRevealOnce(scope){
     var root = scope || document;
     var els = root.querySelectorAll(".reveal-once:not([data-reveal-wired])");
+    var obs = getRevealObserver();
     els.forEach(function(el){
       el.setAttribute("data-reveal-wired", "1");
-      function reveal(){ el.classList.add("revealed"); }
-      el.addEventListener("mouseenter", reveal, { once: true });
-      el.addEventListener("focus", reveal, { once: true });
+      if(obs) obs.observe(el);
+      else el.classList.add("revealed"); // مرورگر بدون پشتیبانی از IntersectionObserver
     });
   }
 
@@ -199,7 +214,7 @@ window.AVISTORE = (function(){
     var atMax = qtyInCart >= CONFIG.MAX_QTY_PER_PRODUCT;
     var category = (p.category || "").trim();
     return (
-      '<a class="card" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
+      '<a class="card reveal-once" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
         '<span class="card-media">' +
           '<img src="' + thumb + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
         '</span>' +
