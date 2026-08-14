@@ -98,34 +98,37 @@ window.AVISTORE = (function(){
   function onChange(fn){ listeners.push(fn); }
   function notify(){ listeners.forEach(function(fn){ fn(); }); renderBadges(); }
 
-  /* ---------- header / badges / nav (present on every page) ---------- */
+  /* ---------- header / badges / nav (present on every page) ----------
+     نکته دربارهٔ باگ «صفر ماندن عدد سبد خرید»: قبلاً برای مخفی/نمایش
+     کردن مقدار روی attribute بولی «hidden» تکیه می‌کردیم. در برخی
+     مرورگرها/دستگاه‌ها (به‌خصوص وقتی چند استایل‌شیت با هم رقابت
+     می‌کنند) قانون [hidden]{display:none} می‌تواند حتی وقتی خودمان
+     hidden=false می‌گذاریم برنده شود، پس بج همیشه پنهان می‌ماند و
+     در نتیجه شمارهٔ صحیح هیچ‌وقت دیده نمی‌شود. راه‌حل: به‌جای
+     attribute، مستقیماً style.display را کنترل می‌کنیم که همیشه
+     بالاترین اولویت را دارد و دیگر به رقابت CSS وابسته نیست. */
   function renderBadges(){
     var count = cartCount();
     document.querySelectorAll(".cart-badge").forEach(function(b){
-      if(count > 0){ b.hidden = false; b.textContent = count; }
-      else { b.hidden = true; }
+      b.textContent = count;
+      b.style.display = count > 0 ? "flex" : "none";
+      b.removeAttribute("hidden");
     });
     document.querySelectorAll(".nav-badge").forEach(function(b){
-      if(count > 0){ b.hidden = false; b.textContent = count; }
-      else { b.hidden = true; }
+      b.textContent = count;
+      b.style.display = count > 0 ? "flex" : "none";
+      b.removeAttribute("hidden");
     });
   }
 
   function initChrome(){
-    document.querySelectorAll(".search-wrap input[data-role='global-search']").forEach(function(input){
-      input.addEventListener("keydown", function(e){
-        if(e.key === "Enter"){
-          e.preventDefault();
-          window.location.href = "/search.html?q=" + encodeURIComponent(input.value);
-        }
-      });
-      input.addEventListener("focus", function(){
-        if(input.getAttribute("data-navigate-on-focus") === "1"){
-          window.location.href = "/search.html";
-        }
-      });
-    });
     renderBadges();
+    // در صورتی که صفحه از حافظهٔ back-forward مرورگر (bfcache) بازیابی شود،
+    // اسکریپت دوباره اجرا نمی‌شود، پس باید عدد سبد را دستی تازه کنیم.
+    window.addEventListener("pageshow", function(e){
+      cart = loadCart();
+      renderBadges();
+    });
   }
 
   /* ---------- cart logic ---------- */
