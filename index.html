@@ -64,6 +64,15 @@
   </div>
 
   <div class="section-title">
+    <h2>دسته‌بندی‌ها</h2>
+  </div>
+  <div class="cat-row" id="homeCatRow">
+    <div class="skeleton" style="aspect-ratio:auto;width:90px;height:34px;border-radius:999px;"></div>
+    <div class="skeleton" style="aspect-ratio:auto;width:90px;height:34px;border-radius:999px;"></div>
+    <div class="skeleton" style="aspect-ratio:auto;width:90px;height:34px;border-radius:999px;"></div>
+  </div>
+
+  <div class="section-title">
     <h2>پیشنهاد امروز برای شما</h2>
     <button class="refresh-link" id="shuffleHomeBtn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 2v6h-6M3 22v-6h6M3.5 9a8.5 8.5 0 0 1 14.6-4.9L21 8M20.5 15a8.5 8.5 0 0 1-14.6 4.9L3 16"/></svg>
@@ -84,6 +93,10 @@
   <a class="nav-btn active" href="/index.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
     خانه
+  </a>
+  <a class="nav-btn" href="/categories.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    دسته‌ها
   </a>
   <a class="nav-btn" href="/search.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -108,6 +121,15 @@
   var grid = document.getElementById("homeGrid");
   A.wireGridAddButtons(grid);
 
+  function renderHomeCategories(){
+    var cats = A.getCategories();
+    var catRow = document.getElementById("homeCatRow");
+    if(!cats.length){ catRow.innerHTML = ""; return; }
+    catRow.innerHTML = cats.map(function(c){
+      return '<a class="cat-chip" href="' + A.categoryUrl(c) + '">' + A.escapeHtml(c) + '</a>';
+    }).join("");
+  }
+
   function rollHomeRandom(){
     var all = A.getAllProducts();
     var n = Math.min(A.CONFIG.HOME_RANDOM_COUNT, all.length);
@@ -129,8 +151,10 @@
   A.fetchProducts().then(function(){
     rollHomeRandom();
     renderHome();
+    renderHomeCategories();
   }).catch(function(err){
     grid.innerHTML = '<div class="error-state"><h3>مشکلی در بارگذاری محصولات پیش آمد</h3><p>فایل products.json پیدا نشد یا فرمت آن نادرست است. (' + A.escapeHtml(err.message) + ')</p></div>';
+    document.getElementById("homeCatRow").innerHTML = "";
   });
 
   /* banner slider */

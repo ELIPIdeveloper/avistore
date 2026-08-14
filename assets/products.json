@@ -6,7 +6,8 @@
     "price": 1850000,
     "thumb": "https://picsum.photos/seed/avistore1/600/600",
     "image": "https://picsum.photos/seed/avistore1/1000/1000",
-    "active": true
+    "active": true,
+    "category": "الکترونیک"
   },
   {
     "code": "2",
@@ -15,7 +16,8 @@
     "price": 4200000,
     "thumb": "https://picsum.photos/seed/avistore2/600/600",
     "image": "https://picsum.photos/seed/avistore2/1000/1000",
-    "active": true
+    "active": true,
+    "category": "الکترونیک"
   },
   {
     "code": "3",
@@ -24,7 +26,8 @@
     "price": 690000,
     "thumb": "https://picsum.photos/seed/avistore3/600/600",
     "image": "https://picsum.photos/seed/avistore3/1000/1000",
-    "active": true
+    "active": true,
+    "category": "کیف و چرم"
   },
   {
     "code": "4",
@@ -33,7 +36,8 @@
     "price": 1290000,
     "thumb": "https://picsum.photos/seed/avistore4/600/600",
     "image": "https://picsum.photos/seed/avistore4/1000/1000",
-    "active": true
+    "active": true,
+    "category": "الکترونیک"
   },
   {
     "code": "5",
@@ -42,7 +46,8 @@
     "price": 980000,
     "thumb": "https://picsum.photos/seed/avistore5/600/600",
     "image": "https://picsum.photos/seed/avistore5/1000/1000",
-    "active": true
+    "active": true,
+    "category": "کیف و چرم"
   },
   {
     "code": "6",
@@ -51,25 +56,7 @@
     "price": 850000,
     "thumb": "https://picsum.photos/seed/avistore6/600/600",
     "image": "https://picsum.photos/seed/avistore6/1000/1000",
-    "active": true
-  },
-  {
-    "code": "P-1001",
-    "name": "پاوربانک 1 میلی‌آمپر",
-    "description": "شارژ سریع دو پورت، نمایشگر دیجیتال درصد باتری.",
-    "price": 850000,
-    "thumb": "https://picsum.photos/seed/avistore6/600/600",
-    "image": "https://picsum.photos/seed/avistore6/1000/1000",
-    "active": true
-  }
-  ,
-  {
-    "code": "7",
-    "name": "پاوربانک 2 میلی‌آمپر",
-    "description": "شارژ سریع دو پورت، نمایشگر دیجیتال درصد باتری.",
-    "price": 850000,
-    "thumb": "https://picsum.photos/seed/avistore6/600/600",
-    "image": "https://picsum.photos/seed/avistore6/1000/1000",
-    "active": true
+    "active": true,
+    "category": "الکترونیک"
   }
 ]

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>دسته‌بندی‌ها | اوی‌استور</title>
+<meta name="description" content="مرور محصولات اوی‌استور بر اساس دسته‌بندی">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230F6E5D'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23FAF9F5' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="/index.html">
+      <span class="brand-mark">A</span><span class="brand-text">اوی‌استور</span>
+    </a>
+    <a class="icon-btn header-search-btn" href="/search.html" aria-label="جستجو">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    </a>
+    <a class="icon-btn" href="/cart.html" aria-label="سبد خرید">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+      <span class="cart-badge" hidden>0</span>
+    </a>
+  </div>
+</header>
+
+<div class="app">
+
+  <div class="breadcrumb" id="catBreadcrumb" style="display:none;">
+    <a href="/index.html">خانه</a><span>/</span><a href="/categories.html">دسته‌بندی‌ها</a><span>/</span><span id="bcCatName"></span>
+  </div>
+
+  <div class="section-title" id="catsTitle">
+    <h2>دسته‌بندی‌ها</h2>
+    <span id="catsCount"></span>
+  </div>
+
+  <!-- حالت ۱: لیست همه دسته‌بندی‌ها (وقتی cat در URL نیست) -->
+  <div class="cat-grid" id="catGrid">
+    <div class="skeleton" style="aspect-ratio:1.6;"></div>
+    <div class="skeleton" style="aspect-ratio:1.6;"></div>
+    <div class="skeleton" style="aspect-ratio:1.6;"></div>
+    <div class="skeleton" style="aspect-ratio:1.6;"></div>
+  </div>
+
+  <!-- حالت ۲: محصولات یک دسته انتخاب‌شده -->
+  <div class="cat-row" id="catSwitchRow" style="display:none;"></div>
+  <div class="grid" id="catProductsGrid" style="display:none;"></div>
+
+</div>
+
+<footer class="app-foot">© <span id="year"></span> اوی‌استور — تمام حقوق محفوظ است.</footer>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<nav class="bottom-nav">
+  <a class="nav-btn" href="/index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+    خانه
+  </a>
+  <a class="nav-btn active" href="/categories.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    دسته‌ها
+  </a>
+  <a class="nav-btn" href="/search.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    جستجو
+  </a>
+  <a class="nav-btn" href="/cart.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+    سبد خرید
+    <span class="nav-badge" hidden>0</span>
+  </a>
+</nav>
+
+<script src="/assets/common.js"></script>
+<script>
+(function(){
+  "use strict";
+  var A = window.AVISTORE;
+  document.getElementById("year").textContent = new Date().getFullYear();
+  A.initChrome();
+
+  var catGrid = document.getElementById("catGrid");
+  var catsTitle = document.getElementById("catsTitle");
+  var catsCount = document.getElementById("catsCount");
+  var breadcrumb = document.getElementById("catBreadcrumb");
+  var bcCatName = document.getElementById("bcCatName");
+  var switchRow = document.getElementById("catSwitchRow");
+  var productsGrid = document.getElementById("catProductsGrid");
+  A.wireGridAddButtons(productsGrid);
+
+  function getCategoryFromUrl(){
+    var params = new URLSearchParams(window.location.search);
+    return params.get("cat") || "";
+  }
+
+  function countInCategory(all, cat){
+    return all.filter(function(p){ return (p.category || "") === cat; }).length;
+  }
+
+  /* ---------- حالت لیست دسته‌بندی‌ها ---------- */
+  function renderCategoryList(){
+    var all = A.getAllProducts();
+    var cats = A.getCategories();
+
+    breadcrumb.style.display = "none";
+    catsTitle.querySelector("h2").textContent = "دسته‌بندی‌ها";
+    catsCount.textContent = cats.length ? cats.length + " دسته" : "";
+    switchRow.style.display = "none";
+    productsGrid.style.display = "none";
+    catGrid.style.display = "grid";
+
+    if(!cats.length){
+      catGrid.innerHTML = '<div class="empty-state"><h3>دسته‌بندی‌ای موجود نیست</h3><p>بعداً دوباره سر بزن.</p></div>';
+      return;
+    }
+    catGrid.innerHTML = cats.map(function(c){
+      var sample = all.filter(function(p){ return p.category === c; })[0];
+      var img = sample ? A.escapeHtml(sample.thumb || sample.image || "") : "";
+      var count = countInCategory(all, c);
+      return (
+        '<a class="cat-card" href="' + A.categoryUrl(c) + '">' +
+          (img ? '<span class="cat-card-media"><img src="' + img + '" alt="' + A.escapeHtml(c) + '" loading="lazy"></span>' : '') +
+          '<span class="cat-card-body">' +
+            '<h3>' + A.escapeHtml(c) + '</h3>' +
+            '<span>' + count + ' محصول</span>' +
+          '</span>' +
+        '</a>'
+      );
+    }).join("");
+  }
+
+  /* ---------- حالت محصولات یک دسته ---------- */
+  function renderCategoryProducts(cat){
+    var all = A.getAllProducts();
+    var cats = A.getCategories();
+
+    catGrid.style.display = "none";
+    catsTitle.querySelector("h2").textContent = cat;
+    breadcrumb.style.display = "flex";
+    bcCatName.textContent = cat;
+
+    var list = all.filter(function(p){ return (p.category || "") === cat; });
+    catsCount.textContent = list.length + " محصول";
+
+    switchRow.style.display = cats.length > 1 ? "flex" : "none";
+    switchRow.innerHTML = cats.map(function(c){
+      return '<a class="cat-chip' + (c === cat ? " active" : "") + '" href="' + A.categoryUrl(c) + '">' + A.escapeHtml(c) + '</a>';
+    }).join("");
+
+    productsGrid.style.display = "grid";
+    if(!list.length){
+      productsGrid.innerHTML = '<div class="empty-state"><h3>محصولی در این دسته نیست</h3><p>دسته دیگری را امتحان کن.</p></div>';
+      return;
+    }
+    productsGrid.innerHTML = list.map(A.cardHtml).join("");
+  }
+
+  function render(){
+    var cat = getCategoryFromUrl();
+    if(cat) renderCategoryProducts(cat);
+    else renderCategoryList();
+  }
+
+  A.onChange(render);
+
+  A.fetchProducts().then(render).catch(function(err){
+    catGrid.innerHTML = '<div class="error-state"><h3>مشکلی در بارگذاری دسته‌بندی‌ها پیش آمد</h3><p>' + A.escapeHtml(err.message) + '</p></div>';
+  });
+})();
+</script>
+</body>
+</html>

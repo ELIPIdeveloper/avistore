@@ -44,11 +44,15 @@ function main(){
     const dir = path.join(PRODUCTS_DIR, String(p.code));
     fs.mkdirSync(dir, { recursive: true });
 
+    const categoryUrl = "/categories.html?cat=" + encodeURIComponent(p.category || "");
+
     const html = template
       .split("{{TITLE}}").join(escapeHtml(p.name || ""))
       .split("{{DESC}}").join(escapeHtml(p.description || ""))
       .split("{{IMAGE}}").join(escapeHtml(p.image || p.thumb || ""))
-      .split("{{CODE}}").join(escapeHtml(p.code));
+      .split("{{CODE}}").join(escapeHtml(p.code))
+      .split("{{CATEGORY_URL}}").join(escapeHtml(categoryUrl))
+      .split("{{CATEGORY}}").join(escapeHtml(p.category || ""));
 
     fs.writeFileSync(path.join(dir, "index.html"), html, "utf8");
     count++;

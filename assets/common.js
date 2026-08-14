@@ -93,6 +93,18 @@ window.AVISTORE = (function(){
       });
   }
   function getProductByCode(code){ return productsByCode[code]; }
+  function getCategories(){
+    var seen = {};
+    var list = [];
+    products.forEach(function(p){
+      var c = (p.category || "").trim();
+      if(!c || seen[c]) return;
+      seen[c] = true;
+      list.push(c);
+    });
+    return list.sort(function(a, b){ return a.localeCompare(b, "fa"); });
+  }
+  function categoryUrl(cat){ return "/categories.html?cat=" + encodeURIComponent(cat); }
 
   /* ---------- change notifications (badge/cart re-render across a page) ---------- */
   function onChange(fn){ listeners.push(fn); }
@@ -172,12 +184,14 @@ window.AVISTORE = (function(){
     var thumb = escapeHtml(p.thumb || p.image || "");
     var qtyInCart = qtyOf(p.code);
     var atMax = qtyInCart >= CONFIG.MAX_QTY_PER_PRODUCT;
+    var category = (p.category || "").trim();
     return (
       '<a class="card" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
         '<span class="card-media">' +
           '<img src="' + thumb + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
         '</span>' +
         '<span class="card-body">' +
+          (category ? '<span class="card-cat">' + escapeHtml(category) + '</span>' : "") +
           '<h3 class="card-title">' + escapeHtml(p.name) + '</h3>' +
           '<p class="card-desc">' + escapeHtml(p.description || "") + '</p>' +
           '<span class="card-foot">' +
@@ -210,6 +224,8 @@ window.AVISTORE = (function(){
     fetchProducts: fetchProducts,
     getProductByCode: getProductByCode,
     getAllProducts: function(){ return products; },
+    getCategories: getCategories,
+    categoryUrl: categoryUrl,
     onChange: onChange,
     initChrome: initChrome,
     renderBadges: renderBadges,

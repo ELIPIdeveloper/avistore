@@ -34,6 +34,7 @@
   </div>
 </div>
 <div class="app">
+  <div class="cat-row" id="catRow"></div>
   <div class="search-meta" id="searchMeta"></div>
   <div class="grid" id="searchGrid"></div>
 </div>
@@ -46,6 +47,10 @@
   <a class="nav-btn" href="/index.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
     خانه
+  </a>
+  <a class="nav-btn" href="/categories.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    دسته‌ها
   </a>
   <a class="nav-btn active" href="/search.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -74,9 +79,41 @@
     var params = new URLSearchParams(window.location.search);
     return params.get("q") || "";
   }
+  function getCategoryFromUrl(){
+    var params = new URLSearchParams(window.location.search);
+    return params.get("cat") || "";
+  }
 
   var searchTerm = getQueryFromUrl();
+  var activeCategory = getCategoryFromUrl();
   document.getElementById("searchInputPage").value = searchTerm;
+
+  var catRow = document.getElementById("catRow");
+  function renderCategoryChips(){
+    var cats = A.getCategories();
+    if(!cats.length){ catRow.innerHTML = ""; return; }
+    var chips = ['<a class="cat-chip' + (!activeCategory ? " active" : "") + '" data-cat="">همه</a>'];
+    cats.forEach(function(c){
+      chips.push(
+        '<a class="cat-chip' + (activeCategory === c ? " active" : "") + '" data-cat="' + A.escapeHtml(c) + '">' +
+          A.escapeHtml(c) +
+        '</a>'
+      );
+    });
+    catRow.innerHTML = chips.join("");
+  }
+  catRow.addEventListener("click", function(e){
+    var chip = e.target.closest("[data-cat]");
+    if(!chip) return;
+    e.preventDefault();
+    activeCategory = chip.getAttribute("data-cat") || "";
+    renderCategoryChips();
+    renderSearch();
+    var url = new URL(window.location);
+    if(activeCategory) url.searchParams.set("cat", activeCategory);
+    else url.searchParams.delete("cat");
+    window.history.replaceState({}, "", url);
+  });
 
   /* قفل کردن نوار جستجو زیر هدر، طوری که هنگام اسکرول ثابت بماند */
   function pinSearchHead(){
@@ -91,18 +128,24 @@
     var q = searchTerm.trim().toLowerCase();
     var all = A.getAllProducts();
 
-    if(!q){
-      meta.textContent = all.length ? "چیزی برای جستجو تایپ کن…" : "";
+    if(!q && !activeCategory){
+      meta.textContent = all.length ? "چیزی برای جستجو تایپ کن یا یک دسته‌بندی را انتخاب کن…" : "";
       grid.innerHTML = "";
       return;
     }
     var list = all.filter(function(p){
-      var hay = (p.name + " " + (p.description||"")).toLowerCase();
-      return hay.indexOf(q) !== -1;
+      var matchesQuery = !q || (p.name + " " + (p.description||"")).toLowerCase().indexOf(q) !== -1;
+      var matchesCategory = !activeCategory || (p.category || "") === activeCategory;
+      return matchesQuery && matchesCategory;
     });
-    meta.textContent = list.length + " نتیجه برای «" + searchTerm.trim() + "»";
+
+    var metaText = list.length + " نتیجه";
+    if(q) metaText += " برای «" + searchTerm.trim() + "»";
+    if(activeCategory) metaText += " در دسته «" + activeCategory + "»";
+    meta.textContent = metaText;
+
     if(!list.length){
-      grid.innerHTML = '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو را تغییر بده یا دوباره تلاش کن.</p></div>';
+      grid.innerHTML = '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو یا دسته‌بندی را تغییر بده و دوباره تلاش کن.</p></div>';
       return;
     }
     grid.innerHTML = list.map(A.cardHtml).join("");
@@ -117,11 +160,16 @@
     window.history.replaceState({}, "", url);
   });
 
-  A.fetchProducts().then(renderSearch).catch(function(err){
+  A.fetchProducts().then(function(){
+    renderCategoryChips();
+    renderSearch();
+  }).catch(function(err){
     grid.innerHTML = '<div class="error-state"><h3>مشکلی در بارگذاری محصولات پیش آمد</h3><p>' + A.escapeHtml(err.message) + '</p></div>';
   });
 
-  setTimeout(function(){ document.getElementById("searchInputPage").focus(); }, 50);
+  if(!activeCategory){
+    setTimeout(function(){ document.getElementById("searchInputPage").focus(); }, 50);
+  }
 })();
 </script>
 </body>

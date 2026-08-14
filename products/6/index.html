@@ -34,7 +34,7 @@
 <div class="app">
 
   <div class="breadcrumb">
-    <a href="/index.html">خانه</a><span>/</span><a href="/search.html">محصولات</a><span>/</span><span id="bcName">پاوربانک ۲۰۰۰۰ میلی‌آمپر</span>
+    <a href="/index.html">خانه</a><span>/</span><a href="/search.html">محصولات</a><span id="bcCatSep">/</span><a href="/categories.html?cat=%D8%A7%D9%84%DA%A9%D8%AA%D8%B1%D9%88%D9%86%DB%8C%DA%A9" id="bcCat">الکترونیک</a><span>/</span><span id="bcName">پاوربانک ۲۰۰۰۰ میلی‌آمپر</span>
   </div>
 
   <div class="pd-wrap">
@@ -75,6 +75,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
     خانه
   </a>
+  <a class="nav-btn" href="/categories.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    دسته‌ها
+  </a>
   <a class="nav-btn" href="/search.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
     جستجو
@@ -110,6 +114,17 @@
     document.title = p.name + " | اوی‌استور";
     document.getElementById("pdName").textContent = p.name;
     document.getElementById("bcName").textContent = p.name;
+    var bcCat = document.getElementById("bcCat");
+    var bcCatSep = document.getElementById("bcCatSep");
+    if(p.category){
+      bcCat.textContent = p.category;
+      bcCat.href = A.categoryUrl(p.category);
+      bcCat.style.display = "";
+      bcCatSep.style.display = "";
+    } else {
+      bcCat.style.display = "none";
+      bcCatSep.style.display = "none";
+    }
     document.getElementById("pdDesc").textContent = p.description || "";
     document.getElementById("pdPrice").textContent = A.fmtPrice(p.price);
     document.getElementById("pdImg").src = p.image || p.thumb || "";
