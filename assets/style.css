@@ -359,7 +359,7 @@ footer.app-foot{padding:20px 16px 8px;text-align:center;color:var(--ink-faint);f
 
 /* ===== Trust bar (support / security seal / brand) ===== */
 .trust-bar{
-  margin:6px 16px 0;padding:18px;
+  margin:6px 16px 20px;padding:18px;
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
 }
 .trust-bar-inner{
