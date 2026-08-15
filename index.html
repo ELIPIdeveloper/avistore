@@ -179,22 +179,58 @@
     var track = document.getElementById("bannerTrack");
     var slides = track.querySelectorAll(".banner-slide");
     var dotsWrap = document.getElementById("bannerDots");
-    slides.forEach(function(_, i){
-      var d = document.createElement("span");
+    slides.forEach(function(slide, i){
+      slide.setAttribute("data-idx", i);
+      var d = document.createElement("button");
+      d.type = "button";
+      d.setAttribute("aria-label", "اسلاید " + (i + 1));
       if(i === 0) d.classList.add("on");
       dotsWrap.appendChild(d);
     });
-    var dots = dotsWrap.querySelectorAll("span");
-    function setActive(i){ dots.forEach(function(d, idx){ d.classList.toggle("on", idx === i); }); }
-    track.addEventListener("scroll", function(){
-      var i = Math.round(track.scrollLeft / track.clientWidth);
-      setActive(Math.max(0, Math.min(slides.length - 1, i)));
+    var dots = dotsWrap.querySelectorAll("span, button");
+    var activeIdx = 0;
+    function setActive(i){
+      activeIdx = i;
+      dots.forEach(function(d, idx){ d.classList.toggle("on", idx === i); });
+      slides.forEach(function(s, idx){ s.classList.toggle("active", idx === i); });
+    }
+    setActive(0);
+
+    // به‌جای محاسبهٔ دستی scrollLeft (که در چیدمان RTL بین مرورگرها ناسازگار است)
+    // از IntersectionObserver داخل خودِ track استفاده می‌کنیم تا اسلاید فعال را
+    // با اطمینان تشخیص بدهیم؛ همین observer دات‌ها را هم به‌روزرسانی می‌کند.
+    if(typeof IntersectionObserver !== "undefined"){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting && entry.intersectionRatio >= 0.6){
+            setActive(Number(entry.target.getAttribute("data-idx")));
+          }
+        });
+      }, { root: track, threshold: [0.6] });
+      slides.forEach(function(s){ io.observe(s); });
+    }
+
+    function goTo(i){
+      var idx = Math.max(0, Math.min(slides.length - 1, i));
+      slides[idx].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+      setActive(idx);
+    }
+
+    dots.forEach(function(d, i){
+      d.addEventListener("click", function(){
+        goTo(i);
+        restartAutoplay();
+      });
     });
-    var autoIdx = 0;
-    setInterval(function(){
-      autoIdx = (autoIdx + 1) % slides.length;
-      track.scrollTo({ left: autoIdx * track.clientWidth, behavior: "smooth" });
-    }, 4500);
+
+    var timer = null;
+    function restartAutoplay(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(function(){
+        goTo((activeIdx + 1) % slides.length);
+      }, 4500);
+    }
+    restartAutoplay();
   })();
 })();
 </script>

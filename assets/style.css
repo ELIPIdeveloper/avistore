@@ -85,7 +85,7 @@ header.site-head{
 }
 
 /* ===== App shell ===== */
-.app{max-width:1200px;margin:0 auto;padding:0 0 calc(var(--nav-h) + 24px);}
+.app{max-width:1200px;margin:0 auto;}
 
 /* ===== Home: hero / banners ===== */
 .banner-slider{padding:16px 16px 4px;}
@@ -101,15 +101,27 @@ header.site-head{
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   color:#fff;padding:26px 22px;min-height:132px;
   display:flex;flex-direction:column;justify-content:center;gap:6px;
+  opacity:.5;transform:scale(.94);
+  transition:opacity .5s ease, transform .5s cubic-bezier(.22,.7,.2,1);
 }
+.banner-slide.active{opacity:1;transform:scale(1);}
 .banner-slide.alt{background:linear-gradient(135deg,#26405F 0%,var(--ink) 100%);}
 .banner-slide.gold{background:linear-gradient(135deg,var(--accent-bright) 0%,var(--accent) 100%);}
 .banner-eyebrow{font-size:12px;font-weight:700;opacity:.85;}
 .banner-slide h2{margin:0;font-size:20px;font-weight:900;letter-spacing:-.3px;}
 .banner-slide p{margin:0;font-size:13px;opacity:.9;line-height:1.7;max-width:360px;}
-.banner-dots{display:flex;justify-content:center;gap:6px;margin-top:10px;}
+.banner-dots{display:flex;justify-content:center;gap:4px;margin-top:10px;}
 .banner-dots span{width:6px;height:6px;border-radius:999px;background:var(--line);transition:background .2s,width .2s;}
 .banner-dots span.on{background:var(--accent);width:16px;}
+.banner-dots button{
+  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  background:none;border:none;padding:0;cursor:pointer;
+}
+.banner-dots button::after{
+  content:"";width:6px;height:6px;border-radius:999px;background:var(--line);
+  transition:background .2s,width .2s;
+}
+.banner-dots button.on::after{background:var(--accent);width:16px;}
 
 .about-section{
   margin:10px 16px 4px;padding:20px;background:var(--surface);
@@ -355,11 +367,11 @@ nav.bottom-nav{
 .toast.err{background:var(--danger);}
 @keyframes toast-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
 
-footer.app-foot{padding:20px 16px 8px;text-align:center;color:var(--ink-faint);font-size:12px;}
+footer.app-foot{padding:20px 16px calc(var(--nav-h) + 20px);text-align:center;color:var(--ink-faint);font-size:12px;}
 
 /* ===== Trust bar (support / security seal / brand) ===== */
 .trust-bar{
-  margin:6px 16px 20px;padding:18px;
+  margin:16px 16px 20px;padding:18px;
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
 }
 .trust-bar-inner{
