@@ -38,10 +38,13 @@
   </div>
 
   <div class="pd-wrap">
-    <div class="pd-media"><img id="pdImg" src="https://picsum.photos/seed/avistore6/1000/1000" alt="پاوربانک ۲۰۰۰۰ میلی‌آمپر"></div>
+    <div class="pd-media"><img id="pdImg" src="https://picsum.photos/seed/avistore6/1000/1000" alt="پاوربانک ۲۰۰۰۰ میلی‌آمپر"><span class="discount-badge" id="pdDiscountBadge" hidden></span></div>
     <div class="pd-info">
       <h1 id="pdName">پاوربانک ۲۰۰۰۰ میلی‌آمپر</h1>
-      <div class="pd-price num" id="pdPrice"></div>
+      <div class="pd-price-row">
+        <span class="pd-price-old num" id="pdPriceOld" hidden></span>
+        <div class="pd-price num" id="pdPrice"></div>
+      </div>
       <p class="pd-desc" id="pdDesc">شارژ سریع دو پورت، نمایشگر دیجیتال درصد باتری.</p>
       <div class="pd-card">
         <div class="pd-actions">
@@ -143,6 +146,18 @@
     }
     document.getElementById("pdDesc").textContent = p.description || "";
     document.getElementById("pdPrice").textContent = A.fmtPrice(p.price);
+    var off = A.discountPercent(p);
+    var pdBadge = document.getElementById("pdDiscountBadge");
+    var pdOld = document.getElementById("pdPriceOld");
+    if(off){
+      pdBadge.textContent = off + "٪ تخفیف";
+      pdBadge.hidden = false;
+      pdOld.textContent = A.fmtPrice(p.oldPrice);
+      pdOld.hidden = false;
+    } else {
+      pdBadge.hidden = true;
+      pdOld.hidden = true;
+    }
     document.getElementById("pdImg").src = p.image || p.thumb || "";
     document.getElementById("pdImg").alt = p.name;
 

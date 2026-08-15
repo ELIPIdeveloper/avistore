@@ -7,7 +7,8 @@
     "thumb": "https://picsum.photos/seed/avistore1/600/600",
     "image": "https://picsum.photos/seed/avistore1/1000/1000",
     "active": true,
-    "category": "الکترونیک"
+    "category": "الکترونیک",
+    "oldPrice": 2200000
   },
   {
     "code": "2",
@@ -17,7 +18,8 @@
     "thumb": "https://picsum.photos/seed/avistore2/600/600",
     "image": "https://picsum.photos/seed/avistore2/1000/1000",
     "active": true,
-    "category": "الکترونیک"
+    "category": "الکترونیک",
+    "oldPrice": 4990000
   },
   {
     "code": "3",
@@ -37,7 +39,8 @@
     "thumb": "https://picsum.photos/seed/avistore4/600/600",
     "image": "https://picsum.photos/seed/avistore4/1000/1000",
     "active": true,
-    "category": "الکترونیک"
+    "category": "الکترونیک",
+    "oldPrice": 1590000
   },
   {
     "code": "5",
@@ -57,6 +60,7 @@
     "thumb": "https://picsum.photos/seed/avistore6/600/600",
     "image": "https://picsum.photos/seed/avistore6/1000/1000",
     "active": true,
-    "category": "الکترونیک"
+    "category": "الکترونیک",
+    "oldPrice": 990000
   }
 ]

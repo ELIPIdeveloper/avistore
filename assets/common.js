@@ -207,23 +207,35 @@ window.AVISTORE = (function(){
     return cartEntries().reduce(function(sum, e){ return sum + (Number(e.product.price)||0) * e.qty; }, 0);
   }
 
+  function discountPercent(p){
+    var old = Number(p.oldPrice) || 0;
+    var price = Number(p.price) || 0;
+    if(!old || old <= price) return 0;
+    return Math.round(((old - price) / old) * 100);
+  }
+
   /* ---------- shared product-card renderer (home / search / related) ---------- */
   function cardHtml(p){
     var thumb = escapeHtml(p.thumb || p.image || "");
     var qtyInCart = qtyOf(p.code);
     var atMax = qtyInCart >= CONFIG.MAX_QTY_PER_PRODUCT;
     var category = (p.category || "").trim();
+    var off = discountPercent(p);
     return (
       '<a class="card reveal-once" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
         '<span class="card-media">' +
           '<img src="' + thumb + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
+          (off ? '<span class="discount-badge">' + off + '٪ تخفیف</span>' : "") +
         '</span>' +
         '<span class="card-body">' +
           (category ? '<span class="card-cat">' + escapeHtml(category) + '</span>' : "") +
           '<h3 class="card-title">' + escapeHtml(p.name) + '</h3>' +
           '<p class="card-desc">' + escapeHtml(p.description || "") + '</p>' +
           '<span class="card-foot">' +
-            '<span class="price-tag num">' + fmtPrice(p.price) + '</span>' +
+            '<span class="price-wrap">' +
+              (off ? '<span class="price-old num">' + fmtPrice(p.oldPrice) + '</span>' : "") +
+              '<span class="price-tag num">' + fmtPrice(p.price) + '</span>' +
+            '</span>' +
             '<button type="button" class="add-btn" data-add="' + escapeHtml(p.code) + '" ' + (atMax ? "disabled" : "") + '>' +
               (atMax ? "حداکثر" : "افزودن") +
             '</button>' +
@@ -265,6 +277,7 @@ window.AVISTORE = (function(){
     cartEntries: cartEntries,
     cartTotal: cartTotal,
     cardHtml: cardHtml,
+    discountPercent: discountPercent,
     wireGridAddButtons: wireGridAddButtons,
     loadCustomer: loadCustomer,
     saveCustomer: saveCustomer
