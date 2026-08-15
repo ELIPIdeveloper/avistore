@@ -76,6 +76,65 @@ window.AVISTORE = (function(){
   }
   function productUrl(code){ return "/products/" + encodeURIComponent(code) + "/"; }
 
+  /* ---------- product image gallery ----------
+     اگر محصول آرایهٔ images داشته باشد همان استفاده می‌شود (چند عکس)،
+     در غیر این‌صورت فقط همان یک عکس/thumb قبلی به‌عنوان تک‌آیتم برگردانده می‌شود. */
+  function productImages(p){
+    if(!p) return [];
+    if(Array.isArray(p.images) && p.images.length){
+      return p.images.filter(Boolean);
+    }
+    var single = p.image || p.thumb;
+    return single ? [single] : [];
+  }
+
+  /* ---------- variant (رنگ/سایز) key helpers ----------
+     کلید سبد خرید معمولاً همان کد محصول است؛ اگر رنگ/سایز انتخاب شده باشد
+     به کلید اضافه می‌شود تا هر ترکیب رنگ/سایز به‌صورت مستقل در سبد شمرده شود.
+     این کلید‌ها با استخراج کد از ابتدای رشته (تا اولین "|") با نسخهٔ قبلی
+     (که فقط کد بود) کاملاً سازگار می‌مانند. */
+  function variantKey(code, variant){
+    var parts = [code];
+    if(variant && variant.color) parts.push("c:" + variant.color);
+    if(variant && variant.size) parts.push("s:" + variant.size);
+    return parts.join("|");
+  }
+  function keyToCode(key){ return String(key).split("|")[0]; }
+  function keyToVariant(key){
+    var parts = String(key).split("|").slice(1);
+    var v = {};
+    parts.forEach(function(part){
+      if(part.indexOf("c:") === 0) v.color = part.slice(2);
+      else if(part.indexOf("s:") === 0) v.size = part.slice(2);
+    });
+    return v;
+  }
+
+  /* ---------- قیمت بر اساس رنگ/سایز ----------
+     هر گزینهٔ رنگ/سایز می‌تواند فیلد اختیاری priceDiff داشته باشد (مبلغی که
+     به قیمت پایه اضافه/کم می‌شود). اگر priceDiff نداشته باشد یعنی همان قیمت
+     پایه محصول، بدون تغییر. sizes هم می‌تواند رشتهٔ ساده باشد (بدون اختلاف
+     قیمت) و هم آبجکت {name, priceDiff} برای سازگاری با محصولات قدیمی. */
+  function sizeName(s){ return (s && typeof s === "object") ? s.name : s; }
+  function variantPriceDiff(p, variant){
+    var diff = 0;
+    if(variant && variant.color && Array.isArray(p.colors)){
+      var c = p.colors.filter(function(x){ return x.name === variant.color; })[0];
+      if(c && c.priceDiff) diff += Number(c.priceDiff) || 0;
+    }
+    if(variant && variant.size && Array.isArray(p.sizes)){
+      var s = p.sizes.filter(function(x){ return sizeName(x) === variant.size; })[0];
+      if(s && typeof s === "object" && s.priceDiff) diff += Number(s.priceDiff) || 0;
+    }
+    return diff;
+  }
+  function effectivePrice(p, variant){
+    var diff = variantPriceDiff(p, variant);
+    var out = { price: (Number(p.price) || 0) + diff };
+    if(p.oldPrice) out.oldPrice = (Number(p.oldPrice) || 0) + diff;
+    return out;
+  }
+
   /* ---------- product data ---------- */
   function fetchProducts(){
     if(products.length) return Promise.resolve(products);
@@ -171,40 +230,56 @@ window.AVISTORE = (function(){
     });
   }
 
-  /* ---------- cart logic ---------- */
+  /* ---------- cart logic ----------
+     کلید‌های cart می‌توانند فقط کد محصول باشند (بدون تنوع) یا
+     "کد|c:رنگ|s:سایز" باشند (وقتی کاربر رنگ/سایز را از صفحهٔ محصول انتخاب می‌کند). */
   function cartCount(){
     var c = 0;
-    Object.keys(cart).forEach(function(code){ c += cart[code] || 0; });
+    Object.keys(cart).forEach(function(key){ c += cart[key] || 0; });
     return c;
   }
-  function qtyOf(code){ return cart[code] || 0; }
-  function addToCart(code, qty){
-    var product = getProductByCode(code);
+  function qtyOf(key){ return cart[key] || 0; }
+  function addToCart(key, qty){
+    var product = getProductByCode(keyToCode(key));
     if(!product) return;
-    var current = cart[code] || 0;
+    var current = cart[key] || 0;
     var next = Math.min(current + qty, CONFIG.MAX_QTY_PER_PRODUCT);
     if(next === current){
       toast("حداکثر " + CONFIG.MAX_QTY_PER_PRODUCT + " عدد از این محصول قابل افزودن است.", true);
       return;
     }
-    cart[code] = next;
+    cart[key] = next;
     saveCart();
     notify();
     toast(product.name + " به سبد اضافه شد.");
   }
-  function setQty(code, qty){
-    if(qty <= 0){ delete cart[code]; }
-    else { cart[code] = Math.min(qty, CONFIG.MAX_QTY_PER_PRODUCT); }
+  function setQty(key, qty){
+    if(qty <= 0){ delete cart[key]; }
+    else { cart[key] = Math.min(qty, CONFIG.MAX_QTY_PER_PRODUCT); }
     saveCart();
     notify();
   }
   function cartEntries(){
     return Object.keys(cart)
-      .filter(function(code){ return productsByCode[code] && cart[code] > 0; })
-      .map(function(code){ return { code: code, qty: cart[code], product: productsByCode[code] }; });
+      .filter(function(key){ return productsByCode[keyToCode(key)] && cart[key] > 0; })
+      .map(function(key){
+        var code = keyToCode(key);
+        var variant = keyToVariant(key);
+        var product = productsByCode[code];
+        var eff = effectivePrice(product, variant);
+        return {
+          key: key,
+          code: code,
+          variant: variant,
+          qty: cart[key],
+          product: product,
+          price: eff.price,
+          oldPrice: eff.oldPrice
+        };
+      });
   }
   function cartTotal(){
-    return cartEntries().reduce(function(sum, e){ return sum + (Number(e.product.price)||0) * e.qty; }, 0);
+    return cartEntries().reduce(function(sum, e){ return sum + (Number(e.price)||0) * e.qty; }, 0);
   }
 
   function discountPercent(p){
@@ -214,8 +289,15 @@ window.AVISTORE = (function(){
     return Math.round(((old - price) / old) * 100);
   }
 
-  /* ---------- shared product-card renderer (home / search / related) ---------- */
-  function cardHtml(p){
+  /* ---------- shared product-card renderer (home / search / related) ----------
+     opts.showDesc و opts.showAdd پیش‌فرض true هستند (رفتار قبلی حفظ می‌شود).
+     صفحهٔ اصلی این دو را false می‌فرستد تا نه توضیحات نشان داده شود و نه
+     دکمهٔ «افزودن» — با کلیک روی کارت مستقیماً به صفحهٔ محصول می‌رود و
+     افزودن به سبد فقط از همان‌جا انجام می‌شود. */
+  function cardHtml(p, opts){
+    opts = opts || {};
+    var showDesc = opts.showDesc !== false;
+    var showAdd = opts.showAdd !== false;
     var thumb = escapeHtml(p.thumb || p.image || "");
     var qtyInCart = qtyOf(p.code);
     var atMax = qtyInCart >= CONFIG.MAX_QTY_PER_PRODUCT;
@@ -230,15 +312,17 @@ window.AVISTORE = (function(){
         '<span class="card-body">' +
           (category ? '<span class="card-cat">' + escapeHtml(category) + '</span>' : "") +
           '<h3 class="card-title">' + escapeHtml(p.name) + '</h3>' +
-          '<p class="card-desc">' + escapeHtml(p.description || "") + '</p>' +
+          (showDesc ? '<p class="card-desc">' + escapeHtml(p.description || "") + '</p>' : "") +
           '<span class="card-foot">' +
             '<span class="price-wrap">' +
               (off ? '<span class="price-old num">' + fmtPrice(p.oldPrice) + '</span>' : "") +
               '<span class="price-tag num">' + fmtPrice(p.price) + '</span>' +
             '</span>' +
-            '<button type="button" class="add-btn" data-add="' + escapeHtml(p.code) + '" ' + (atMax ? "disabled" : "") + '>' +
-              (atMax ? "حداکثر" : "افزودن") +
-            '</button>' +
+            (showAdd ?
+              '<button type="button" class="add-btn" data-add="' + escapeHtml(p.code) + '" ' + (atMax ? "disabled" : "") + '>' +
+                (atMax ? "حداکثر" : "افزودن") +
+              '</button>'
+            : "") +
           '</span>' +
         '</span>' +
       '</a>'
@@ -266,6 +350,9 @@ window.AVISTORE = (function(){
     getAllProducts: function(){ return products; },
     getCategories: getCategories,
     categoryUrl: categoryUrl,
+    productImages: productImages,
+    variantKey: variantKey,
+    effectivePrice: effectivePrice,
     onChange: onChange,
     initChrome: initChrome,
     wireRevealOnce: wireRevealOnce,

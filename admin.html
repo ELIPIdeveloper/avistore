@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>پنل سفارش‌ها | آوی استور</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231F4E86'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23FAF9F5' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/style.css?v=5">
+<style>
+  body{background:var(--bg);}
+  .admin-wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+  .admin-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+  .admin-head h1{font-size:19px;font-weight:800;margin:0;}
+  .admin-toolbar{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px;margin-bottom:16px;
+  }
+  .admin-field{display:flex;flex-direction:column;gap:5px;}
+  .admin-field label{font-size:11.5px;font-weight:700;color:var(--ink-soft);}
+  .admin-field input, .admin-field select{
+    padding:9px 11px;border-radius:12px;border:1.5px solid var(--line);
+    font-size:13.5px;background:var(--bg);color:var(--ink);outline:none;font-family:inherit;
+  }
+  .admin-field input:focus, .admin-field select:focus{border-color:var(--accent);background:var(--surface);}
+  .admin-field input[type="password"]{min-width:200px;}
+  .admin-btn{
+    background:var(--accent);color:#fff;border:none;border-radius:12px;
+    padding:10px 18px;font-size:13.5px;font-weight:700;cursor:pointer;transition:background .15s;
+  }
+  .admin-btn:hover{background:var(--accent-dark);}
+  .admin-btn.secondary{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);}
+  .admin-btn.secondary:hover{background:var(--accent-tint);}
+  .admin-status{font-size:12.5px;color:var(--ink-faint);margin-bottom:12px;min-height:16px;}
+  .admin-status.err{color:var(--danger);font-weight:700;}
+  .admin-summary{
+    display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;
+  }
+  .summary-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:12px 16px;min-width:130px;
+  }
+  .summary-card .n{font-size:19px;font-weight:900;color:var(--accent-dark);}
+  .summary-card .l{font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
+
+  .orders-table-wrap{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    overflow-x:auto;
+  }
+  table.orders-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:920px;}
+  table.orders-table th{
+    background:var(--accent-tint);color:var(--accent-dark);font-weight:800;
+    text-align:right;padding:10px 10px;white-space:nowrap;position:sticky;top:0;
+  }
+  table.orders-table td{padding:10px 10px;border-top:1px dashed var(--line);vertical-align:top;}
+  table.orders-table tr:hover td{background:var(--accent-tint);}
+  .cust-name{font-weight:700;}
+  .cust-phone{color:var(--ink-soft);font-size:11.5px;direction:ltr;text-align:right;}
+  .addr-line{line-height:1.7;}
+  .item-line{white-space:nowrap;}
+  .item-line + .item-line{margin-top:4px;}
+  .badge{
+    display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;
+  }
+  .badge.paid{background:#e4f5ea;color:#1f8a4c;}
+  .badge.pending{background:#fff4e0;color:#a8660e;}
+  .badge.other{background:var(--accent-tint);color:var(--accent-dark);}
+  .amount-cell{font-weight:800;white-space:nowrap;}
+  .empty-row td{text-align:center;padding:40px 10px;color:var(--ink-faint);}
+  code.small{font-size:11px;color:var(--ink-faint);}
+</style>
+</head>
+<body>
+
+<div class="admin-wrap">
+  <div class="admin-head">
+    <h1>پنل سفارش‌ها — آوی استور</h1>
+    <a href="/index.html" style="font-size:12.5px;color:var(--accent);font-weight:700;">بازگشت به سایت</a>
+  </div>
+
+  <div class="admin-toolbar">
+    <div class="admin-field">
+      <label>کلید ادمین</label>
+      <input type="password" id="adminKey" placeholder="ADMIN_KEY" autocomplete="off">
+    </div>
+    <div class="admin-field">
+      <label>وضعیت سفارش</label>
+      <select id="statusSelect">
+        <option value="paid">پرداخت‌شده</option>
+        <option value="pending">در انتظار پرداخت</option>
+        <option value="all">همه</option>
+      </select>
+    </div>
+    <div class="admin-field">
+      <label>سقف تعداد</label>
+      <input type="number" id="limitInput" value="200" min="1" max="500" style="width:90px;">
+    </div>
+    <button class="admin-btn" id="loadBtn" type="button">بارگذاری سفارش‌ها</button>
+    <button class="admin-btn secondary" id="csvBtn" type="button">دانلود CSV</button>
+  </div>
+
+  <div class="admin-status" id="statusMsg"></div>
+
+  <div class="admin-summary" id="summaryRow" hidden>
+    <div class="summary-card"><div class="n" id="sumCount">0</div><div class="l">تعداد سفارش</div></div>
+    <div class="summary-card"><div class="n num" id="sumTotal">0</div><div class="l">جمع کل مبلغ</div></div>
+  </div>
+
+  <div class="orders-table-wrap">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>کد سفارش / تاریخ</th>
+          <th>مشتری</th>
+          <th>آدرس</th>
+          <th>اقلام خریداری‌شده</th>
+          <th>مبلغ</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody">
+        <tr class="empty-row"><td colspan="6">کلید ادمین را وارد کنید و «بارگذاری سفارش‌ها» را بزنید.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // API_BASE را اگر Worker روی دامنهٔ دیگری اجرا می‌شود اینجا ست کنید،
+  // مثلاً "https://your-worker.workers.dev". خالی یعنی همان دامنهٔ سایت.
+  var API_BASE = "";
+
+  var keyInput = document.getElementById("adminKey");
+  var statusSelect = document.getElementById("statusSelect");
+  var limitInput = document.getElementById("limitInput");
+  var loadBtn = document.getElementById("loadBtn");
+  var csvBtn = document.getElementById("csvBtn");
+  var statusMsg = document.getElementById("statusMsg");
+  var body = document.getElementById("ordersBody");
+  var summaryRow = document.getElementById("summaryRow");
+  var sumCount = document.getElementById("sumCount");
+  var sumTotal = document.getElementById("sumTotal");
+
+  // کلید فقط در sessionStorage نگه داشته می‌شود (پاک می‌شود با بستن تب).
+  try {
+    var saved = sessionStorage.getItem("avistore_admin_key");
+    if(saved) keyInput.value = saved;
+  } catch(e){}
+
+  function fmtPrice(n){
+    n = Number(n) || 0;
+    return n.toLocaleString("fa-IR") + " ریال";
+  }
+  function escapeHtml(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function statusBadge(status){
+    if(status === "paid") return '<span class="badge paid">پرداخت‌شده</span>';
+    if(status === "pending") return '<span class="badge pending">در انتظار</span>';
+    return '<span class="badge other">' + escapeHtml(status) + '</span>';
+  }
+
+  function buildUrl(format){
+    var key = keyInput.value.trim();
+    var status = statusSelect.value;
+    var limit = Number(limitInput.value) || 200;
+    var u = new URL(API_BASE + "/api/orders", window.location.origin);
+    u.searchParams.set("status", status);
+    u.searchParams.set("limit", limit);
+    u.searchParams.set("format", format || "json");
+    u.searchParams.set("key", key);
+    return u.toString();
+  }
+
+  function renderOrders(orders){
+    if(!orders.length){
+      body.innerHTML = '<tr class="empty-row"><td colspan="6">سفارشی با این فیلتر پیدا نشد.</td></tr>';
+      summaryRow.hidden = true;
+      return;
+    }
+
+    var total = 0;
+    body.innerHTML = orders.map(function(o){
+      total += Number(o.amount) || 0;
+      var itemsHtml = o.items.map(function(it){
+        var bits = [];
+        if(it.color) bits.push("رنگ: " + it.color);
+        if(it.size) bits.push("سایز: " + it.size);
+        var variant = bits.length ? " (" + bits.join("، ") + ")" : "";
+        return '<div class="item-line">' + escapeHtml(it.name || it.code) + variant + ' × ' + escapeHtml(it.quantity) + '</div>';
+      }).join("");
+
+      return (
+        '<tr>' +
+          '<td><div>' + escapeHtml(o.purchase_id) + '</div><code class="small">' + escapeHtml(o.created_at) + '</code></td>' +
+          '<td><div class="cust-name">' + escapeHtml(o.customer.full_name) + '</div><div class="cust-phone">' + escapeHtml(o.customer.phone) + '</div></td>' +
+          '<td class="addr-line">' + escapeHtml(o.customer.province) + '، ' + escapeHtml(o.customer.city) + '<br>' + escapeHtml(o.customer.address) + '<br>کدپستی: ' + escapeHtml(o.customer.postal_code) + '</td>' +
+          '<td>' + itemsHtml + '</td>' +
+          '<td class="amount-cell num">' + fmtPrice(o.amount) + '</td>' +
+          '<td>' + statusBadge(o.status) + '</td>' +
+        '</tr>'
+      );
+    }).join("");
+
+    sumCount.textContent = orders.length.toLocaleString("fa-IR");
+    sumTotal.textContent = fmtPrice(total);
+    summaryRow.hidden = false;
+  }
+
+  function loadOrders(){
+    var key = keyInput.value.trim();
+    if(!key){
+      statusMsg.textContent = "کلید ادمین را وارد کنید.";
+      statusMsg.classList.add("err");
+      return;
+    }
+    try { sessionStorage.setItem("avistore_admin_key", key); } catch(e){}
+
+    statusMsg.textContent = "در حال بارگذاری…";
+    statusMsg.classList.remove("err");
+    loadBtn.disabled = true;
+
+    fetch(buildUrl("json"))
+      .then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
+      .then(function(res){
+        loadBtn.disabled = false;
+        if(!res.ok || !res.data || !res.data.ok){
+          var msg = (res.data && res.data.error) ? res.data.error : "بارگذاری سفارش‌ها با خطا مواجه شد.";
+          statusMsg.textContent = msg;
+          statusMsg.classList.add("err");
+          body.innerHTML = '<tr class="empty-row"><td colspan="6">' + escapeHtml(msg) + '</td></tr>';
+          summaryRow.hidden = true;
+          return;
+        }
+        statusMsg.textContent = res.data.count + " سفارش پیدا شد.";
+        renderOrders(res.data.orders || []);
+      })
+      .catch(function(){
+        loadBtn.disabled = false;
+        statusMsg.textContent = "ارتباط با سرور برقرار نشد.";
+        statusMsg.classList.add("err");
+      });
+  }
+
+  loadBtn.addEventListener("click", loadOrders);
+  csvBtn.addEventListener("click", function(){
+    if(!keyInput.value.trim()){
+      statusMsg.textContent = "کلید ادمین را وارد کنید.";
+      statusMsg.classList.add("err");
+      return;
+    }
+    try { sessionStorage.setItem("avistore_admin_key", keyInput.value.trim()); } catch(e){}
+    window.location.href = buildUrl("csv");
+  });
+  keyInput.addEventListener("keydown", function(e){ if(e.key === "Enter") loadOrders(); });
+})();
+</script>
+</body>
+</html>

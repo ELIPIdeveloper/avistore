@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231F4E86'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23FAF9F5' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="/assets/style.css?v=3">
+<link rel="stylesheet" href="/assets/style.css?v=5">
 </head>
 <body>
 
@@ -110,7 +110,7 @@
   </a>
 </nav>
 
-<script src="/assets/common.js?v=3"></script>
+<script src="/assets/common.js?v=5"></script>
 <script>
 (function(){
   "use strict";
@@ -139,21 +139,26 @@
     foot.hidden = false;
     wrap.innerHTML = entries.map(function(e){
       var thumb = A.escapeHtml(e.product.thumb || e.product.image || "");
+      var variantBits = [];
+      if(e.variant.color) variantBits.push("رنگ: " + e.variant.color);
+      if(e.variant.size) variantBits.push("سایز: " + e.variant.size);
+      var variantLine = variantBits.length ? '<div class="line-variant">' + A.escapeHtml(variantBits.join(" · ")) + '</div>' : "";
       return (
-        '<div class="cart-item" data-code="' + A.escapeHtml(e.code) + '">' +
+        '<div class="cart-item" data-key="' + A.escapeHtml(e.key) + '">' +
           '<a href="' + A.productUrl(e.code) + '"><img src="' + thumb + '" alt=""></a>' +
           '<div class="cart-item-info">' +
             '<h4><a href="' + A.productUrl(e.code) + '">' + A.escapeHtml(e.product.name) + '</a></h4>' +
-            '<div class="line-price num">' + A.fmtPrice(e.product.price) + ' × ' + e.qty + '</div>' +
+            variantLine +
+            '<div class="line-price num">' + A.fmtPrice(e.price) + ' × ' + e.qty + '</div>' +
             '<div class="stepper" style="margin-top:6px;">' +
-              '<button type="button" data-dec="' + A.escapeHtml(e.code) + '">−</button>' +
+              '<button type="button" data-dec="' + A.escapeHtml(e.key) + '">−</button>' +
               '<span class="num">' + e.qty + '</span>' +
-              '<button type="button" data-inc="' + A.escapeHtml(e.code) + '" ' + (e.qty>=A.CONFIG.MAX_QTY_PER_PRODUCT?"disabled":"") + '>+</button>' +
+              '<button type="button" data-inc="' + A.escapeHtml(e.key) + '" ' + (e.qty>=A.CONFIG.MAX_QTY_PER_PRODUCT?"disabled":"") + '>+</button>' +
             '</div>' +
           '</div>' +
           '<div class="cart-item-actions">' +
-            '<span class="num" style="font-weight:700;font-size:13px;">' + A.fmtPrice(e.product.price * e.qty) + '</span>' +
-            '<button class="remove-link" data-remove="' + A.escapeHtml(e.code) + '">حذف</button>' +
+            '<span class="num" style="font-weight:700;font-size:13px;">' + A.fmtPrice(e.price * e.qty) + '</span>' +
+            '<button class="remove-link" data-remove="' + A.escapeHtml(e.key) + '">حذف</button>' +
           '</div>' +
         '</div>'
       );
@@ -232,8 +237,10 @@
 
     A.saveCustomer(customer);
 
-    // فقط کد و تعداد به سرور ارسال می‌شود؛ قیمت و جمع کل توسط سرور و بر اساس دیتابیس محاسبه می‌گردد.
-    var products_payload = entries.map(function(e){ return { code: e.code, quantity: e.qty }; });
+    // فقط کد، تعداد و رنگ/سایز انتخابی به سرور ارسال می‌شود؛ قیمت و جمع کل توسط سرور و بر اساس دیتابیس محاسبه می‌گردد.
+    var products_payload = entries.map(function(e){
+      return { code: e.code, quantity: e.qty, color: e.variant.color || null, size: e.variant.size || null };
+    });
 
     payBtn.disabled = true;
     payBtn.textContent = "در حال اتصال به درگاه…";
