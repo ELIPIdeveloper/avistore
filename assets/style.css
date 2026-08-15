@@ -96,7 +96,8 @@ header.site-head{
 }
 .banner-track::-webkit-scrollbar{display:none;}
 .banner-slide{
-  scroll-snap-align:start;flex:0 0 100%;min-width:100%;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  flex:0 0 100%;min-width:100%;max-width:100%;flex-shrink:0;
   border-radius:22px;overflow:hidden;position:relative;
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   color:#fff;padding:26px 22px;min-height:132px;
@@ -375,7 +376,6 @@ footer.app-foot{padding:20px 16px calc(var(--nav-h) + 20px);text-align:center;co
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
 }
 .trust-bar-inner{
-  max-width:1200px;margin:0 auto;
   display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
 }
 .trust-bar-brand{display:flex;flex-direction:column;gap:2px;outline:none;}
