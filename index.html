@@ -60,7 +60,6 @@
       <span class="trust-chip">✓ پرداخت امن</span>
       <span class="trust-chip">🚚 ارسال سریع</span>
       <span class="trust-chip">↩ امکان مرجوعی</span>
-      <span class="trust-chip">☎ پشتیبانی آنلاین</span>
     </div>
   </div>
 
@@ -220,18 +219,8 @@
     dots.forEach(function(d, i){
       d.addEventListener("click", function(){
         goTo(i);
-        restartAutoplay();
       });
     });
-
-    var timer = null;
-    function restartAutoplay(){
-      if(timer) clearInterval(timer);
-      timer = setInterval(function(){
-        goTo((activeIdx + 1) % slides.length);
-      }, 4500);
-    }
-    restartAutoplay();
   })();
 })();
 </script>
