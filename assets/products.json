@@ -1,0 +1,106 @@
+[
+  {
+    "code": "1",
+    "name": "هدفون بی‌سیم اوی‌پاد",
+    "description": "هدفون بلوتوثی با کیفیت صدای بالا، حذف نویز فعال و باتری ۳۰ ساعته.",
+    "price": 1850000,
+    "thumb": "https://picsum.photos/seed/avistore1/600/600",
+    "image": "https://picsum.photos/seed/avistore1/1000/1000",
+    "images": [
+      "https://picsum.photos/seed/avistore1/1000/1000",
+      "https://picsum.photos/seed/avistore1b/1000/1000",
+      "https://picsum.photos/seed/avistore1c/1000/1000"
+    ],
+    "active": true,
+    "category": "الکترونیک",
+    "oldPrice": 2200000,
+    "colors": [
+      { "name": "مشکی", "hex": "#111111" },
+      { "name": "سفید", "hex": "#f5f5f5" },
+      { "name": "آبی", "hex": "#2b5fad", "priceDiff": 80000 }
+    ]
+  },
+  {
+    "code": "2",
+    "name": "ساعت هوشمند سری ۵",
+    "description": "پایش ضربان قلب، خواب و ورزش، صفحه‌نمایش AMOLED و ضدآب.",
+    "price": 4200000,
+    "thumb": "https://picsum.photos/seed/avistore2/600/600",
+    "image": "https://picsum.photos/seed/avistore2/1000/1000",
+    "images": [
+      "https://picsum.photos/seed/avistore2/1000/1000",
+      "https://picsum.photos/seed/avistore2b/1000/1000",
+      "https://picsum.photos/seed/avistore2c/1000/1000",
+      "https://picsum.photos/seed/avistore2d/1000/1000"
+    ],
+    "active": true,
+    "category": "الکترونیک",
+    "oldPrice": 4990000,
+    "colors": [
+      { "name": "مشکی", "hex": "#111111" },
+      { "name": "نقره‌ای", "hex": "#c7c9cc" }
+    ],
+    "sizes": [
+      { "name": "کوچک", "priceDiff": 0 },
+      { "name": "بزرگ", "priceDiff": 350000 }
+    ]
+  },
+  {
+    "code": "3",
+    "name": "کیف پول چرمی دست‌دوز",
+    "description": "چرم طبیعی، دوخت دستی، ۸ جیب کارت و یک جیب سکه.",
+    "price": 690000,
+    "thumb": "https://picsum.photos/seed/avistore3/600/600",
+    "image": "https://picsum.photos/seed/avistore3/1000/1000",
+    "active": true,
+    "category": "کیف و چرم",
+    "colors": [
+      { "name": "قهوه‌ای", "hex": "#6b4226" },
+      { "name": "مشکی", "hex": "#111111" }
+    ]
+  },
+  {
+    "code": "4",
+    "name": "اسپیکر بلوتوثی قابل حمل",
+    "description": "صدای استریو، ضدآب IPX7 و باتری ۱۲ ساعته، مناسب سفر.",
+    "price": 1290000,
+    "thumb": "https://picsum.photos/seed/avistore4/600/600",
+    "image": "https://picsum.photos/seed/avistore4/1000/1000",
+    "active": true,
+    "category": "الکترونیک",
+    "oldPrice": 1590000
+  },
+  {
+    "code": "5",
+    "name": "کوله‌پشتی لپ‌تاپ ضدآب",
+    "description": "جادار برای لپ‌تاپ ۱۵.۶ اینچی، پارچه ضدآب و درگاه شارژ USB.",
+    "price": 980000,
+    "thumb": "https://picsum.photos/seed/avistore5/600/600",
+    "image": "https://picsum.photos/seed/avistore5/1000/1000",
+    "images": [
+      "https://picsum.photos/seed/avistore5/1000/1000",
+      "https://picsum.photos/seed/avistore5b/1000/1000"
+    ],
+    "active": true,
+    "category": "کیف و چرم",
+    "colors": [
+      { "name": "مشکی", "hex": "#111111" },
+      { "name": "طوسی", "hex": "#7a7f87" }
+    ],
+    "sizes": [
+      { "name": "۲۰ لیتر", "priceDiff": 0 },
+      { "name": "۳۰ لیتر", "priceDiff": 120000 }
+    ]
+  },
+  {
+    "code": "6",
+    "name": "پاوربانک ۲۰۰۰۰ میلی‌آمپر",
+    "description": "شارژ سریع دو پورت، نمایشگر دیجیتال درصد باتری.",
+    "price": 850000,
+    "thumb": "https://picsum.photos/seed/avistore6/600/600",
+    "image": "https://picsum.photos/seed/avistore6/1000/1000",
+    "active": true,
+    "category": "الکترونیک",
+    "oldPrice": 990000
+  }
+]
