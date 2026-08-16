@@ -5,7 +5,10 @@
   A.initChrome();
 
   // کد محصول این صفحه از مسیر پوشه استخراج می‌شود؛ یعنی /products/{{CODE}}/
-  var CODE = "{{CODE}}";
+  var CODE = (function(){
+    var m = window.location.pathname.match(/\/products\/([^\/]+)\/?/);
+    return m ? decodeURIComponent(m[1]) : "";
+  })();
 
   // رنگ/سایز انتخاب‌شدهٔ فعلی (اگر محصول این گزینه‌ها را داشته باشد)
   var selected = { color: null, size: null };
