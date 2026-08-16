@@ -35,7 +35,7 @@
 </div>
 <div class="app">
   <div class="search-meta" id="searchMeta"></div>
-  <div class="grid" id="searchGrid"></div>
+  <div class="list" id="searchGrid"></div>
 <div class="trust-bar">
   <div class="trust-bar-inner">
     <div class="trust-bar-brand reveal-once" tabindex="0">
@@ -88,7 +88,6 @@
 
   var grid = document.getElementById("searchGrid");
   var meta = document.getElementById("searchMeta");
-  A.wireGridAddButtons(grid);
 
   function getQueryFromUrl(){
     var params = new URLSearchParams(window.location.search);
@@ -114,7 +113,7 @@
     if(!q){
       var suggested = A.shuffledCopy(all).slice(0, A.CONFIG.HOME_RANDOM_COUNT);
       meta.textContent = suggested.length ? "پیشنهاد برای شما" : "";
-      grid.innerHTML = suggested.map(A.cardHtml).join("");
+      grid.innerHTML = suggested.map(A.listItemHtml).join("");
       A.wireRevealOnce(grid);
       return;
     }
@@ -127,7 +126,7 @@
       grid.innerHTML = '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو را تغییر بده یا دوباره تلاش کن.</p></div>';
       return;
     }
-    grid.innerHTML = list.map(A.cardHtml).join("");
+    grid.innerHTML = list.map(A.listItemHtml).join("");
     A.wireRevealOnce(grid);
   }
   A.onChange(renderSearch);

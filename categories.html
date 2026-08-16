@@ -108,7 +108,6 @@
   var bcCatName = document.getElementById("bcCatName");
   var switchRow = document.getElementById("catSwitchRow");
   var productsGrid = document.getElementById("catProductsGrid");
-  A.wireGridAddButtons(productsGrid);
 
   function getCategoryFromUrl(){
     var params = new URLSearchParams(window.location.search);
@@ -175,7 +174,9 @@
       productsGrid.innerHTML = '<div class="empty-state"><h3>محصولی در این دسته نیست</h3><p>دسته دیگری را امتحان کن.</p></div>';
       return;
     }
-    productsGrid.innerHTML = list.map(A.cardHtml).join("");
+    productsGrid.innerHTML = list.map(function(p){
+      return A.cardHtml(p, { showDesc: false, showAdd: false });
+    }).join("");
     A.wireRevealOnce(productsGrid);
   }
 

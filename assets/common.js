@@ -338,6 +338,180 @@ window.AVISTORE = (function(){
     });
   }
 
+  /* ---------- ردیفی/خطی (list) renderer — برای صفحهٔ جستجو ----------
+     بدون توضیحات و بدون دکمهٔ افزودن؛ کل ردیف یک لینک است و با کلیک
+     مستقیم به صفحهٔ محصول (/products/کد/) می‌رود. عکس کوچک سمت راست،
+     بعد از آن عنوان محصول و یک متن کوچک از دسته‌بندی. */
+  function listItemHtml(p){
+    var thumb = escapeHtml(p.thumb || p.image || "");
+    var category = (p.category || "").trim();
+    var off = discountPercent(p);
+    return (
+      '<a class="list-item reveal-once" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
+        '<span class="list-item-media">' +
+          '<img src="' + thumb + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
+          (off ? '<span class="discount-badge sm">' + off + '٪</span>' : "") +
+        '</span>' +
+        '<span class="list-item-body">' +
+          '<span class="list-item-title">' + escapeHtml(p.name) + '</span>' +
+          (category ? '<span class="list-item-cat">' + escapeHtml(category) + '</span>' : "") +
+          '<span class="list-item-foot">' +
+            (off ? '<span class="price-old num">' + fmtPrice(p.oldPrice) + '</span>' : "") +
+            '<span class="price-tag num">' + fmtPrice(p.price) + '</span>' +
+          '</span>' +
+        '</span>' +
+      '</a>'
+    );
+  }
+
+  /* ---------- تاریخچهٔ سفارش‌ها (محلی/localStorage) ----------
+     چون سایت کاربرِ لاگین‌شده ندارد، خلاصهٔ سفارش‌هایی که از همین مرورگر
+     ثبت شده‌اند برای نمایش در سبد خرید و چاپ فاکتور، در localStorage
+     نگه‌داری می‌شود. منبع اصلی و رسمی سفارش‌ها همیشه دیتابیس سرور
+     (D1 در ورکر) است؛ این فقط یک رونوشت راحت برای همین دستگاه است. */
+  var ORDERS_KEY = "avistore_orders";
+  var MAX_STORED_ORDERS = 30;
+
+  function loadOrders(){
+    try {
+      var raw = localStorage.getItem(ORDERS_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch(e){ return []; }
+  }
+  function saveOrders(list){
+    try { localStorage.setItem(ORDERS_KEY, JSON.stringify(list.slice(0, MAX_STORED_ORDERS))); } catch(e){}
+  }
+  function addOrder(order){
+    if(!order || !order.purchase_id) return;
+    var list = loadOrders().filter(function(o){ return o.purchase_id !== order.purchase_id; });
+    list.unshift(order);
+    saveOrders(list);
+  }
+  function updateOrder(purchaseId, patch){
+    var list = loadOrders();
+    var idx = -1;
+    for(var i = 0; i < list.length; i++){ if(list[i].purchase_id === purchaseId){ idx = i; break; } }
+    if(idx === -1) return null;
+    list[idx] = Object.assign({}, list[idx], patch);
+    saveOrders(list);
+    return list[idx];
+  }
+  function getOrders(){ return loadOrders(); }
+  function getOrder(purchaseId){
+    var list = loadOrders();
+    for(var i = 0; i < list.length; i++){ if(list[i].purchase_id === purchaseId) return list[i]; }
+    return null;
+  }
+  function clearCart(){
+    cart = {};
+    saveCart();
+    notify();
+  }
+
+  /* ---------- ساخت و چاپ فاکتور ---------- */
+  function fmtOrderDate(iso){
+    if(!iso) return "";
+    try {
+      return new Date(iso).toLocaleDateString("fa-IR", { year: "numeric", month: "2-digit", day: "2-digit" }) +
+        " ساعت " + new Date(iso).toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" });
+    } catch(e){ return ""; }
+  }
+  function orderStatusLabel(status){
+    if(status === "paid") return "پرداخت‌شده";
+    if(status === "failed") return "ناموفق";
+    return "در انتظار پرداخت";
+  }
+  function buildInvoiceHtml(order){
+    order = order || {};
+    var items = Array.isArray(order.items) ? order.items : [];
+    var customer = order.customer || {};
+    var rows = items.map(function(it, i){
+      var variantBits = [];
+      if(it.color) variantBits.push("رنگ: " + it.color);
+      if(it.size) variantBits.push("سایز: " + it.size);
+      return (
+        '<tr>' +
+          '<td>' + (i + 1) + '</td>' +
+          '<td>' + escapeHtml(it.name || it.code || "") + (variantBits.length ? '<div class="v">' + escapeHtml(variantBits.join(" · ")) + '</div>' : "") + '</td>' +
+          '<td class="num">' + (it.qty || 0) + '</td>' +
+          '<td class="num">' + fmtPrice(it.price) + '</td>' +
+          '<td class="num">' + fmtPrice(it.line_total != null ? it.line_total : (it.price || 0) * (it.qty || 0)) + '</td>' +
+        '</tr>'
+      );
+    }).join("");
+    var addressLine = [customer.province, customer.city, customer.address].filter(Boolean).join("، ");
+    return (
+      '<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">' +
+      '<title>فاکتور ' + escapeHtml(order.purchase_id || "") + '</title>' +
+      '<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet">' +
+      '<style>' +
+        '*{box-sizing:border-box;}' +
+        'body{font-family:"Vazirmatn",sans-serif;margin:0;padding:28px;color:#131C2B;background:#fff;}' +
+        '.head{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #1F4E86;padding-bottom:14px;margin-bottom:18px;}' +
+        '.brand{font-weight:900;font-size:20px;color:#1F4E86;}' +
+        '.head h1{font-size:15px;margin:0;font-weight:800;}' +
+        '.meta{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:12.5px;color:#55636F;margin-bottom:16px;}' +
+        '.meta b{color:#131C2B;}' +
+        '.status{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;}' +
+        '.status.paid{background:#E4F3E8;color:#1F7A3D;}' +
+        '.status.pending{background:#FFF3D9;color:#93650A;}' +
+        '.status.failed{background:#FBE7E2;color:#C2452F;}' +
+        '.box{border:1px solid #E1E6ED;border-radius:14px;padding:14px 16px;margin-bottom:18px;font-size:12.5px;line-height:2;}' +
+        '.box h3{margin:0 0 6px;font-size:13px;}' +
+        'table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:18px;}' +
+        'th,td{border:1px solid #E1E6ED;padding:8px 10px;text-align:right;}' +
+        'th{background:#F5F7FA;font-weight:700;}' +
+        '.v{color:#8994A1;font-size:11px;margin-top:2px;}' +
+        '.total-row{display:flex;justify-content:space-between;font-size:15px;font-weight:800;padding:10px 4px;border-top:2px dashed #E1E6ED;}' +
+        '.no-print{margin-top:22px;text-align:center;}' +
+        '.no-print button{background:#1F4E86;color:#fff;border:none;border-radius:12px;padding:11px 24px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}' +
+        '.foot{margin-top:26px;text-align:center;color:#8994A1;font-size:11px;}' +
+        '@media print{ .no-print{display:none;} body{padding:0;} }' +
+      '</style></head><body>' +
+        '<div class="head"><span class="brand">آوی استور</span><h1>فاکتور خرید</h1></div>' +
+        '<div class="meta">' +
+          '<span>شماره سفارش: <b class="num">' + escapeHtml(order.purchase_id || "-") + '</b></span>' +
+          (order.ref_id ? '<span>کد رهگیری: <b class="num">' + escapeHtml(order.ref_id) + '</b></span>' : "") +
+          '<span>تاریخ: <b>' + fmtOrderDate(order.paid_at || order.created_at) + '</b></span>' +
+          '<span>وضعیت: <span class="status ' + escapeHtml(order.status || "pending") + '">' + orderStatusLabel(order.status) + '</span></span>' +
+        '</div>' +
+        (customer.full_name ? (
+          '<div class="box"><h3>اطلاعات گیرنده</h3>' +
+            '<div>نام: ' + escapeHtml(customer.full_name) + '</div>' +
+            (customer.phone ? '<div>موبایل: <span class="num">' + escapeHtml(customer.phone) + '</span></div>' : "") +
+            (addressLine ? '<div>آدرس: ' + escapeHtml(addressLine) + '</div>' : "") +
+            (customer.postal_code ? '<div>کد پستی: <span class="num">' + escapeHtml(customer.postal_code) + '</span></div>' : "") +
+          '</div>'
+        ) : "") +
+        (items.length ?
+          '<table><thead><tr><th>#</th><th>محصول</th><th>تعداد</th><th>قیمت واحد</th><th>جمع</th></tr></thead><tbody>' + rows + '</tbody></table>'
+          : '<p style="color:#8994A1;font-size:12.5px;">جزئیات اقلام این سفارش روی این دستگاه ذخیره نشده است.</p>'
+        ) +
+        '<div class="total-row"><span>جمع کل قابل پرداخت</span><span class="num">' + fmtPrice(order.amount) + '</span></div>' +
+        '<div class="no-print"><button onclick="window.print()">چاپ فاکتور</button></div>' +
+        '<div class="foot">آوی استور — این برگه به‌صورت خودکار تولید شده است.</div>' +
+      '</body></html>'
+    );
+  }
+  function printInvoice(order){
+    if(!order){
+      toast("سفارشی برای چاپ پیدا نشد.", true);
+      return;
+    }
+    var html = buildInvoiceHtml(order);
+    var w = window.open("", "_blank");
+    if(!w){
+      toast("مرورگر اجازهٔ باز شدن پنجرهٔ چاپ را نداد. لطفاً pop-up را برای این سایت فعال کنید.", true);
+      return;
+    }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    w.focus();
+    setTimeout(function(){ try { w.print(); } catch(e){} }, 350);
+  }
+
   return {
     CONFIG: CONFIG,
     fmtPrice: fmtPrice,
@@ -364,9 +538,19 @@ window.AVISTORE = (function(){
     cartEntries: cartEntries,
     cartTotal: cartTotal,
     cardHtml: cardHtml,
+    listItemHtml: listItemHtml,
     discountPercent: discountPercent,
     wireGridAddButtons: wireGridAddButtons,
     loadCustomer: loadCustomer,
-    saveCustomer: saveCustomer
+    saveCustomer: saveCustomer,
+    clearCart: clearCart,
+    addOrder: addOrder,
+    updateOrder: updateOrder,
+    getOrders: getOrders,
+    getOrder: getOrder,
+    fmtOrderDate: fmtOrderDate,
+    orderStatusLabel: orderStatusLabel,
+    buildInvoiceHtml: buildInvoiceHtml,
+    printInvoice: printInvoice
   };
 })();

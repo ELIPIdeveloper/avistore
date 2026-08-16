@@ -67,6 +67,11 @@
       </div>
     </div>
 
+    <div class="orders-section" id="ordersSection" style="display:none;">
+      <div class="cart-page-head"><h2>سفارش‌های قبلی</h2></div>
+      <div class="orders-list" id="ordersList"></div>
+    </div>
+
   </div>
 <div class="trust-bar">
   <div class="trust-bar-inner">
@@ -184,6 +189,48 @@
   });
   A.onChange(renderCart);
 
+  /* ---------- سفارش‌های قبلی (تاریخچهٔ محلی این دستگاه) ---------- */
+  var ordersSection = document.getElementById("ordersSection");
+  var ordersList = document.getElementById("ordersList");
+
+  function formatOrderDate(iso){
+    if(!iso) return "";
+    try { return new Date(iso).toLocaleDateString("fa-IR", { year: "numeric", month: "2-digit", day: "2-digit" }); }
+    catch(e){ return ""; }
+  }
+
+  function renderOrders(){
+    var list = A.getOrders();
+    if(!list.length){ ordersSection.style.display = "none"; ordersList.innerHTML = ""; return; }
+    ordersSection.style.display = "block";
+    ordersList.innerHTML = list.map(function(o){
+      var statusClass = o.status === "paid" ? "ok" : (o.status === "failed" ? "bad" : "pending");
+      var itemCount = (o.items || []).reduce(function(s, it){ return s + (it.qty || 0); }, 0);
+      return (
+        '<div class="order-card">' +
+          '<div class="order-card-top">' +
+            '<span class="order-id num">' + A.escapeHtml(o.purchase_id) + '</span>' +
+            '<span class="order-status ' + statusClass + '">' + A.orderStatusLabel(o.status) + '</span>' +
+          '</div>' +
+          '<div class="order-card-mid">' +
+            '<span>' + itemCount + ' قلم</span>' +
+            '<span class="num">' + A.fmtPrice(o.amount) + '</span>' +
+            '<span>' + formatOrderDate(o.paid_at || o.created_at) + '</span>' +
+          '</div>' +
+          '<button type="button" class="order-print-btn" data-print="' + A.escapeHtml(o.purchase_id) + '">چاپ فاکتور</button>' +
+        '</div>'
+      );
+    }).join("");
+  }
+
+  ordersList.addEventListener("click", function(e){
+    var btn = e.target.closest("[data-print]");
+    if(!btn) return;
+    A.printInvoice(A.getOrder(btn.getAttribute("data-print")));
+  });
+
+  renderOrders();
+
   /* cart / checkout view switch */
   var cartView = document.getElementById("cartView");
   var checkoutView = document.getElementById("checkoutView");
@@ -253,6 +300,24 @@
       .then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
       .then(function(res){
         if(res.ok && res.data && res.data.ok && res.data.url){
+          var orderItems = entries.map(function(e){
+            return {
+              code: e.code, name: e.product.name,
+              color: e.variant.color || null, size: e.variant.size || null,
+              qty: e.qty, price: e.price, line_total: e.price * e.qty
+            };
+          });
+          A.addOrder({
+            purchase_id: res.data.purchase_id,
+            amount: res.data.amount,
+            status: "pending",
+            ref_id: null,
+            customer: customer,
+            items: orderItems,
+            created_at: new Date().toISOString(),
+            paid_at: null
+          });
+          renderOrders();
           window.location.href = res.data.url;
         } else {
           var msg = (res.data && res.data.error) ? res.data.error : "ثبت سفارش با خطا مواجه شد.";
