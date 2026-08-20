@@ -70,6 +70,8 @@
   }
   .badge.paid{background:#e4f5ea;color:#1f8a4c;}
   .badge.pending{background:#fff4e0;color:#a8660e;}
+  .badge.cancelled{background:#f1f1f1;color:#6b6b6b;}
+  .badge.failed{background:#fdeaea;color:#c0392b;}
   .badge.other{background:var(--accent-tint);color:var(--accent-dark);}
   .amount-cell{font-weight:800;white-space:nowrap;}
   .empty-row td{text-align:center;padding:40px 10px;color:var(--ink-faint);}
@@ -94,6 +96,8 @@
       <select id="statusSelect">
         <option value="paid">پرداخت‌شده</option>
         <option value="pending">در انتظار پرداخت</option>
+        <option value="cancelled">لغوشده</option>
+        <option value="failed">ناموفق</option>
         <option value="all">همه</option>
       </select>
     </div>
