@@ -74,6 +74,25 @@ function buildProductJsonLd(p, url){
   return '<script type="application/ld+json">\n' + json + '\n</script>';
 }
 
+// مسیر فایل sitemap.xml که در ریشهٔ سایت ساخته می‌شود
+const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
+
+// صفحات ثابت سایت که باید در sitemap.xml قرار بگیرند (فقط صفحهٔ اصلی)
+const STATIC_PAGES = [
+  "/"
+];
+
+function buildSitemap(urls){
+  const today = new Date().toISOString().slice(0, 10);
+  const body = urls.map(function(u){
+    return "  <url>\n    <loc>" + escapeHtml(u) + "</loc>\n    <lastmod>" + today + "</lastmod>\n  </url>";
+  }).join("\n");
+  return '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    body + "\n" +
+    "</urlset>\n";
+}
+
 function main(){
   const products = JSON.parse(fs.readFileSync(PRODUCTS_JSON, "utf8"));
   const template = fs.readFileSync(TEMPLATE_PATH, "utf8");
@@ -84,6 +103,7 @@ function main(){
   }
 
   let count = 0;
+  const productUrls = [];
   products.forEach(function(p){
     if(!p || !p.code) return;
     const dir = path.join(PRODUCTS_DIR, String(p.code));
@@ -114,10 +134,19 @@ function main(){
       fs.copyFileSync(ICON_SVG_PATH, path.join(dir, "icon.svg"));
     }
 
+    // آدرس صفحهٔ محصول بدون اسلش انتهایی، مثلاً https://avistore.ir/products/1
+    productUrls.push(SITE_URL + "/products/" + encodeURIComponent(p.code));
     count++;
   });
 
+  // ساخت sitemap.xml شامل صفحات ثابت + لینک همهٔ صفحات محصول
+  const staticUrls = STATIC_PAGES.map(function(p){ return SITE_URL + p; });
+  const allUrls = staticUrls.concat(productUrls);
+  const sitemapXml = buildSitemap(allUrls);
+  fs.writeFileSync(SITEMAP_PATH, sitemapXml, "utf8");
+
   console.log("✔ " + count + " صفحه محصول ساخته شد در پوشه‌های /products/<code>/ (به همراه favicon.ico و icon.svg)");
+  console.log("✔ sitemap.xml با " + allUrls.length + " لینک (" + staticUrls.length + " صفحهٔ ثابت + " + productUrls.length + " محصول) ساخته شد.");
 }
 
 main();
