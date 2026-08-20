@@ -88,15 +88,18 @@ window.AVISTORE = (function(){
     return single ? [single] : [];
   }
 
-  /* ---------- variant (رنگ/سایز) key helpers ----------
-     کلید سبد خرید معمولاً همان کد محصول است؛ اگر رنگ/سایز انتخاب شده باشد
-     به کلید اضافه می‌شود تا هر ترکیب رنگ/سایز به‌صورت مستقل در سبد شمرده شود.
+  /* ---------- variant (رنگ/سایز/وزن) key helpers ----------
+     کلید سبد خرید معمولاً همان کد محصول است؛ اگر رنگ/سایز/وزن انتخاب شده
+     باشد به کلید اضافه می‌شود تا هر ترکیب به‌صورت مستقل در سبد شمرده شود.
+     یک محصول می‌تواند هیچ‌کدام، یکی، دوتا یا هر سه‌ی این گزینه‌ها را
+     داشته باشد (colors / sizes / weights در products.json اختیاری‌اند).
      این کلید‌ها با استخراج کد از ابتدای رشته (تا اولین "|") با نسخهٔ قبلی
      (که فقط کد بود) کاملاً سازگار می‌مانند. */
   function variantKey(code, variant){
     var parts = [code];
     if(variant && variant.color) parts.push("c:" + variant.color);
     if(variant && variant.size) parts.push("s:" + variant.size);
+    if(variant && variant.weight) parts.push("w:" + variant.weight);
     return parts.join("|");
   }
   function keyToCode(key){ return String(key).split("|")[0]; }
@@ -106,15 +109,17 @@ window.AVISTORE = (function(){
     parts.forEach(function(part){
       if(part.indexOf("c:") === 0) v.color = part.slice(2);
       else if(part.indexOf("s:") === 0) v.size = part.slice(2);
+      else if(part.indexOf("w:") === 0) v.weight = part.slice(2);
     });
     return v;
   }
 
-  /* ---------- قیمت بر اساس رنگ/سایز ----------
-     هر گزینهٔ رنگ/سایز می‌تواند فیلد اختیاری priceDiff داشته باشد (مبلغی که
-     به قیمت پایه اضافه/کم می‌شود). اگر priceDiff نداشته باشد یعنی همان قیمت
-     پایه محصول، بدون تغییر. sizes هم می‌تواند رشتهٔ ساده باشد (بدون اختلاف
-     قیمت) و هم آبجکت {name, priceDiff} برای سازگاری با محصولات قدیمی. */
+  /* ---------- قیمت بر اساس رنگ/سایز/وزن ----------
+     هر گزینهٔ رنگ/سایز/وزن می‌تواند فیلد اختیاری priceDiff داشته باشد
+     (مبلغی که به قیمت پایه اضافه/کم می‌شود). اگر priceDiff نداشته باشد
+     یعنی همان قیمت پایه محصول، بدون تغییر. sizes/weights هم می‌توانند
+     رشتهٔ ساده باشند (بدون اختلاف قیمت) و هم آبجکت {name, priceDiff}
+     برای سازگاری با محصولات قدیمی. */
   function sizeName(s){ return (s && typeof s === "object") ? s.name : s; }
   function variantPriceDiff(p, variant){
     var diff = 0;
@@ -125,6 +130,10 @@ window.AVISTORE = (function(){
     if(variant && variant.size && Array.isArray(p.sizes)){
       var s = p.sizes.filter(function(x){ return sizeName(x) === variant.size; })[0];
       if(s && typeof s === "object" && s.priceDiff) diff += Number(s.priceDiff) || 0;
+    }
+    if(variant && variant.weight && Array.isArray(p.weights)){
+      var w = p.weights.filter(function(x){ return sizeName(x) === variant.weight; })[0];
+      if(w && typeof w === "object" && w.priceDiff) diff += Number(w.priceDiff) || 0;
     }
     return diff;
   }
@@ -430,6 +439,7 @@ window.AVISTORE = (function(){
       var variantBits = [];
       if(it.color) variantBits.push("رنگ: " + it.color);
       if(it.size) variantBits.push("سایز: " + it.size);
+      if(it.weight) variantBits.push("وزن: " + it.weight);
       return (
         '<tr>' +
           '<td>' + (i + 1) + '</td>' +

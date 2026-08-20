@@ -61,6 +61,7 @@
         var bits = [];
         if(it.color) bits.push("رنگ: " + it.color);
         if(it.size) bits.push("سایز: " + it.size);
+        if(it.weight) bits.push("وزن: " + it.weight);
         var variant = bits.length ? " (" + bits.join("، ") + ")" : "";
         return '<div class="item-line">' + escapeHtml(it.name || it.code) + variant + ' × ' + escapeHtml(it.quantity) + '</div>';
       }).join("");

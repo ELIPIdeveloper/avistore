@@ -10,8 +10,9 @@
     return m ? decodeURIComponent(m[1]) : "";
   })();
 
-  // رنگ/سایز انتخاب‌شدهٔ فعلی (اگر محصول این گزینه‌ها را داشته باشد)
-  var selected = { color: null, size: null };
+  // رنگ/سایز/وزن انتخاب‌شدهٔ فعلی (اگر محصول این گزینه‌ها را داشته باشد؛
+  // هر محصول می‌تواند هیچ‌کدام، یکی، دوتا یا هر سه‌ی این‌ها را داشته باشد)
+  var selected = { color: null, size: null, weight: null };
 
   var qty = 1;
   var stepperEl = document.getElementById("pdStepper");
@@ -98,27 +99,52 @@
   function renderVariants(p){
     var hasColors = Array.isArray(p.colors) && p.colors.length;
     var hasSizes = Array.isArray(p.sizes) && p.sizes.length;
+    var hasWeights = Array.isArray(p.weights) && p.weights.length;
 
-    if(!hasColors && !hasSizes){
+    if(!hasColors && !hasSizes && !hasWeights){
       variantsEl.hidden = true;
       variantsEl.innerHTML = "";
       selected.color = null;
       selected.size = null;
+      selected.weight = null;
       return;
     }
 
     if(hasColors && (!selected.color || !p.colors.some(function(c){ return c.name === selected.color; }))){
       selected.color = p.colors[0].name;
     }
+    if(!hasColors) selected.color = null;
     if(hasSizes && (!selected.size || !p.sizes.some(function(s){ return sizeName(s) === selected.size; }))){
       selected.size = sizeName(p.sizes[0]);
     }
+    if(!hasSizes) selected.size = null;
+    if(hasWeights && (!selected.weight || !p.weights.some(function(w){ return sizeName(w) === selected.weight; }))){
+      selected.weight = sizeName(p.weights[0]);
+    }
+    if(!hasWeights) selected.weight = null;
 
     function sizeName(s){ return (s && typeof s === "object") ? s.name : s; }
     function diffLabel(diff){
       if(!diff) return "";
       var sign = diff > 0 ? "+" : "−";
       return ' <span class="variant-diff">(' + sign + A.fmtPrice(Math.abs(diff)) + ')</span>';
+    }
+    // یک گروه گزینهٔ متنی ساده (برای سایز و وزن؛ رنگ جدا و به‌صورت
+    // سواچ رنگی رندر می‌شود) — تا افزودن هر نوع تنوع جدید (وزن، حجم و...)
+    // فقط با تکرار همین الگو ممکن باشد.
+    function textGroupHtml(label, options, selectedValue, attr){
+      return '<div class="variant-group">' +
+        '<div class="variant-group-label">' + label + ': <b>' + A.escapeHtml(selectedValue) + '</b></div>' +
+        '<div class="variant-options">' +
+        options.map(function(o){
+          var name = sizeName(o);
+          var diff = (o && typeof o === "object") ? Number(o.priceDiff) || 0 : 0;
+          var active = name === selectedValue;
+          return '<button type="button" class="size-option' + (active ? " active" : "") + '" data-' + attr + '="' + A.escapeHtml(name) + '">' +
+            A.escapeHtml(name) + diffLabel(diff) +
+          '</button>';
+        }).join("") +
+        '</div></div>';
     }
 
     var html = "";
@@ -134,20 +160,8 @@
         }).join("") +
         '</div></div>';
     }
-    if(hasSizes){
-      html += '<div class="variant-group">' +
-        '<div class="variant-group-label">سایز: <b>' + A.escapeHtml(selected.size) + '</b></div>' +
-        '<div class="variant-options">' +
-        p.sizes.map(function(s){
-          var name = sizeName(s);
-          var diff = (s && typeof s === "object") ? Number(s.priceDiff) || 0 : 0;
-          var active = name === selected.size;
-          return '<button type="button" class="size-option' + (active ? " active" : "") + '" data-size="' + A.escapeHtml(name) + '">' +
-            A.escapeHtml(name) + diffLabel(diff) +
-          '</button>';
-        }).join("") +
-        '</div></div>';
-    }
+    if(hasSizes) html += textGroupHtml("سایز", p.sizes, selected.size, "size");
+    if(hasWeights) html += textGroupHtml("وزن", p.weights, selected.weight, "weight");
     variantsEl.hidden = false;
     variantsEl.innerHTML = html;
 
@@ -167,6 +181,14 @@
         updateAddButtonState();
       });
     });
+    variantsEl.querySelectorAll("[data-weight]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        selected.weight = btn.getAttribute("data-weight");
+        renderVariants(p);
+        renderPrice(p);
+        updateAddButtonState();
+      });
+    });
   }
 
   function updateAddButtonState(){
@@ -181,11 +203,24 @@
     qtyEl.textContent = qty;
   }
 
+  // نکته دربارهٔ باگ «افزودن محصول اشتباه/اضافه به سبد»: قبلاً هر بار که
+  // سبد خرید تغییر می‌کرد (حتی همان لحظه که کاربر روی دکمهٔ «افزودن» یکی
+  // از محصولات مشابه کلیک می‌کرد)، renderRelated دوباره صدا زده می‌شد و
+  // لیست محصولات مشابه را از نو و به‌صورت تصادفی می‌چید. یعنی درست در
+  // لحظه‌ای که کاربر انگشتش را برمی‌داشت یا دوباره کلیک می‌کرد، زیر دستش
+  // یک محصول کاملاً متفاوت جای محصول قبلی می‌نشست و کلیک دوم به‌جای آن
+  // محصول، محصول دیگری را به سبد اضافه می‌کرد. راه‌حل: لیست محصولات
+  // مشابه فقط یک‌بار (اولین باری که صفحه رندر می‌شود) انتخاب و کش می‌شود؛
+  // تغییرات بعدی سبد فقط همان لیست ثابت را دوباره رسم می‌کنند، نه یک
+  // چینش تصادفی جدید.
+  var relatedList = null;
   function renderRelated(current){
-    var all = A.getAllProducts().filter(function(p){ return p.code !== current.code; });
-    var list = A.shuffledCopy(all).slice(0, 4);
+    if(!relatedList){
+      var all = A.getAllProducts().filter(function(p){ return p.code !== current.code; });
+      relatedList = A.shuffledCopy(all).slice(0, 4);
+    }
     var grid = document.getElementById("relatedGrid");
-    grid.innerHTML = list.length ? list.map(A.cardHtml).join("") : "";
+    grid.innerHTML = relatedList.length ? relatedList.map(A.cardHtml).join("") : "";
     A.wireRevealOnce(grid);
   }
   A.wireGridAddButtons(document.getElementById("relatedGrid"));

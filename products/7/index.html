@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>{{TITLE}} | آوی استور</title>
-<meta name="description" content="{{DESC}}">
-<meta property="og:title" content="{{TITLE}}">
-<meta property="og:description" content="{{DESC}}">
-<meta property="og:image" content="{{IMAGE}}">
+<title>پودر پروتئین وی نچرال | آوی استور</title>
+<meta name="description" content="پروتئین وی ایزوله با طعم طبیعی، بدون شکر افزوده، مناسب پس از تمرین.">
+<meta property="og:title" content="پودر پروتئین وی نچرال">
+<meta property="og:description" content="پروتئین وی ایزوله با طعم طبیعی، بدون شکر افزوده، مناسب پس از تمرین.">
+<meta property="og:image" content="https://picsum.photos/seed/avistore7/1000/1000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,7 +15,30 @@
 <link rel="alternate icon" href="/icon.png" type="image/png">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="stylesheet" href="/assets/style.css?v=5">
-{{JSONLD}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "پودر پروتئین وی نچرال",
+  "image": [
+    "https://picsum.photos/seed/avistore7/1000/1000"
+  ],
+  "description": "پروتئین وی ایزوله با طعم طبیعی، بدون شکر افزوده، مناسب پس از تمرین.",
+  "sku": "7",
+  "brand": {
+    "@type": "Brand",
+    "name": "آوی استور"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://avistore.ir/products/7/",
+    "priceCurrency": "IRR",
+    "price": "1450000",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -37,21 +60,21 @@
 <div class="app">
 
   <div class="breadcrumb">
-    <a href="/index.html">خانه</a><span>/</span><a href="/search.html">محصولات</a><span id="bcCatSep">/</span><a href="{{CATEGORY_URL}}" id="bcCat">{{CATEGORY}}</a><span>/</span><span id="bcName">{{TITLE}}</span>
+    <a href="/index.html">خانه</a><span>/</span><a href="/search.html">محصولات</a><span id="bcCatSep">/</span><a href="/categories.html?cat=%D8%B3%D9%84%D8%A7%D9%85%D8%AA%20%D9%88%20%D9%88%D8%B1%D8%B2%D8%B4" id="bcCat">سلامت و ورزش</a><span>/</span><span id="bcName">پودر پروتئین وی نچرال</span>
   </div>
 
   <div class="pd-wrap">
     <div class="pd-media">
-      <div class="pd-main-img"><img id="pdImg" src="{{IMAGE}}" alt="{{TITLE}}"><span class="discount-badge" id="pdDiscountBadge" hidden></span></div>
+      <div class="pd-main-img"><img id="pdImg" src="https://picsum.photos/seed/avistore7/1000/1000" alt="پودر پروتئین وی نچرال"><span class="discount-badge" id="pdDiscountBadge" hidden></span></div>
       <div class="pd-thumbs" id="pdThumbs" hidden></div>
     </div>
     <div class="pd-info">
-      <h1 id="pdName">{{TITLE}}</h1>
+      <h1 id="pdName">پودر پروتئین وی نچرال</h1>
       <div class="pd-price-row">
         <span class="pd-price-old num" id="pdPriceOld" hidden></span>
         <div class="pd-price num" id="pdPrice"></div>
       </div>
-      <p class="pd-desc" id="pdDesc">{{DESC}}</p>
+      <p class="pd-desc" id="pdDesc">پروتئین وی ایزوله با طعم طبیعی، بدون شکر افزوده، مناسب پس از تمرین.</p>
       <div class="pd-variants" id="pdVariants" hidden></div>
       <div class="pd-card">
         <div class="pd-actions">

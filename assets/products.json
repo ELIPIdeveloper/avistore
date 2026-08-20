@@ -90,6 +90,10 @@
     "sizes": [
       { "name": "۲۰ لیتر", "priceDiff": 0 },
       { "name": "۳۰ لیتر", "priceDiff": 120000 }
+    ],
+    "weights": [
+      { "name": "پارچه استاندارد", "priceDiff": 0 },
+      { "name": "پارچه سبک ripstop", "priceDiff": 90000 }
     ]
   },
   {
@@ -102,5 +106,20 @@
     "active": true,
     "category": "الکترونیک",
     "oldPrice": 990000
+  },
+  {
+    "code": "7",
+    "name": "پودر پروتئین وی نچرال",
+    "description": "پروتئین وی ایزوله با طعم طبیعی، بدون شکر افزوده، مناسب پس از تمرین.",
+    "price": 1450000,
+    "thumb": "https://picsum.photos/seed/avistore7/600/600",
+    "image": "https://picsum.photos/seed/avistore7/1000/1000",
+    "active": true,
+    "category": "سلامت و ورزش",
+    "weights": [
+      { "name": "۵۰۰ گرم", "priceDiff": 0 },
+      { "name": "۱ کیلوگرم", "priceDiff": 950000 },
+      { "name": "۲ کیلوگرم", "priceDiff": 1800000 }
+    ]
   }
 ]

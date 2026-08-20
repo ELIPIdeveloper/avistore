@@ -28,6 +28,7 @@
       var variantBits = [];
       if(e.variant.color) variantBits.push("رنگ: " + e.variant.color);
       if(e.variant.size) variantBits.push("سایز: " + e.variant.size);
+      if(e.variant.weight) variantBits.push("وزن: " + e.variant.weight);
       var variantLine = variantBits.length ? '<div class="line-variant">' + A.escapeHtml(variantBits.join(" · ")) + '</div>' : "";
       return (
         '<div class="cart-item" data-key="' + A.escapeHtml(e.key) + '">' +
@@ -167,7 +168,7 @@
 
     // فقط کد، تعداد و رنگ/سایز انتخابی به سرور ارسال می‌شود؛ قیمت و جمع کل توسط سرور و بر اساس دیتابیس محاسبه می‌گردد.
     var products_payload = entries.map(function(e){
-      return { code: e.code, quantity: e.qty, color: e.variant.color || null, size: e.variant.size || null };
+      return { code: e.code, quantity: e.qty, color: e.variant.color || null, size: e.variant.size || null, weight: e.variant.weight || null };
     });
 
     payBtn.disabled = true;
@@ -184,7 +185,7 @@
           var orderItems = entries.map(function(e){
             return {
               code: e.code, name: e.product.name,
-              color: e.variant.color || null, size: e.variant.size || null,
+              color: e.variant.color || null, size: e.variant.size || null, weight: e.variant.weight || null,
               qty: e.qty, price: e.price, line_total: e.price * e.qty
             };
           });
