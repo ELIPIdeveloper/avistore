@@ -181,7 +181,7 @@
     })
       .then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
       .then(function(res){
-        if(res.ok && res.data && res.data.ok && res.data.url){
+        if(res.ok && res.data && res.data.ok && res.data.payment_url){
           var orderItems = entries.map(function(e){
             return {
               code: e.code, name: e.product.name,
@@ -191,7 +191,7 @@
           });
           A.addOrder({
             purchase_id: res.data.purchase_id,
-            amount: res.data.amount,
+            amount: A.cartTotal(),
             status: "pending",
             ref_id: null,
             customer: customer,
@@ -200,7 +200,7 @@
             paid_at: null
           });
           renderOrders();
-          window.location.href = res.data.url;
+          window.location.href = res.data.payment_url;
         } else {
           var msg = (res.data && res.data.error) ? res.data.error : "ثبت سفارش با خطا مواجه شد.";
           showFormError(msg);
