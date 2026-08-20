@@ -9,16 +9,16 @@
   function getParams(){
     var p = new URLSearchParams(window.location.search);
     return {
-      status: p.get("status") || "",
+      success: p.get("success") || "",
       purchase_id: p.get("purchase_id") || "",
       ref_id: p.get("ref_id") || "",
-      message: p.get("message") || "",
+      message: p.get("error") || "",
       zarinpal_code: p.get("zarinpal_code") || ""
     };
   }
 
   var q = getParams();
-  var isSuccess = q.status === "success";
+  var isSuccess = q.success === "1";
 
   var order = q.purchase_id ? A.getOrder(q.purchase_id) : null;
 
