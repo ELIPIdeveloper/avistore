@@ -58,13 +58,25 @@
     var off = A.discountPercent(eff);
     var pdBadge = document.getElementById("pdDiscountBadge");
     var pdOld = document.getElementById("pdPriceOld");
-    if(off){
-      pdBadge.textContent = off + "٪ تخفیف";
+    if(!A.isInStock(p)){
+      pdBadge.textContent = "ناموجود";
       pdBadge.hidden = false;
+      pdBadge.classList.add("oos-badge");
+      pdBadge.classList.remove("discount-badge");
+    } else {
+      pdBadge.classList.add("discount-badge");
+      pdBadge.classList.remove("oos-badge");
+      if(off){
+        pdBadge.textContent = off + "٪ تخفیف";
+        pdBadge.hidden = false;
+      } else {
+        pdBadge.hidden = true;
+      }
+    }
+    if(off && A.isInStock(p)){
       pdOld.textContent = A.fmtPrice(eff.oldPrice);
       pdOld.hidden = false;
     } else {
-      pdBadge.hidden = true;
       pdOld.hidden = true;
     }
   }
@@ -192,12 +204,18 @@
   }
 
   function updateAddButtonState(){
+    var p = A.getProductByCode(CODE);
     var already = A.qtyOf(currentKey());
     var addBtn = document.getElementById("pdAdd");
-    if(already >= A.CONFIG.MAX_QTY_PER_PRODUCT){
+    if(p && !A.isInStock(p)){
+      addBtn.disabled = true; addBtn.textContent = "ناموجود";
+      stepperEl.querySelectorAll("button").forEach(function(b){ b.disabled = true; });
+    } else if(already >= A.CONFIG.MAX_QTY_PER_PRODUCT){
       addBtn.disabled = true; addBtn.textContent = "حداکثر تعداد در سبد";
+      stepperEl.querySelectorAll("button").forEach(function(b){ b.disabled = false; });
     } else {
       addBtn.disabled = false; addBtn.textContent = "افزودن به سبد";
+      stepperEl.querySelectorAll("button").forEach(function(b){ b.disabled = false; });
     }
     qty = 1;
     qtyEl.textContent = qty;

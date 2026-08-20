@@ -251,6 +251,10 @@ window.AVISTORE = (function(){
   function addToCart(key, qty){
     var product = getProductByCode(keyToCode(key));
     if(!product) return;
+    if(!isInStock(product)){
+      toast("این محصول در حال حاضر ناموجود است.", true);
+      return;
+    }
     var current = cart[key] || 0;
     var next = Math.min(current + qty, CONFIG.MAX_QTY_PER_PRODUCT);
     if(next === current){
@@ -298,6 +302,13 @@ window.AVISTORE = (function(){
     return Math.round(((old - price) / old) * 100);
   }
 
+  /* محصول همچنان نمایش داده می‌شود (بر خلاف active:false که کلاً از لیست‌ها
+     حذفش می‌کند)، فقط دکمهٔ افزودن غیرفعال و برچسب «ناموجود» نشان داده می‌شود.
+     برای ناموجود کردن یک محصول: در products.json فیلد "inStock": false اضافه کنید. */
+  function isInStock(p){
+    return p && p.inStock !== false;
+  }
+
   /* ---------- shared product-card renderer (home / search / related) ----------
      opts.showDesc و opts.showAdd پیش‌فرض true هستند (رفتار قبلی حفظ می‌شود).
      صفحهٔ اصلی این دو را false می‌فرستد تا نه توضیحات نشان داده شود و نه
@@ -312,11 +323,12 @@ window.AVISTORE = (function(){
     var atMax = qtyInCart >= CONFIG.MAX_QTY_PER_PRODUCT;
     var category = (p.category || "").trim();
     var off = discountPercent(p);
+    var inStock = isInStock(p);
     return (
-      '<a class="card reveal-once" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
+      '<a class="card reveal-once' + (inStock ? "" : " is-oos") + '" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
         '<span class="card-media">' +
           '<img src="' + thumb + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
-          (off ? '<span class="discount-badge">' + off + '٪ تخفیف</span>' : "") +
+          (!inStock ? '<span class="oos-badge">ناموجود</span>' : (off ? '<span class="discount-badge">' + off + '٪ تخفیف</span>' : "")) +
         '</span>' +
         '<span class="card-body">' +
           (category ? '<span class="card-cat">' + escapeHtml(category) + '</span>' : "") +
@@ -328,9 +340,13 @@ window.AVISTORE = (function(){
               '<span class="price-tag num">' + fmtPrice(p.price) + '</span>' +
             '</span>' +
             (showAdd ?
-              '<button type="button" class="add-btn" data-add="' + escapeHtml(p.code) + '" ' + (atMax ? "disabled" : "") + '>' +
-                (atMax ? "حداکثر" : "افزودن") +
-              '</button>'
+              (!inStock ?
+                '<button type="button" class="add-btn" disabled>ناموجود</button>'
+              :
+                '<button type="button" class="add-btn" data-add="' + escapeHtml(p.code) + '" ' + (atMax ? "disabled" : "") + '>' +
+                  (atMax ? "حداکثر" : "افزودن") +
+                '</button>'
+              )
             : "") +
           '</span>' +
         '</span>' +
@@ -355,11 +371,12 @@ window.AVISTORE = (function(){
     var thumb = escapeHtml(p.thumb || p.image || "");
     var category = (p.category || "").trim();
     var off = discountPercent(p);
+    var inStock = isInStock(p);
     return (
-      '<a class="list-item reveal-once" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
+      '<a class="list-item reveal-once' + (inStock ? "" : " is-oos") + '" href="' + productUrl(p.code) + '" data-code="' + escapeHtml(p.code) + '">' +
         '<span class="list-item-media">' +
           '<img src="' + thumb + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
-          (off ? '<span class="discount-badge sm">' + off + '٪</span>' : "") +
+          (!inStock ? '<span class="oos-badge sm">ناموجود</span>' : (off ? '<span class="discount-badge sm">' + off + '٪</span>' : "")) +
         '</span>' +
         '<span class="list-item-body">' +
           '<span class="list-item-title">' + escapeHtml(p.name) + '</span>' +
@@ -550,6 +567,7 @@ window.AVISTORE = (function(){
     cardHtml: cardHtml,
     listItemHtml: listItemHtml,
     discountPercent: discountPercent,
+    isInStock: isInStock,
     wireGridAddButtons: wireGridAddButtons,
     loadCustomer: loadCustomer,
     saveCustomer: saveCustomer,

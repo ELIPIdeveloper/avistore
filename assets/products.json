@@ -15,9 +15,19 @@
     "category": "الکترونیک",
     "oldPrice": 2200000,
     "colors": [
-      { "name": "مشکی", "hex": "#111111" },
-      { "name": "سفید", "hex": "#f5f5f5" },
-      { "name": "آبی", "hex": "#2b5fad", "priceDiff": 80000 }
+      {
+        "name": "مشکی",
+        "hex": "#111111"
+      },
+      {
+        "name": "سفید",
+        "hex": "#f5f5f5"
+      },
+      {
+        "name": "آبی",
+        "hex": "#2b5fad",
+        "priceDiff": 80000
+      }
     ]
   },
   {
@@ -37,13 +47,26 @@
     "category": "الکترونیک",
     "oldPrice": 4990000,
     "colors": [
-      { "name": "مشکی", "hex": "#111111" },
-      { "name": "نقره‌ای", "hex": "#c7c9cc" }
+      {
+        "name": "مشکی",
+        "hex": "#111111"
+      },
+      {
+        "name": "نقره‌ای",
+        "hex": "#c7c9cc"
+      }
     ],
     "sizes": [
-      { "name": "کوچک", "priceDiff": 0 },
-      { "name": "بزرگ", "priceDiff": 350000 }
-    ]
+      {
+        "name": "کوچک",
+        "priceDiff": 0
+      },
+      {
+        "name": "بزرگ",
+        "priceDiff": 350000
+      }
+    ],
+    "inStock": false
   },
   {
     "code": "3",
@@ -55,8 +78,14 @@
     "active": true,
     "category": "کیف و چرم",
     "colors": [
-      { "name": "قهوه‌ای", "hex": "#6b4226" },
-      { "name": "مشکی", "hex": "#111111" }
+      {
+        "name": "قهوه‌ای",
+        "hex": "#6b4226"
+      },
+      {
+        "name": "مشکی",
+        "hex": "#111111"
+      }
     ]
   },
   {
@@ -84,16 +113,34 @@
     "active": true,
     "category": "کیف و چرم",
     "colors": [
-      { "name": "مشکی", "hex": "#111111" },
-      { "name": "طوسی", "hex": "#7a7f87" }
+      {
+        "name": "مشکی",
+        "hex": "#111111"
+      },
+      {
+        "name": "طوسی",
+        "hex": "#7a7f87"
+      }
     ],
     "sizes": [
-      { "name": "۲۰ لیتر", "priceDiff": 0 },
-      { "name": "۳۰ لیتر", "priceDiff": 120000 }
+      {
+        "name": "۲۰ لیتر",
+        "priceDiff": 0
+      },
+      {
+        "name": "۳۰ لیتر",
+        "priceDiff": 120000
+      }
     ],
     "weights": [
-      { "name": "پارچه استاندارد", "priceDiff": 0 },
-      { "name": "پارچه سبک ripstop", "priceDiff": 90000 }
+      {
+        "name": "پارچه استاندارد",
+        "priceDiff": 0
+      },
+      {
+        "name": "پارچه سبک ripstop",
+        "priceDiff": 90000
+      }
     ]
   },
   {
@@ -117,9 +164,18 @@
     "active": true,
     "category": "سلامت و ورزش",
     "weights": [
-      { "name": "۵۰۰ گرم", "priceDiff": 0 },
-      { "name": "۱ کیلوگرم", "priceDiff": 950000 },
-      { "name": "۲ کیلوگرم", "priceDiff": 1800000 }
+      {
+        "name": "۵۰۰ گرم",
+        "priceDiff": 0
+      },
+      {
+        "name": "۱ کیلوگرم",
+        "priceDiff": 950000
+      },
+      {
+        "name": "۲ کیلوگرم",
+        "priceDiff": 1800000
+      }
     ]
   }
 ]
