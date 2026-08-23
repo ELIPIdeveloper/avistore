@@ -54,19 +54,20 @@
       },
       {
         "name": "3متر",
-        "priceDiff": 420000
+        "priceDiff": 870000
       },
       {
         "name": "4متر",
-        "priceDiff": 400000
+        "priceDiff": 1270000
       },
       {
         "name": "5متر",
-        "priceDiff": 360000
+        "priceDiff": 1630000
       }
     ],
     "inStock": true,
     "images": [
+      "2.webp",
       "3.webp"
     ]
   }
