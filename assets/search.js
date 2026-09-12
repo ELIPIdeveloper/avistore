@@ -5,22 +5,24 @@
   A.initChrome();
 
   var grid = document.getElementById("searchGrid");
-  var meta = document.getElementById("searchMeta");
-  var sortBar = document.getElementById("sortBar");
   var sortSelect = document.getElementById("sortSelect");
   var pagination = document.getElementById("searchPagination");
   var pageSize = A.CONFIG.SEARCH_PAGE_SIZE;
   var currentPage = 1;
-  var sortMode = "default";
 
+  /* ---------- مرتب‌سازی ----------
+     همیشه از یک آرایهٔ تازه (slice) مرتب می‌شود تا آرایهٔ اصلی محصولات
+     دست‌نخورده بماند؛ مقدار sortSelect.value مستقیماً همین‌جا خوانده
+     می‌شود (بدون متغیر واسطهٔ جدا) تا هیچ‌وقت بین UI و منطق ناهم‌خوان نشود. */
   function sortList(list){
+    var mode = sortSelect.value;
     var arr = list.slice();
-    if(sortMode === "price_asc"){
-      arr.sort(function(a,b){ return (Number(a.price)||0) - (Number(b.price)||0); });
-    } else if(sortMode === "price_desc"){
-      arr.sort(function(a,b){ return (Number(b.price)||0) - (Number(a.price)||0); });
-    } else if(sortMode === "discount"){
-      arr.sort(function(a,b){ return A.discountPercent(b) - A.discountPercent(a); });
+    if(mode === "price_asc"){
+      arr.sort(function(a, b){ return (Number(a.price) || 0) - (Number(b.price) || 0); });
+    } else if(mode === "price_desc"){
+      arr.sort(function(a, b){ return (Number(b.price) || 0) - (Number(a.price) || 0); });
+    } else if(mode === "discount"){
+      arr.sort(function(a, b){ return A.discountPercent(b) - A.discountPercent(a); });
     }
     return arr;
   }
@@ -42,37 +44,10 @@
   pinSearchHead();
   window.addEventListener("resize", pinSearchHead);
 
-  function renderSearch(){
-    var q = searchTerm.trim().toLowerCase();
-    var all = A.getAllProducts();
-
-    if(!q){
-      sortBar.hidden = true;
-      pagination.innerHTML = "";
-      var suggested = A.shuffledCopy(all).slice(0, A.CONFIG.HOME_RANDOM_COUNT);
-      meta.textContent = suggested.length ? "پیشنهاد برای شما" : "";
-      grid.innerHTML = suggested.map(A.listItemHtml).join("");
-      A.wireRevealOnce(grid);
-      return;
-    }
-    var list = all.filter(function(p){
-      var hay = (p.name + " " + (p.description||"")).toLowerCase();
-      return hay.indexOf(q) !== -1;
-    });
-    if(!list.length){
-      sortBar.hidden = true;
-      pagination.innerHTML = "";
-      meta.textContent = "۰ نتیجه برای «" + searchTerm.trim() + "»";
-      grid.innerHTML = '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو را تغییر بده یا دوباره تلاش کن.</p></div>';
-      return;
-    }
-
-    sortBar.hidden = false;
-    list = sortList(list);
-    meta.textContent = list.length + " نتیجه برای «" + searchTerm.trim() + "»";
-
+  function renderPage(list){
     var totalPages = Math.max(1, Math.ceil(list.length / pageSize));
     if(currentPage > totalPages) currentPage = totalPages;
+    if(currentPage < 1) currentPage = 1;
     var start = (currentPage - 1) * pageSize;
     var pageItems = list.slice(start, start + pageSize);
 
@@ -80,16 +55,43 @@
     A.wireRevealOnce(grid);
     pagination.innerHTML = A.paginationHtml(currentPage, totalPages);
   }
+
+  function renderSearch(){
+    var q = searchTerm.trim().toLowerCase();
+    var all = A.getAllProducts();
+
+    var base;
+    if(!q){
+      base = A.shuffledCopy(all).slice(0, A.CONFIG.HOME_RANDOM_COUNT);
+    } else {
+      base = all.filter(function(p){
+        var hay = (p.name + " " + (p.description || "")).toLowerCase();
+        return hay.indexOf(q) !== -1;
+      });
+    }
+
+    if(!base.length){
+      pagination.innerHTML = "";
+      grid.innerHTML = q
+        ? '<div class="empty-state"><h3>محصولی پیدا نشد</h3><p>عبارت جستجو را تغییر بده یا دوباره تلاش کن.</p></div>'
+        : '<div class="empty-state"><h3>محصولی موجود نیست</h3><p>بعداً دوباره سر بزن.</p></div>';
+      return;
+    }
+
+    renderPage(sortList(base));
+  }
+
   A.wirePagination(pagination, function(n){
     currentPage = n;
     renderSearch();
     grid.scrollIntoView({ behavior: "smooth", block: "start" });
   });
+
   sortSelect.addEventListener("change", function(){
-    sortMode = sortSelect.value;
     currentPage = 1;
     renderSearch();
   });
+
   A.onChange(renderSearch);
 
   document.getElementById("searchInputPage").addEventListener("input", function(e){
@@ -102,6 +104,7 @@
   });
 
   A.fetchProducts().then(renderSearch).catch(function(err){
+    pagination.innerHTML = "";
     grid.innerHTML = '<div class="error-state"><h3>مشکلی در بارگذاری محصولات پیش آمد</h3><p>' + A.escapeHtml(err.message) + '</p></div>';
   });
 
