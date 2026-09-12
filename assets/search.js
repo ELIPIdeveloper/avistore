@@ -62,7 +62,7 @@
 
     var base;
     if(!q){
-      base = A.shuffledCopy(all).slice(0, A.CONFIG.HOME_RANDOM_COUNT);
+      base = all;
     } else {
       base = all.filter(function(p){
         var hay = (p.name + " " + (p.description || "")).toLowerCase();
