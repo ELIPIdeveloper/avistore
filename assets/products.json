@@ -9,7 +9,10 @@
     "active": true,
     "category": "محصولات طبیعی",
     "oldPrice": 10500000,
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "am1001",
@@ -21,7 +24,8 @@
     "active": true,
     "category": "قطعات الکتریکی",
     "inStock": true,
-    "oldPrice": 381300
+    "oldPrice": 381300,
+    "authenticity": "اصل"
   },
   {
     "code": "am1002",
@@ -32,7 +36,8 @@
     "image": "1.webp",
     "active": true,
     "category": "قطعات الکتریکی",
-    "inStock": true
+    "inStock": true,
+    "authenticity": "اصل"
   },
   {
     "code": "am1003",
@@ -69,7 +74,8 @@
     "images": [
       "1.webp",
       "2.webp"
-    ]
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "sr1002",
@@ -81,7 +87,10 @@
     "active": true,
     "category": "محصولات طبیعی",
     "oldPrice": 55000000,
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1003",
@@ -92,7 +101,10 @@
     "image": "1.webp",
     "active": true,
     "category": "محصولات طبیعی",
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1004",
@@ -104,7 +116,10 @@
     "active": true,
     "category": "محصولات طبیعی",
     "oldPrice": 4550000,
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1005",
@@ -115,7 +130,10 @@
     "image": "1.webp",
     "active": true,
     "category": "محصولات طبیعی",
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1006",
@@ -126,7 +144,10 @@
     "image": "1.webp",
     "active": true,
     "category": "محصولات طبیعی",
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1007",
@@ -137,7 +158,10 @@
     "image": "1.webp",
     "active": true,
     "category": "محصولات طبیعی",
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1008",
@@ -149,7 +173,10 @@
     "active": true,
     "category": "محصولات طبیعی",
     "oldPrice": 2510000,
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "sr1009",
@@ -160,7 +187,10 @@
     "image": "1.webp",
     "active": true,
     "category": "محصولات طبیعی",
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "returnable": false
+    }
   },
   {
     "code": "am1004",
@@ -185,7 +215,8 @@
         "priceDiff": 3470000
       }
     ],
-    "inStock": true
+    "inStock": true,
+    "authenticity": "اصل"
   },
   {
     "code": "ar1001",
@@ -255,7 +286,12 @@
         "name": "6 لایه",
         "priceDiff": 1020000
       }
-    ]
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل"
   },
   {
     "code": "ar1002",
@@ -310,7 +346,12 @@
         "priceDiff": 185000
       }
     ],
-    "inStock": true
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل"
   },
   {
     "code": "zs1001",
@@ -366,6 +407,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -420,6 +472,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -478,6 +541,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -531,6 +605,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -598,6 +683,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -651,6 +747,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -704,6 +811,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -760,7 +878,8 @@
     "images": [
       "1.webp",
       "2.webp"
-    ]
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "zs1009",
@@ -813,6 +932,17 @@
     "images": [
       "1.webp",
       "2.webp"
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
     ]
   },
   {
@@ -867,7 +997,18 @@
     "images": [
       "1.webp",
       "2.webp"
-    ]
+    ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "am1005",
@@ -879,7 +1020,22 @@
     "active": true,
     "category": "دیجیتال",
     "oldPrice": 1520000000,
-    "inStock": true
+    "inStock": true,
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "اپل"
+      },
+      {
+        "name": "پردازنده",
+        "value": "m1"
+      },
+      {
+        "name": "حافظه",
+        "value": "256"
+      }
+    ]
   },
   {
     "code": "am1006",
@@ -891,7 +1047,8 @@
     "active": true,
     "category": "متفرقه",
     "inStock": true,
-    "oldPrice": 4850000
+    "oldPrice": 4850000,
+    "authenticity": "اصل"
   },
   {
     "code": "am1007",
@@ -903,7 +1060,8 @@
     "active": true,
     "category": "متفرقه",
     "inStock": true,
-    "oldPrice": 4720000
+    "oldPrice": 4720000,
+    "authenticity": "اصل"
   },
   {
     "code": "am1008",
@@ -915,7 +1073,8 @@
     "active": true,
     "category": "متفرقه",
     "oldPrice": 3900000,
-    "inStock": true
+    "inStock": true,
+    "authenticity": "اصل"
   },
   {
     "code": "am1009",
@@ -927,7 +1086,18 @@
     "active": true,
     "category": "دیجیتال",
     "inStock": false,
-    "oldPrice": 143500000
+    "oldPrice": 143500000,
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "کالوس"
+      },
+      {
+        "name": "حافظه",
+        "value": "32"
+      }
+    ]
   },
   {
     "code": "ee1001",
@@ -940,5 +1110,164 @@
     "category": "محصولات طبیعی",
     "oldPrice": 22300000,
     "inStock": true
+  },
+  {
+    "code": "zs1011",
+    "name": "ست کیف زنانه جای پول و کیف شانی چرم دست ساز کاوه",
+    "description": "ست کیف زنانه جای پول و کیف شانی چرم دست‌ساز کاوه، ترکیبی از زیبایی، کاربردی بودن و هنر دست است. این ست از چرم باکیفیت ساخته شده و دوام و ماندگاری بالایی دارد. طراحی ظریف و اجرای دقیق جزئیات، زیبایی و اصالت این محصولات را دوچندان کرده است. هماهنگی بین کیف و جای پول، این ست را به انتخابی خاص و کاربردی برای بانوانی تبدیل کرده است که به محصولات چرمی باکیفیت و متفاوت علاقه دارند. به دلیل دست‌ساز بودن محصول، آماده‌سازی آن ممکن است کمی بیشتر زمان ببرد و ارسال با تأخیر انجام شود.",
+    "price": 25850000,
+    "thumb": "/products/zs1011/1.webp",
+    "image": "1.webp",
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
+    "active": true,
+    "category": "محصولات چرمی",
+    "oldPrice": 27900000,
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ]
+  },
+  {
+    "code": "zs1012",
+    "name": "کمربند زنانه چرم دست ساز کاوه",
+    "description": "کمربند زنانه چرم دست‌ساز کاوه، ترکیبی از ظرافت، کیفیت و هنر دست است. این کمربند از چرم باکیفیت ساخته شده و دوام و ماندگاری بالایی دارد. طراحی شیک و دوخت ظریف، زیبایی و اصالت این محصول را دوچندان کرده است. این کمربند انتخابی مناسب برای بانوانی است که به اکسسوری‌های خاص، باکیفیت و دست‌ساز علاقه دارند و می‌تواند جلوه‌ای زیبا به استایل‌های مختلف ببخشد. به دلیل دست‌ساز بودن محصول، آماده‌سازی آن ممکن است کمی بیشتر زمان ببرد و ارسال با تأخیر انجام شود.",
+    "price": 9900000,
+    "thumb": "/products/zs1012/1.webp",
+    "image": "1.webp",
+    "active": true,
+    "category": "محصولات چرمی",
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ],
+    "authenticity": "اصل"
+  },
+  {
+    "code": "zs1013",
+    "name": "کمربند مردانه دو طرفه با سگک چرخشی چرم دست ساز کاوه",
+    "description": "کمربند مردانه دو طرفه با سگک چرخشی چرم دست‌ساز کاوه، ترکیبی از طراحی کاربردی، کیفیت و هنر دست است. این کمربند از چرم باکیفیت ساخته شده و دوام و ماندگاری بالایی دارد. طراحی دو طرفه و سگک چرخشی، امکان استفاده از کمربند با دو روی متفاوت را فراهم کرده و آن را به گزینه‌ای کاربردی برای استایل‌های مختلف تبدیل کرده است. دوخت ظریف و اجرای دقیق جزئیات، زیبایی و اصالت این محصول را دوچندان کرده است. به دلیل دست‌ساز بودن محصول، آماده‌سازی آن ممکن است کمی بیشتر زمان ببرد و ارسال با تأخیر انجام شود.",
+    "price": 19250000,
+    "thumb": "/products/zs1013/1.webp",
+    "image": "1.webp",
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
+    "active": true,
+    "category": "محصولات چرمی",
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ]
+  },
+  {
+    "code": "zs1014",
+    "name": "ست کیف و کمربند مردانه چرم دست ساز کاوه",
+    "description": "ست کیف و کمربند مردانه چرم دست‌ساز کاوه، ترکیبی از کیفیت، هنر دست و طراحی شیک و کاربردی است. این ست از چرم باکیفیت ساخته شده و دوام و ماندگاری بالایی دارد. دوخت ظریف و اجرای دقیق جزئیات، زیبایی و اصالت این محصولات را دوچندان کرده است. هماهنگی کیف و کمربند، این ست را به انتخابی مناسب برای تکمیل استایل آقایان و استفاده روزمره تبدیل کرده است. به دلیل دست‌ساز بودن محصولات، آماده‌سازی سفارش ممکن است کمی بیشتر زمان ببرد و ارسال با تأخیر انجام شود.",
+    "price": 27500000,
+    "thumb": "/products/zs1014/1.webp",
+    "image": "1.webp",
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
+    "active": true,
+    "category": "محصولات چرمی",
+    "oldPrice": 29900000,
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ]
+  },
+  {
+    "code": "zs1015",
+    "name": "کمربند مردانه اسپرت چرم دست ساز کاوه",
+    "description": "کمربند مردانه اسپرت چرم دست‌ساز کاوه، ترکیبی از طراحی جذاب، کیفیت بالا و هنر دست است. این کمربند از چرم باکیفیت ساخته شده و دوام و ماندگاری بالایی دارد. دوخت ظریف و اجرای دقیق جزئیات، زیبایی و اصالت آن را دوچندان کرده است. طراحی اسپرت و کاربردی آن، انتخابی مناسب برای استفاده روزمره و تکمیل استایل‌های مختلف مردانه است. به دلیل دست‌ساز بودن محصول، آماده‌سازی آن ممکن است کمی بیشتر زمان ببرد و ارسال با تأخیر انجام شود.",
+    "price": 13750000,
+    "thumb": "/products/zs1015/1.webp",
+    "image": "1.webp",
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
+    "active": true,
+    "category": "محصولات چرمی",
+    "oldPrice": 14000000,
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ]
+  },
+  {
+    "code": "zs10016",
+    "name": "کمربند مردانه ساده چرم دست ساز کاوه",
+    "description": "کمربند مردانه ساده چرم دست‌ساز کاوه، ترکیبی از طراحی ساده، کیفیت و هنر دست است. این کمربند از چرم باکیفیت ساخته شده و دوام و ماندگاری بالایی دارد. دوخت ظریف و اجرای دقیق جزئیات، زیبایی و اصالت آن را دوچندان کرده است. طراحی ساده و شیک آن، این محصول را به انتخابی مناسب برای استفاده روزمره و استایل‌های مختلف مردانه تبدیل کرده است. به دلیل دست‌ساز بودن محصول، آماده‌سازی آن ممکن است کمی بیشتر زمان ببرد و ارسال با تأخیر انجام شود.",
+    "price": 12100000,
+    "thumb": "/products/zs10016/1.webp",
+    "image": "1.webp",
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
+    "active": true,
+    "category": "محصولات طبیعی",
+    "inStock": true,
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
+    "authenticity": "اصل",
+    "specs": [
+      {
+        "name": "برند",
+        "value": "چرم کاوه"
+      }
+    ]
   }
 ]

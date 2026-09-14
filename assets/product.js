@@ -101,30 +101,78 @@
     }
   }
 
-  /* ---------- گالری چند عکسی ---------- */
+  /* ---------- گالری چند عکسی (+ جابجایی با سوایپ لمسی مثل گالری) ---------- */
   function renderGallery(p){
     var images = A.productImages(p);
+    var mediaEl = imgEl.closest(".pd-main-img");
+    var activeIdx = 0;
     imgEl.alt = p.name;
     imgEl.src = images[0] || "";
+
+    function showImage(idx){
+      if(!images.length) return;
+      // چرخشی: از آخرین به اولین و برعکس هم برود، حس گالری واقعی‌تر می‌شود
+      idx = (idx + images.length) % images.length;
+      if(idx === activeIdx) return;
+      activeIdx = idx;
+      imgEl.src = images[activeIdx];
+      if(thumbsEl){
+        thumbsEl.querySelectorAll(".pd-thumb").forEach(function(b, i){
+          b.classList.toggle("active", i === activeIdx);
+        });
+      }
+    }
 
     if(images.length <= 1){
       thumbsEl.hidden = true;
       thumbsEl.innerHTML = "";
-      return;
-    }
-    thumbsEl.hidden = false;
-    thumbsEl.innerHTML = images.map(function(src, i){
-      return '<button type="button" class="pd-thumb' + (i === 0 ? " active" : "") + '" data-idx="' + i + '">' +
-        '<img src="' + A.escapeHtml(src) + '" alt="' + A.escapeHtml(p.name) + ' - تصویر ' + (i + 1) + '">' +
-      '</button>';
-    }).join("");
-    thumbsEl.querySelectorAll(".pd-thumb").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        imgEl.src = images[Number(btn.getAttribute("data-idx"))];
-        thumbsEl.querySelectorAll(".pd-thumb").forEach(function(b){ b.classList.remove("active"); });
-        btn.classList.add("active");
+    } else {
+      thumbsEl.hidden = false;
+      thumbsEl.innerHTML = images.map(function(src, i){
+        return '<button type="button" class="pd-thumb' + (i === 0 ? " active" : "") + '" data-idx="' + i + '">' +
+          '<img src="' + A.escapeHtml(src) + '" alt="' + A.escapeHtml(p.name) + ' - تصویر ' + (i + 1) + '">' +
+        '</button>';
+      }).join("");
+      thumbsEl.querySelectorAll(".pd-thumb").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          showImage(Number(btn.getAttribute("data-idx")));
+        });
       });
-    });
+    }
+
+    // سوایپ لمسی روی تصویر اصلی؛ چون renderGallery ممکن است چندبار صدا
+    // زده شود، از خصوصیت‌های on... استفاده می‌کنیم تا هندلر قبلی به‌جای
+    // «اضافه شدن» جایگزین شود و رویدادها تکراری نشوند.
+    if(mediaEl){
+      var startX = 0, startY = 0, dragging = false, isHorizontal = false;
+      var SWIPE_THRESHOLD = 40;
+      mediaEl.ontouchstart = function(e){
+        if(images.length <= 1) return;
+        var t = e.touches[0];
+        startX = t.clientX; startY = t.clientY;
+        dragging = true; isHorizontal = false;
+      };
+      mediaEl.ontouchmove = function(e){
+        if(!dragging) return;
+        var t = e.touches[0];
+        var dx = t.clientX - startX, dy = t.clientY - startY;
+        if(!isHorizontal && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 6){
+          isHorizontal = true;
+        }
+        if(isHorizontal && e.cancelable) e.preventDefault();
+      };
+      mediaEl.ontouchend = function(e){
+        if(!dragging) return;
+        dragging = false;
+        if(!isHorizontal) return;
+        var t = e.changedTouches[0];
+        var dx = t.clientX - startX;
+        if(Math.abs(dx) < SWIPE_THRESHOLD) return;
+        // کشیدن انگشت به چپ → تصویر بعدی، به راست → تصویر قبلی
+        showImage(activeIdx + (dx < 0 ? 1 : -1));
+      };
+      mediaEl.ontouchcancel = function(){ dragging = false; };
+    }
   }
 
   /* ---------- رنگ و سایز ---------- */

@@ -317,6 +317,7 @@ header.site-head{
 .pd-main-img{
   background:var(--accent-tint);border-radius:var(--radius);overflow:hidden;
   aspect-ratio:1/1;border:1px solid var(--line);position:relative;
+  touch-action:pan-y; /* اجازهٔ اسکرول عمودی صفحه؛ سوایپ افقی برای تعویض تصویر گرفته می‌شود */
 }
 .pd-main-img img{width:100%;height:100%;object-fit:cover;}
 .pd-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
@@ -463,22 +464,24 @@ header.site-head{
   opacity:0; filter:blur(16px); transform:scale(1.04) translateY(6px);
 }
 
-/* ===== دکمه افزودن به سبد در صفحه محصول: انیمیشن دائمی جذاب ===== */
+/* ===== دکمه افزودن به سبد (و مشابه‌های آن در سبد خرید): انیمیشن دائمی جذاب و پویا ===== */
 .pd-add-btn{
   position:relative;overflow:hidden;
-  animation:pdAddPulse 2.1s ease-in-out infinite;
+  animation:pdAddPulse 1.15s cubic-bezier(.45,0,.2,1) infinite;
 }
 .pd-add-btn::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%);
   background-size:260% 100%;
-  animation:pdAddShine 2.4s linear infinite;
+  animation:pdAddShine 1.3s linear infinite;
 }
 .pd-add-btn:hover{background:var(--accent-dark);}
 .pd-add-btn:active{transform:scale(.96);}
+.pd-add-btn:disabled{animation:none;box-shadow:none;transform:none;}
+.pd-add-btn:disabled::after{animation:none;}
 @keyframes pdAddPulse{
   0%,100%{ box-shadow:0 0 0 0 rgba(31,78,134,.5); transform:scale(1); }
-  50%{ box-shadow:0 0 0 9px rgba(31,78,134,0); transform:scale(1.015); }
+  50%{ box-shadow:0 0 0 8px rgba(31,78,134,0); transform:scale(1.025); }
 }
 @keyframes pdAddShine{
   from{ background-position:220% 0; }
