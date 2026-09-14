@@ -9,7 +9,7 @@
     var catRow = document.getElementById("homeCatRow");
     if(!cats.length){ catRow.innerHTML = ""; return; }
     catRow.innerHTML = cats.map(function(c){
-      return '<a class="cat-chip" href="' + A.categoryUrl(c) + '">' + A.escapeHtml(c) + '</a>';
+      return '<a class="cat-chip" href="' + A.categoryUrl(c.path) + '">' + A.escapeHtml(c.name) + '</a>';
     }).join("");
   }
 

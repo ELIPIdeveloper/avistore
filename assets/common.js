@@ -164,18 +164,55 @@ window.AVISTORE = (function(){
       });
   }
   function getProductByCode(code){ return productsByCode[code]; }
-  function getCategories(){
+
+  /* ---------- دسته‌بندی چندسطحی ----------
+     یک محصول می‌تواند دسته‌بندی‌اش را با "/" جدا کند تا چند سطحی شود،
+     مثلاً "محصولات چرمی/مردانه". محصولات قدیمی‌تر که فقط یک تکه دارند
+     (مثل "دیجیتال") کاملاً سازگار می‌مانند، چون همان یک تکه است. */
+  function splitCategory(cat){
+    return String(cat || "").split("/").map(function(s){ return s.trim(); }).filter(Boolean);
+  }
+  function joinCategory(parts){ return parts.join("/"); }
+  function categoryUrl(cat){ return "/categories.html?cat=" + encodeURIComponent(cat); }
+
+  // زیردسته‌های مستقیم زیر یک مسیر (parentPath="" یعنی سطح اول/ریشه)
+  function getCategoryChildren(parentPath){
+    var parentParts = splitCategory(parentPath);
     var seen = {};
     var list = [];
     products.forEach(function(p){
-      var c = (p.category || "").trim();
-      if(!c || seen[c]) return;
-      seen[c] = true;
-      list.push(c);
+      var parts = splitCategory(p.category);
+      if(parts.length <= parentParts.length) return;
+      for(var i = 0; i < parentParts.length; i++){ if(parts[i] !== parentParts[i]) return; }
+      var childPath = parts.slice(0, parentParts.length + 1).join("/");
+      if(seen[childPath]) return;
+      seen[childPath] = true;
+      list.push({ name: parts[parentParts.length], path: childPath });
     });
-    return list.sort(function(a, b){ return a.localeCompare(b, "fa"); });
+    return list.sort(function(a, b){ return a.name.localeCompare(b.name, "fa"); });
   }
-  function categoryUrl(cat){ return "/categories.html?cat=" + encodeURIComponent(cat); }
+  // فهرست دسته‌های سطح اول (برای چیپ‌های صفحه اصلی و مشابه)
+  function getCategories(){ return getCategoryChildren(""); }
+  // همه محصولاتِ دقیقاً همین مسیر، یا (پیش‌فرض) همهٔ زیرمجموعه‌های آن هم
+  function productsInCategory(path, opts){
+    opts = opts || {};
+    var includeSub = opts.includeSub !== false;
+    var parts = splitCategory(path);
+    return products.filter(function(p){
+      var pparts = splitCategory(p.category);
+      if(includeSub){
+        if(pparts.length < parts.length) return false;
+        for(var i = 0; i < parts.length; i++){ if(pparts[i] !== parts[i]) return false; }
+        return true;
+      }
+      return joinCategory(pparts) === joinCategory(parts);
+    });
+  }
+  // فقط نام آخرین تکهٔ دسته‌بندی (برای برچسب کوچک روی کارت محصول)
+  function categoryLeaf(cat){
+    var parts = splitCategory(cat);
+    return parts.length ? parts[parts.length - 1] : "";
+  }
 
   /* ---------- change notifications (badge/cart re-render across a page) ---------- */
   function onChange(fn){ listeners.push(fn); }
@@ -312,6 +349,45 @@ window.AVISTORE = (function(){
     return p && p.inStock !== false;
   }
 
+  /* ---------- نشان‌های اعتماد (تضمین اصالت، ارسال سریع، امکان مرجوعی) ----------
+     هر سه پیش‌فرض فعال‌اند مگر این‌که صریحاً در products.json با
+     badges:{authentic:false} و ... غیرفعال شده باشند. */
+  function badgeEnabled(p, key){
+    return !(p && p.badges && p.badges[key] === false);
+  }
+  function trustBadgesHtml(p){
+    var chips = [];
+    if(badgeEnabled(p, "authentic")) chips.push('<span class="trust-chip">✓ تضمین اصالت و سلامت کالا</span>');
+    if(badgeEnabled(p, "fastShipping")) chips.push('<span class="trust-chip">🚚 ارسال سریع</span>');
+    if(badgeEnabled(p, "returnable")) chips.push('<span class="trust-chip">↩ امکان مرجوعی</span>');
+    return chips.join("");
+  }
+
+  /* ---------- مشخصات دلخواه محصول (ابعاد/نوع/اصالت/مشخصه‌های دستی) ---------- */
+  function productSpecRows(p){
+    var rows = [];
+    if(p.dimensions) rows.push({ k: "ابعاد کالا", v: p.dimensions });
+    if(p.itemType) rows.push({ k: "نوع کالا", v: p.itemType });
+    if(p.authenticity) rows.push({ k: "اصالت کالا", v: p.authenticity });
+    if(Array.isArray(p.specs)){
+      p.specs.forEach(function(s){
+        var name = s && (s.name || "").toString().trim();
+        var value = s && (s.value || "").toString().trim();
+        if(name && value) rows.push({ k: name, v: value });
+      });
+    }
+    return rows;
+  }
+  function specsHtml(p){
+    var rows = productSpecRows(p);
+    if(!rows.length) return "";
+    return '<h3 class="pd-specs-title">مشخصات محصول</h3><div class="pd-specs-table">' +
+      rows.map(function(r){
+        return '<div class="pd-spec-row"><span class="pd-spec-k">' + escapeHtml(r.k) + '</span><span class="pd-spec-v">' + escapeHtml(r.v) + '</span></div>';
+      }).join("") +
+      '</div>';
+  }
+
   /* ---------- shared product-card renderer (home / search / related) ----------
      opts.showDesc و opts.showAdd پیش‌فرض true هستند (رفتار قبلی حفظ می‌شود).
      صفحهٔ اصلی این دو را false می‌فرستد تا نه توضیحات نشان داده شود و نه
@@ -324,7 +400,7 @@ window.AVISTORE = (function(){
     var thumb = escapeHtml(p.thumb || p.image || "");
     var qtyInCart = qtyOf(p.code);
     var atMax = qtyInCart >= CONFIG.MAX_QTY_PER_PRODUCT;
-    var category = (p.category || "").trim();
+    var category = categoryLeaf(p.category);
     var off = discountPercent(p);
     var inStock = isInStock(p);
     return (
@@ -372,7 +448,7 @@ window.AVISTORE = (function(){
      بعد از آن عنوان محصول و یک متن کوچک از دسته‌بندی. */
   function listItemHtml(p){
     var thumb = escapeHtml(p.thumb || p.image || "");
-    var category = (p.category || "").trim();
+    var category = categoryLeaf(p.category);
     var off = discountPercent(p);
     var inStock = isInStock(p);
     return (
@@ -587,6 +663,15 @@ window.AVISTORE = (function(){
     getAllProducts: function(){ return products; },
     getCategories: getCategories,
     categoryUrl: categoryUrl,
+    splitCategory: splitCategory,
+    joinCategory: joinCategory,
+    getCategoryChildren: getCategoryChildren,
+    productsInCategory: productsInCategory,
+    categoryLeaf: categoryLeaf,
+    badgeEnabled: badgeEnabled,
+    trustBadgesHtml: trustBadgesHtml,
+    productSpecRows: productSpecRows,
+    specsHtml: specsHtml,
     productImages: productImages,
     variantKey: variantKey,
     effectivePrice: effectivePrice,

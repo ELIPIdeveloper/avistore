@@ -8,7 +8,6 @@
   var catsTitle = document.getElementById("catsTitle");
   var catsCount = document.getElementById("catsCount");
   var breadcrumb = document.getElementById("catBreadcrumb");
-  var bcCatName = document.getElementById("bcCatName");
   var switchRow = document.getElementById("catSwitchRow");
   var productsGrid = document.getElementById("catProductsGrid");
 
@@ -17,36 +16,23 @@
     return params.get("cat") || "";
   }
 
-  function countInCategory(all, cat){
-    return all.filter(function(p){ return (p.category || "") === cat; }).length;
-  }
-
-  /* ---------- حالت لیست دسته‌بندی‌ها ---------- */
-  function renderCategoryList(){
-    var all = A.getAllProducts();
-    var cats = A.getCategories();
-
-    breadcrumb.style.display = "none";
-    catsTitle.querySelector("h2").textContent = "دسته‌بندی‌ها";
-    catsCount.textContent = cats.length ? cats.length + " دسته" : "";
-    switchRow.style.display = "none";
-    productsGrid.style.display = "none";
+  /* ---------- کارت‌های زیردسته (چه در ریشه چه داخل یک دسته) ---------- */
+  function renderChildCards(children){
     catGrid.style.display = "grid";
-
-    if(!cats.length){
-      catGrid.innerHTML = '<div class="empty-state"><h3>دسته‌بندی‌ای موجود نیست</h3><p>بعداً دوباره سر بزن.</p></div>';
+    if(!children.length){
+      catGrid.innerHTML = "";
       return;
     }
-    catGrid.innerHTML = cats.map(function(c){
-      var sample = all.filter(function(p){ return p.category === c; })[0];
+    catGrid.innerHTML = children.map(function(c){
+      var list = A.productsInCategory(c.path);
+      var sample = list[0];
       var img = sample ? A.escapeHtml(sample.thumb || sample.image || "") : "";
-      var count = countInCategory(all, c);
       return (
-        '<a class="cat-card reveal-once" href="' + A.categoryUrl(c) + '">' +
-          (img ? '<span class="cat-card-media"><img src="' + img + '" alt="' + A.escapeHtml(c) + '" loading="lazy"></span>' : '') +
+        '<a class="cat-card reveal-once" href="' + A.categoryUrl(c.path) + '">' +
+          (img ? '<span class="cat-card-media"><img src="' + img + '" alt="' + A.escapeHtml(c.name) + '" loading="lazy"></span>' : '') +
           '<span class="cat-card-body">' +
-            '<h3>' + A.escapeHtml(c) + '</h3>' +
-            '<span>' + count + ' محصول</span>' +
+            '<h3>' + A.escapeHtml(c.name) + '</h3>' +
+            '<span>' + list.length + ' محصول</span>' +
           '</span>' +
         '</a>'
       );
@@ -54,22 +40,65 @@
     A.wireRevealOnce(catGrid);
   }
 
-  /* ---------- حالت محصولات یک دسته ---------- */
-  function renderCategoryProducts(cat){
-    var all = A.getAllProducts();
-    var cats = A.getCategories();
+  /* ---------- حالت لیست دسته‌بندی‌های سطح اول (بدون cat در URL) ---------- */
+  function renderCategoryList(){
+    var top = A.getCategoryChildren("");
 
-    catGrid.style.display = "none";
-    catsTitle.querySelector("h2").textContent = cat;
+    breadcrumb.style.display = "none";
+    breadcrumb.innerHTML = "";
+    catsTitle.querySelector("h2").textContent = "دسته‌بندی‌ها";
+    catsCount.textContent = top.length ? top.length + " دسته" : "";
+    switchRow.style.display = "none";
+    switchRow.innerHTML = "";
+    productsGrid.style.display = "none";
+    productsGrid.innerHTML = "";
+
+    if(!top.length){
+      catGrid.style.display = "grid";
+      catGrid.innerHTML = '<div class="empty-state"><h3>دسته‌بندی‌ای موجود نیست</h3><p>بعداً دوباره سر بزن.</p></div>';
+      return;
+    }
+    renderChildCards(top);
+  }
+
+  /* ---------- حالت یک دسته‌بندی مشخص (با ?cat=) — ممکن است خودش زیردسته هم داشته باشد ---------- */
+  function renderCategoryProducts(catPath){
+    var parts = A.splitCategory(catPath);
+    if(!parts.length){ renderCategoryList(); return; }
+
+    var children = A.getCategoryChildren(catPath);
+    var list = A.productsInCategory(catPath); // شامل زیردسته‌ها هم می‌شود
+
+    // breadcrumb: خانه / دسته‌بندی‌ها / سطح۱ / سطح۲ / ...
+    var acc = [];
+    var crumbs = '<a href="/index.html">خانه</a><span>/</span><a href="/categories.html">دسته‌بندی‌ها</a>';
+    parts.forEach(function(seg, i){
+      acc.push(seg);
+      var isLast = i === parts.length - 1;
+      crumbs += '<span>/</span>' + (isLast
+        ? '<span>' + A.escapeHtml(seg) + '</span>'
+        : '<a href="' + A.categoryUrl(acc.join("/")) + '">' + A.escapeHtml(seg) + '</a>');
+    });
     breadcrumb.style.display = "flex";
-    bcCatName.textContent = cat;
+    breadcrumb.innerHTML = crumbs;
 
-    var list = all.filter(function(p){ return (p.category || "") === cat; });
+    catsTitle.querySelector("h2").textContent = parts[parts.length - 1];
     catsCount.textContent = list.length + " محصول";
 
-    switchRow.style.display = cats.length > 1 ? "flex" : "none";
-    switchRow.innerHTML = cats.map(function(c){
-      return '<a class="cat-chip' + (c === cat ? " active" : "") + '" href="' + A.categoryUrl(c) + '">' + A.escapeHtml(c) + '</a>';
+    // زیردسته‌های همین مسیر (اگر باشند) به‌صورت کارت نشان داده می‌شوند
+    if(children.length){
+      renderChildCards(children);
+    } else {
+      catGrid.style.display = "none";
+      catGrid.innerHTML = "";
+    }
+
+    // چیپ‌های دسته‌های هم‌سطح (خواهر/برادر) برای جابه‌جایی سریع
+    var parentPath = parts.slice(0, -1).join("/");
+    var siblings = A.getCategoryChildren(parentPath);
+    switchRow.style.display = siblings.length > 1 ? "flex" : "none";
+    switchRow.innerHTML = siblings.map(function(s){
+      return '<a class="cat-chip' + (s.path === catPath ? " active" : "") + '" href="' + A.categoryUrl(s.path) + '">' + A.escapeHtml(s.name) + '</a>';
     }).join("");
 
     productsGrid.style.display = "grid";

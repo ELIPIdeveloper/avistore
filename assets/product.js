@@ -32,23 +32,43 @@
     document.title = p.name + " | آوی استور";
     document.getElementById("pdName").textContent = p.name;
     document.getElementById("bcName").textContent = p.name;
-    var bcCat = document.getElementById("bcCat");
-    var bcCatSep = document.getElementById("bcCatSep");
-    if(p.category){
-      bcCat.textContent = p.category;
-      bcCat.href = A.categoryUrl(p.category);
-      bcCat.style.display = "";
-      bcCatSep.style.display = "";
-    } else {
-      bcCat.style.display = "none";
-      bcCatSep.style.display = "none";
-    }
+    renderCategoryBreadcrumb(p);
     document.getElementById("pdDesc").textContent = p.description || "";
+    document.getElementById("pdMetaRow").innerHTML = A.trustBadgesHtml(p);
+    renderSpecs(p);
     renderPrice(p);
     renderGallery(p);
     renderVariants(p);
     updateAddButtonState();
     renderRelated(p);
+  }
+
+  /* ---------- breadcrumb دسته‌بندی چندسطحی (محصولات چرمی / مردانه / نام محصول) ---------- */
+  function renderCategoryBreadcrumb(p){
+    var bcCatWrap = document.getElementById("bcCatWrap");
+    var bcCatSep = document.getElementById("bcCatSep");
+    var parts = A.splitCategory(p.category);
+    if(!parts.length){
+      bcCatWrap.style.display = "none";
+      bcCatSep.style.display = "none";
+      return;
+    }
+    var acc = [];
+    bcCatWrap.innerHTML = parts.map(function(seg){
+      acc.push(seg);
+      return '<a href="' + A.categoryUrl(acc.join("/")) + '">' + A.escapeHtml(seg) + '</a>';
+    }).join('<span>/</span>');
+    bcCatWrap.style.display = "";
+    bcCatSep.style.display = "";
+  }
+
+  /* ---------- مشخصات محصول (ابعاد/نوع/اصالت/مشخصه‌های دستی) ---------- */
+  function renderSpecs(p){
+    var wrap = document.getElementById("pdSpecs");
+    var html = A.specsHtml(p);
+    if(!html){ wrap.hidden = true; wrap.innerHTML = ""; return; }
+    wrap.hidden = false;
+    wrap.innerHTML = html;
   }
 
   /* ---------- قیمت (بر اساس رنگ/سایز انتخاب‌شده) ---------- */
