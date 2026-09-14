@@ -1126,17 +1126,60 @@
     "category": "محصولات چرمی",
     "oldPrice": 27900000,
     "inStock": true,
+    "colors": [
+      {
+        "name": "زرد طبیعی",
+        "hex": "#ffff00"
+      },
+      {
+        "name": "قهوه‌ای کروکودیلی",
+        "hex": "#70402d"
+      },
+      {
+        "name": "سورمه‌ای طبیعی",
+        "hex": "#192b57"
+      },
+      {
+        "name": "قهوه‌ای تیره",
+        "hex": "#290f0f"
+      },
+      {
+        "name": "قرمز کلاسیک",
+        "hex": "#7d0000"
+      },
+      {
+        "name": "سبز زیتونی",
+        "hex": "#203b1f"
+      },
+      {
+        "name": "مشکی کروکودیلی",
+        "hex": "#111111"
+      },
+      {
+        "name": "قهوه‌ای متوسط",
+        "hex": "#755338"
+      },
+      {
+        "name": "مشکی طبیعی",
+        "hex": "#000000",
+        "priceDiff": 50000
+      }
+    ],
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
     "badges": {
       "fastShipping": false,
       "returnable": false
     },
-    "authenticity": "اصل",
     "specs": [
       {
         "name": "برند",
         "value": "چرم کاوه"
       }
-    ]
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "zs1012",
@@ -1148,14 +1191,53 @@
     "active": true,
     "category": "محصولات چرمی",
     "inStock": true,
-    "badges": {
-      "fastShipping": false,
-      "returnable": false
-    },
+    "colors": [
+      {
+        "name": "زرد طبیعی",
+        "hex": "#ffff00"
+      },
+      {
+        "name": "قهوه‌ای کروکودیلی",
+        "hex": "#70402d"
+      },
+      {
+        "name": "سورمه‌ای طبیعی",
+        "hex": "#192b57"
+      },
+      {
+        "name": "قهوه‌ای تیره",
+        "hex": "#290f0f"
+      },
+      {
+        "name": "قرمز کلاسیک",
+        "hex": "#7d0000"
+      },
+      {
+        "name": "سبز زیتونی",
+        "hex": "#203b1f"
+      },
+      {
+        "name": "مشکی کروکودیلی",
+        "hex": "#111111"
+      },
+      {
+        "name": "قهوه‌ای متوسط",
+        "hex": "#755338"
+      },
+      {
+        "name": "مشکی طبیعی",
+        "hex": "#000000",
+        "priceDiff": 50000
+      }
+    ],
     "images": [
       "1.webp",
       "2.webp"
     ],
+    "badges": {
+      "fastShipping": false,
+      "returnable": false
+    },
     "specs": [
       {
         "name": "برند",
@@ -1178,17 +1260,60 @@
     "active": true,
     "category": "محصولات چرمی",
     "inStock": true,
+    "colors": [
+      {
+        "name": "زرد طبیعی",
+        "hex": "#ffff00"
+      },
+      {
+        "name": "قهوه‌ای کروکودیلی",
+        "hex": "#70402d"
+      },
+      {
+        "name": "سورمه‌ای طبیعی",
+        "hex": "#192b57"
+      },
+      {
+        "name": "قهوه‌ای تیره",
+        "hex": "#290f0f"
+      },
+      {
+        "name": "قرمز کلاسیک",
+        "hex": "#7d0000"
+      },
+      {
+        "name": "سبز زیتونی",
+        "hex": "#203b1f"
+      },
+      {
+        "name": "مشکی کروکودیلی",
+        "hex": "#111111"
+      },
+      {
+        "name": "قهوه‌ای متوسط",
+        "hex": "#755338"
+      },
+      {
+        "name": "مشکی طبیعی",
+        "hex": "#000000",
+        "priceDiff": 50000
+      }
+    ],
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
     "badges": {
       "fastShipping": false,
       "returnable": false
     },
-    "authenticity": "اصل",
     "specs": [
       {
         "name": "برند",
         "value": "چرم کاوه"
       }
-    ]
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "zs1014",
@@ -1205,17 +1330,60 @@
     "category": "محصولات چرمی",
     "oldPrice": 29900000,
     "inStock": true,
+    "colors": [
+      {
+        "name": "زرد طبیعی",
+        "hex": "#ffff00"
+      },
+      {
+        "name": "قهوه‌ای کروکودیلی",
+        "hex": "#70402d"
+      },
+      {
+        "name": "سورمه‌ای طبیعی",
+        "hex": "#192b57"
+      },
+      {
+        "name": "قهوه‌ای تیره",
+        "hex": "#290f0f"
+      },
+      {
+        "name": "قرمز کلاسیک",
+        "hex": "#7d0000"
+      },
+      {
+        "name": "سبز زیتونی",
+        "hex": "#203b1f"
+      },
+      {
+        "name": "مشکی کروکودیلی",
+        "hex": "#111111"
+      },
+      {
+        "name": "قهوه‌ای متوسط",
+        "hex": "#755338"
+      },
+      {
+        "name": "مشکی طبیعی",
+        "hex": "#000000",
+        "priceDiff": 50000
+      }
+    ],
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
     "badges": {
       "fastShipping": false,
       "returnable": false
     },
-    "authenticity": "اصل",
     "specs": [
       {
         "name": "برند",
         "value": "چرم کاوه"
       }
-    ]
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "zs1015",
@@ -1232,17 +1400,60 @@
     "category": "محصولات چرمی",
     "oldPrice": 14000000,
     "inStock": true,
+    "colors": [
+      {
+        "name": "زرد طبیعی",
+        "hex": "#ffff00"
+      },
+      {
+        "name": "قهوه‌ای کروکودیلی",
+        "hex": "#70402d"
+      },
+      {
+        "name": "سورمه‌ای طبیعی",
+        "hex": "#192b57"
+      },
+      {
+        "name": "قهوه‌ای تیره",
+        "hex": "#290f0f"
+      },
+      {
+        "name": "قرمز کلاسیک",
+        "hex": "#7d0000"
+      },
+      {
+        "name": "سبز زیتونی",
+        "hex": "#203b1f"
+      },
+      {
+        "name": "مشکی کروکودیلی",
+        "hex": "#111111"
+      },
+      {
+        "name": "قهوه‌ای متوسط",
+        "hex": "#755338"
+      },
+      {
+        "name": "مشکی طبیعی",
+        "hex": "#000000",
+        "priceDiff": 50000
+      }
+    ],
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
     "badges": {
       "fastShipping": false,
       "returnable": false
     },
-    "authenticity": "اصل",
     "specs": [
       {
         "name": "برند",
         "value": "چرم کاوه"
       }
-    ]
+    ],
+    "authenticity": "اصل"
   },
   {
     "code": "zs10016",
@@ -1258,16 +1469,59 @@
     "active": true,
     "category": "محصولات طبیعی",
     "inStock": true,
+    "colors": [
+      {
+        "name": "زرد طبیعی",
+        "hex": "#ffff00"
+      },
+      {
+        "name": "قهوه‌ای کروکودیلی",
+        "hex": "#70402d"
+      },
+      {
+        "name": "سورمه‌ای طبیعی",
+        "hex": "#192b57"
+      },
+      {
+        "name": "قهوه‌ای تیره",
+        "hex": "#290f0f"
+      },
+      {
+        "name": "قرمز کلاسیک",
+        "hex": "#7d0000"
+      },
+      {
+        "name": "سبز زیتونی",
+        "hex": "#203b1f"
+      },
+      {
+        "name": "مشکی کروکودیلی",
+        "hex": "#111111"
+      },
+      {
+        "name": "قهوه‌ای متوسط",
+        "hex": "#755338"
+      },
+      {
+        "name": "مشکی طبیعی",
+        "hex": "#000000",
+        "priceDiff": 50000
+      }
+    ],
+    "images": [
+      "1.webp",
+      "2.webp"
+    ],
     "badges": {
       "fastShipping": false,
       "returnable": false
     },
-    "authenticity": "اصل",
     "specs": [
       {
         "name": "برند",
         "value": "چرم کاوه"
       }
-    ]
+    ],
+    "authenticity": "اصل"
   }
 ]
