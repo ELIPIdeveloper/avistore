@@ -23,7 +23,6 @@ const PRODUCTS_JSON = path.join(ROOT, "assets", "products.json");
 const TEMPLATE_PATH = path.join(ROOT, "products", "_template.html");
 const PRODUCTS_DIR = path.join(ROOT, "products");
 const FAVICON_PATH = path.join(ROOT, "favicon.ico");
-const ICON_SVG_PATH = path.join(ROOT, "icon.svg");
 
 // دامنهٔ واقعی سایت — برای ساخت لینک کامل هر محصول در JSON-LD (schema.org)
 // لازم است. اگر دامنه‌تان چیز دیگری است، همین یک خط را عوض کنید.
@@ -124,14 +123,11 @@ function main(){
 
     fs.writeFileSync(path.join(dir, "index.html"), html, "utf8");
 
-    // آیکون‌ها (favicon.ico و icon.svg) کنار index.html هر محصول کپی می‌شوند
-    // تا آدرس‌دهی نسبی/برخی هاست‌ها که فایل‌های ریشه را برای هر مسیر سرو
-    // نمی‌کنند هم آیکون درست را نمایش دهند.
+    // فقط favicon.ico کنار index.html هر محصول کپی می‌شود (icon.svg دیگر کپی نمی‌شود
+    // چون در هدر همه صفحات به‌جای آن از favicon.ico استفاده می‌شود و کپی آن
+    // فقط حجم اضافه به هر پوشه محصول اضافه می‌کرد).
     if(fs.existsSync(FAVICON_PATH)){
       fs.copyFileSync(FAVICON_PATH, path.join(dir, "favicon.ico"));
-    }
-    if(fs.existsSync(ICON_SVG_PATH)){
-      fs.copyFileSync(ICON_SVG_PATH, path.join(dir, "icon.svg"));
     }
 
     // آدرس صفحهٔ محصول بدون اسلش انتهایی، مثلاً https://avistore.ir/products/1
@@ -145,7 +141,7 @@ function main(){
   const sitemapXml = buildSitemap(allUrls);
   fs.writeFileSync(SITEMAP_PATH, sitemapXml, "utf8");
 
-  console.log("✔ " + count + " صفحه محصول ساخته شد در پوشه‌های /products/<code>/ (به همراه favicon.ico و icon.svg)");
+  console.log("✔ " + count + " صفحه محصول ساخته شد در پوشه‌های /products/<code>/ (به همراه favicon.ico)");
   console.log("✔ sitemap.xml با " + allUrls.length + " لینک (" + staticUrls.length + " صفحهٔ ثابت + " + productUrls.length + " محصول) ساخته شد.");
 }
 

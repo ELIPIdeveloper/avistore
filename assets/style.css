@@ -445,6 +445,48 @@ header.site-head{
 }
 .checkout-btn:hover{background:var(--accent-dark);}
 .checkout-btn:disabled{background:var(--ink-faint);cursor:not-allowed;}
+
+/* ===== صفحه محصول: انیمیشن نرم ورود + تعویض بلورِ تصویر ===== */
+.pd-anim-in{
+  animation:pdFadeUp .6s cubic-bezier(.22,.9,.28,1) both;
+}
+.pd-anim-in-delay{ animation-delay:.09s; }
+@keyframes pdFadeUp{
+  from{ opacity:0; filter:blur(8px); transform:translateY(16px); }
+  to{ opacity:1; filter:blur(0); transform:translateY(0); }
+}
+.pd-main-img img{
+  transition:opacity .38s ease, filter .38s ease, transform .5s cubic-bezier(.22,.9,.28,1.2);
+  will-change:opacity, filter, transform;
+}
+.pd-main-img img.img-switching{
+  opacity:0; filter:blur(16px); transform:scale(1.04) translateY(6px);
+}
+
+/* ===== دکمه افزودن به سبد در صفحه محصول: انیمیشن دائمی جذاب ===== */
+.pd-add-btn{
+  position:relative;overflow:hidden;
+  animation:pdAddPulse 2.1s ease-in-out infinite;
+}
+.pd-add-btn::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%);
+  background-size:260% 100%;
+  animation:pdAddShine 2.4s linear infinite;
+}
+.pd-add-btn:hover{background:var(--accent-dark);}
+.pd-add-btn:active{transform:scale(.96);}
+@keyframes pdAddPulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(31,78,134,.5); transform:scale(1); }
+  50%{ box-shadow:0 0 0 9px rgba(31,78,134,0); transform:scale(1.015); }
+}
+@keyframes pdAddShine{
+  from{ background-position:220% 0; }
+  to{ background-position:-40% 0; }
+}
+@media (prefers-reduced-motion:reduce){
+  .pd-anim-in, .pd-add-btn, .pd-add-btn::after, .pd-main-img img{ animation:none !important; transition:none !important; }
+}
 .back-link{background:none;border:none;color:var(--ink-soft);font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;padding:0;margin-bottom:14px;cursor:pointer;}
 
 /* checkout form */
