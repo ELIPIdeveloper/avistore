@@ -102,6 +102,33 @@
   }
 
   /* ---------- گالری چند عکسی (+ جابجایی با سوایپ لمسی مثل گالری) ---------- */
+  // جلوه محو-تیزِ نرم (کراس‌فید واقعی) هنگام تعویض تصویر اصلی: به‌جای پرش ناگهانی،
+  // یک «شبح» از عکس قبلی زیر عکس جدید قرار می‌گیرد و هر دو هم‌زمان و به‌آرامی محو/نمایان می‌شوند.
+  function setMainImage(src){
+    if(!src || imgEl.getAttribute("src") === src){ if(src) imgEl.src = src; return; }
+    var mediaBox = imgEl.parentNode;
+    if(mediaBox){
+      var ghost = document.createElement("img");
+      ghost.src = imgEl.currentSrc || imgEl.src;
+      ghost.alt = "";
+      ghost.className = "pd-img-ghost";
+      mediaBox.insertBefore(ghost, imgEl);
+      imgEl.classList.add("img-switching");
+      imgEl.src = src;
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          imgEl.classList.remove("img-switching");
+          ghost.style.opacity = "0";
+        });
+      });
+      window.setTimeout(function(){
+        if(ghost.parentNode) ghost.parentNode.removeChild(ghost);
+      }, 650);
+    } else {
+      imgEl.src = src;
+    }
+  }
+
   function renderGallery(p){
     var images = A.productImages(p);
     var mediaEl = imgEl.closest(".pd-main-img");
@@ -115,7 +142,7 @@
       idx = (idx + images.length) % images.length;
       if(idx === activeIdx) return;
       activeIdx = idx;
-      imgEl.src = images[activeIdx];
+      setMainImage(images[activeIdx]);
       if(thumbsEl){
         thumbsEl.querySelectorAll(".pd-thumb").forEach(function(b, i){
           b.classList.toggle("active", i === activeIdx);

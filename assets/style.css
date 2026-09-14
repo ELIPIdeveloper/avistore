@@ -70,9 +70,9 @@ header.site-head{
   display:flex;align-items:center;justify-content:center;
   background:var(--ink);color:#fff;border:none;
   width:40px;height:40px;border-radius:999px;
-  transition:transform .12s;
+  transition:transform .25s cubic-bezier(.33,1,.68,1);
 }
-.icon-btn:active{transform:scale(.94);}
+.icon-btn:active{transform:scale(.94);transition-duration:.12s;}
 .cart-badge{
   position:absolute;top:-6px;left:-6px;
   background:var(--accent-bright);color:#fff;
@@ -324,10 +324,11 @@ header.site-head{
 .pd-thumb{
   width:56px;height:56px;border-radius:10px;overflow:hidden;
   border:2px solid transparent;padding:0;background:var(--accent-tint);
-  flex-shrink:0;cursor:pointer;transition:border-color .15s;
+  flex-shrink:0;cursor:pointer;transition:border-color .25s ease, transform .25s cubic-bezier(.33,1,.68,1);
 }
 .pd-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.pd-thumb.active{border-color:var(--accent);}
+.pd-thumb.active{border-color:var(--accent);transform:scale(1.05);}
+.pd-thumb:active{transform:scale(.92);transition-duration:.1s;}
 .pd-info{display:flex;flex-direction:column;gap:12px;}
 .pd-info h1{margin:0;font-size:21px;font-weight:800;line-height:1.4;}
 .pd-price-row{display:flex;align-items:baseline;gap:10px;}
@@ -428,8 +429,10 @@ header.site-head{
 }
 .stepper button{
   width:30px;height:30px;background:var(--surface);border:none;font-size:16px;font-weight:700;color:var(--ink);
+  transition:background .25s ease, transform .18s cubic-bezier(.33,1,.68,1);
 }
 .stepper button:hover{background:var(--accent-tint);}
+.stepper button:active{transform:scale(.88);transition-duration:.1s;}
 .stepper button:disabled{opacity:.4;cursor:not-allowed;}
 .stepper span{width:32px;text-align:center;font-weight:700;font-size:14px;}
 
@@ -442,9 +445,10 @@ header.site-head{
 .checkout-btn{
   width:100%;background:var(--accent);color:#fff;border:none;border-radius:16px;
   padding:13px;font-size:15px;font-weight:800;margin-top:14px;
-  transition:background .15s;
+  transition:background .28s ease, transform .28s cubic-bezier(.33,1,.68,1);
 }
 .checkout-btn:hover{background:var(--accent-dark);}
+.checkout-btn:active{transform:scale(.98);transition-duration:.12s;}
 .checkout-btn:disabled{background:var(--ink-faint);cursor:not-allowed;}
 
 /* ===== صفحه محصول: انیمیشن نرم ورود + تعویض بلورِ تصویر ===== */
@@ -457,35 +461,43 @@ header.site-head{
   to{ opacity:1; filter:blur(0); transform:translateY(0); }
 }
 .pd-main-img img{
-  transition:opacity .38s ease, filter .38s ease, transform .5s cubic-bezier(.22,.9,.28,1.2);
+  position:relative;z-index:2;
+  transition:opacity .5s cubic-bezier(.33,1,.68,1), filter .5s cubic-bezier(.33,1,.68,1), transform .6s cubic-bezier(.33,1,.68,1);
   will-change:opacity, filter, transform;
 }
 .pd-main-img img.img-switching{
-  opacity:0; filter:blur(16px); transform:scale(1.04) translateY(6px);
+  opacity:0; filter:blur(7px); transform:scale(1.015);
+}
+/* لایهٔ «شبح» برای جاب‌به‌جایی نرمِ تصویر قبلی هنگام تعویض عکس (کراس‌فید واقعی) */
+.pd-img-ghost{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  z-index:1;pointer-events:none;
+  transition:opacity .5s cubic-bezier(.33,1,.68,1);
 }
 
-/* ===== دکمه افزودن به سبد (و مشابه‌های آن در سبد خرید): انیمیشن دائمی جذاب و پویا ===== */
+/* ===== دکمه افزودن به سبد (و مشابه‌های آن در سبد خرید): انیمیشن آرام و نرم ===== */
 .pd-add-btn{
   position:relative;overflow:hidden;
-  animation:pdAddPulse 1.15s cubic-bezier(.45,0,.2,1) infinite;
+  transition:background .3s ease, transform .3s cubic-bezier(.33,1,.68,1), box-shadow .3s ease;
+  animation:pdAddPulse 2.6s ease-in-out infinite;
 }
 .pd-add-btn::after{
   content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%);
+  background:linear-gradient(115deg, transparent 40%, rgba(255,255,255,.4) 50%, transparent 60%);
   background-size:260% 100%;
-  animation:pdAddShine 1.3s linear infinite;
+  animation:pdAddShine 3.4s ease-in-out infinite;
 }
-.pd-add-btn:hover{background:var(--accent-dark);}
-.pd-add-btn:active{transform:scale(.96);}
+.pd-add-btn:hover{background:var(--accent-dark);transform:translateY(-1px);}
+.pd-add-btn:active{transform:scale(.97);transition-duration:.12s;}
 .pd-add-btn:disabled{animation:none;box-shadow:none;transform:none;}
 .pd-add-btn:disabled::after{animation:none;}
 @keyframes pdAddPulse{
-  0%,100%{ box-shadow:0 0 0 0 rgba(31,78,134,.5); transform:scale(1); }
-  50%{ box-shadow:0 0 0 8px rgba(31,78,134,0); transform:scale(1.025); }
+  0%,100%{ box-shadow:0 0 0 0 rgba(31,78,134,.3); transform:scale(1); }
+  50%{ box-shadow:0 0 0 6px rgba(31,78,134,0); transform:scale(1.012); }
 }
 @keyframes pdAddShine{
-  from{ background-position:220% 0; }
-  to{ background-position:-40% 0; }
+  0%{ background-position:220% 0; }
+  22%,100%{ background-position:-40% 0; }
 }
 @media (prefers-reduced-motion:reduce){
   .pd-anim-in, .pd-add-btn, .pd-add-btn::after, .pd-main-img img{ animation:none !important; transition:none !important; }
